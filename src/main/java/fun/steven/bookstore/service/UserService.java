@@ -19,4 +19,26 @@ public class UserService implements IUserService {
         BeanUtils.copyProperties(userDto, user);
         return userRepository.save(user);
     }
+
+    public User delete(String userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        if (user != null) {
+            userRepository.delete(user);
+        }
+        return user;
+    }
+
+    public User update(UserDto userDto) {
+        String userId = userDto.getUserId();
+        User user = userRepository.findById(userId).orElse(null);
+        if (user != null) {
+            BeanUtils.copyProperties(userDto, user);
+            return userRepository.save(user);
+        }
+        return null;
+    }
+
+    public User query(String userId) {
+        return userRepository.findById(userId).orElse(null);
+    }
 }

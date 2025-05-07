@@ -33,7 +33,7 @@ public class ResponseMessage<T> {
     }
 
     /* method */
-    public static <T> ResponseMessage<T> success(T data) {
-        return new ResponseMessage<>(200, "success", data);
+    public static <T> ResponseMessage<T> success(String message, T data) {
+        return new ResponseMessage<>(200, message, data);
     }
 }
