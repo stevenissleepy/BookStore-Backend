@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import fun.steven.bookstore.entity.ResponseMessage;
+import fun.steven.bookstore.dto.ResponseMessage;
 
 @RestControllerAdvice
 public class GlobalExceptionHandlerAdvice {

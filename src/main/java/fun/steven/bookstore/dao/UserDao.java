@@ -4,8 +4,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import fun.steven.bookstore.dto.UserDto;
 import fun.steven.bookstore.entity.User;
-import fun.steven.bookstore.entity.dto.UserDto;
 import fun.steven.bookstore.repository.UserRepository;
 
 @Repository

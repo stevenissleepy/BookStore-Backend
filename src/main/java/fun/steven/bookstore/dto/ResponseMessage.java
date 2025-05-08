@@ -1,4 +1,4 @@
-package fun.steven.bookstore.entity;
+package fun.steven.bookstore.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

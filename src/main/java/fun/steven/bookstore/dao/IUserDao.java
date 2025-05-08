@@ -1,7 +1,7 @@
 package fun.steven.bookstore.dao;
 
+import fun.steven.bookstore.dto.UserDto;
 import fun.steven.bookstore.entity.User;
-import fun.steven.bookstore.entity.dto.UserDto;
 
 public interface IUserDao {
     User add(UserDto user);
