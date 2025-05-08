@@ -1,4 +1,4 @@
-package fun.steven.bookstore.pojo;
+package fun.steven.bookstore.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

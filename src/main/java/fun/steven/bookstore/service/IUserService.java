@@ -1,7 +1,7 @@
 package fun.steven.bookstore.service;
 
-import fun.steven.bookstore.pojo.User;
-import fun.steven.bookstore.pojo.dto.UserDto;
+import fun.steven.bookstore.entity.User;
+import fun.steven.bookstore.entity.dto.UserDto;
 
 public interface IUserService {
     

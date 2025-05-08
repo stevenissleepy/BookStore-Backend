@@ -1,4 +1,4 @@
-package fun.steven.bookstore.pojo;
+package fun.steven.bookstore.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
