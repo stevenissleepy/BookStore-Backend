@@ -19,7 +19,7 @@ public interface IUserService {
      * @param userDto 用户数据传输对象，只需要用户 ID
      * @return User 返回用户对象
      */
-    public User delete(String userId);
+    public User delete(Long userId);
 
     /**
      * @brief 更新用户
@@ -35,5 +35,5 @@ public interface IUserService {
      * @param userDto 用户数据传输对象，只需要用户 ID
      * @return User 返回用户对象
      */
-    public User query(String userId);
+    public User query(Long userId);
 }

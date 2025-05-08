@@ -17,7 +17,7 @@ public class UserService implements IUserService {
         return userDao.add(userDto);
     }
 
-    public User delete(String userId) {
+    public User delete(Long userId) {
         return userDao.delete(userId);
     }
 
@@ -25,7 +25,7 @@ public class UserService implements IUserService {
         return userDao.update(userDto);
     }
 
-    public User query(String userId) {
+    public User query(Long userId) {
         return userDao.query(userId);
     }
 }

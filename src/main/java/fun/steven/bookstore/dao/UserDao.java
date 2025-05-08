@@ -22,7 +22,7 @@ public class UserDao implements IUserDao {
     }
 
     @Override
-    public User delete(String userId) {
+    public User delete(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new RuntimeException("User not found"));
         userRepository.delete(user);
@@ -31,7 +31,7 @@ public class UserDao implements IUserDao {
 
     @Override
     public User update(UserDto userDto) {
-        String userId = userDto.getUserId();
+        Long userId = userDto.getUserId();
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new RuntimeException("User not found"));
         BeanUtils.copyProperties(userDto, user);
@@ -41,7 +41,7 @@ public class UserDao implements IUserDao {
     }
 
     @Override
-    public User query(String userId) {
+    public User query(Long userId) {
         return userRepository.findById(userId).orElseThrow(
                 () -> new RuntimeException("User not found"));
     }

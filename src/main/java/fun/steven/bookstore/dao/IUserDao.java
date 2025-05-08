@@ -5,7 +5,7 @@ import fun.steven.bookstore.entity.dto.UserDto;
 
 public interface IUserDao {
     User add(UserDto user);
-    User delete(String userId);
+    User delete(Long userId);
     User update(UserDto user);
-    User query(String userId);
+    User query(Long userId);
 }
