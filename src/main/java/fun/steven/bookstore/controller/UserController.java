@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import fun.steven.bookstore.pojo.ResponseMessage;
 import fun.steven.bookstore.pojo.User;
@@ -40,12 +39,12 @@ public class UserController {
      * @brief 删除用户
      * @note 该方法使用 DELETE 请求，路径为 /user
      * 
-     * @param userDto 用户数据传输对象
+     * @param userDto 用户数据传输对象，至少包含用户 ID
      * @return ResponseMessage<User> 返回响应消息对象
      */
-    @DeleteMapping("/{userId}")
-    public ResponseMessage<User> delete(@PathVariable String userId) {
-        User user = userService.delete(userId);
+    @DeleteMapping()
+    public ResponseMessage<User> delete(@RequestBody UserDto userDto) {
+        User user = userService.delete(userDto.getUserId());
         return ResponseMessage.success("del user success!", user);
     }
 
@@ -66,12 +65,12 @@ public class UserController {
      * @brief 查询用户
      * @note 该方法使用 GET 请求，路径为 /user/{userId}
      * 
-     * @param userId 用户 ID
+     * @param userId 用户 ID，至少包含用户 ID
      * @return ResponseMessage<User> 返回响应消息对象
      */
-    @GetMapping("/{userId}")
-    public ResponseMessage<User> query(@PathVariable String userId) {
-        User user = userService.query(userId);
+    @GetMapping
+    public ResponseMessage<User> query(@RequestBody UserDto userDto) {
+        User user = userService.query(userDto.getUserId());
         return ResponseMessage.success("query user success!", user);
     }
 }
