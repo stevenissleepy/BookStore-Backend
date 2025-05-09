@@ -8,5 +8,5 @@ public interface IUserDao {
     User add(UserDto user);
     User delete(Long userId);
     User update(UpdateUserDto user);
-    User query(Long userId);
+    User find(Long userId);
 }

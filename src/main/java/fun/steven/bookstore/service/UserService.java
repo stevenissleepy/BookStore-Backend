@@ -27,6 +27,6 @@ public class UserService implements IUserService {
     }
 
     public User query(Long userId) {
-        return userDao.query(userId);
+        return userDao.find(userId);
     }
 }

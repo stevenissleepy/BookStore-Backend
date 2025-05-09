@@ -42,7 +42,7 @@ public class UserDao implements IUserDao {
     }
 
     @Override
-    public User query(Long userId) {
+    public User find(Long userId) {
         return userRepository.findById(userId).orElseThrow(
                 () -> new RuntimeException("User not found"));
     }
