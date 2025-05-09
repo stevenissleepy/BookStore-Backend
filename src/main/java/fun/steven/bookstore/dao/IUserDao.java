@@ -9,5 +9,5 @@ public interface IUserDao {
     User delete(Long userId);
     User update(UpdateUserDto user);
     User find(Long userId);
-    User findByUsername(String username);
+    User findByUserName(String username);
 }
