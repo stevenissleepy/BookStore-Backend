@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import fun.steven.bookstore.dto.ResponseMessage;
 
 @RestControllerAdvice
-public class GlobalExceptionHandlerAdvice {
+public class GlobalExceptionHandler {
 
-    Logger logger = LoggerFactory.getLogger(GlobalExceptionHandlerAdvice.class);
+    Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler({ Exception.class })
     public ResponseMessage<Object> handleException(Exception e) {
