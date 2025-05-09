@@ -7,6 +7,7 @@ import fun.steven.bookstore.dao.UserDao;
 import fun.steven.bookstore.dto.UpdateUserDto;
 import fun.steven.bookstore.dto.UserDto;
 import fun.steven.bookstore.entity.User;
+import fun.steven.bookstore.exception.LoginException;
 
 @Service                                    /* 将该类标记为一个 Spring Bean */
 public class UserService implements IUserService {
@@ -28,5 +29,18 @@ public class UserService implements IUserService {
 
     public User query(Long userId) {
         return userDao.find(userId);
+    }
+    
+    public User login(String username, String password) {
+        User user = null;
+        try {
+            user = userDao.findByUserName(username);
+        } catch (RuntimeException e) {
+            throw LoginException.usernameError();
+        }
+        if (!user.getPassword().equals(password)) {
+            throw LoginException.passwordError();
+        }
+        return user;
     }
 }

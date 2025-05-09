@@ -15,6 +15,7 @@ import fun.steven.bookstore.dto.ResponseMessage;
 import fun.steven.bookstore.dto.UpdateUserDto;
 import fun.steven.bookstore.dto.UserDto;
 import fun.steven.bookstore.entity.User;
+import fun.steven.bookstore.exception.LoginException;
 import fun.steven.bookstore.service.IUserService;
 
 
@@ -88,7 +89,17 @@ public class UserController {
      */
     @PostMapping("/login")
     public ResponseMessage<String> login(@RequestParam String userName, @RequestParam String password, HttpServletRequest request) {
+        try{
+            userService.login(userName, password);
+        }catch (LoginException e){
+            if (e.getMessage().equals("Username is incorrect.")) {
+                return ResponseMessage.error(401, "用户名错误");
+            } else if (e.getMessage().equals("Password is incorrect.")) {
+                return ResponseMessage.error(401, "密码错误");
+            }
+        }
         
+        request.getSession().setAttribute("userName", userName);
         return ResponseMessage.success("login success!", null);
     }
 }

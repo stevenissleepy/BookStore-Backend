@@ -14,4 +14,8 @@ public class ResponseMessage<T> {
     public static <T> ResponseMessage<T> success(String message, T data) {
         return new ResponseMessage<>(200, message, data);
     }
+
+    public static ResponseMessage<String> error(Integer code, String message) {
+        return new ResponseMessage<>(code, message, null);
+    }
 }
