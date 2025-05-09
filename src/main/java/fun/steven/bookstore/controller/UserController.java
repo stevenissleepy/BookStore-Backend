@@ -5,10 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import fun.steven.bookstore.dto.LoginDto;
@@ -47,8 +47,8 @@ public class UserController {
      * @param userId 用户 ID
      * @return ResponseMessage<String> 返回响应消息对象
      */
-    @DeleteMapping
-    public ResponseMessage<String> delete(@RequestParam Long userId) {
+    @DeleteMapping("/{userId}")
+    public ResponseMessage<String> delete(@PathVariable Long userId) {
         userService.delete(userId);
         return ResponseMessage.success("del user success!", null);
     }
@@ -73,8 +73,8 @@ public class UserController {
      * @param userId 用户 ID
      * @return ResponseMessage<User> 返回响应消息对象
      */
-    @GetMapping
-    public ResponseMessage<User> query(@RequestParam Long userId) {
+    @GetMapping("/{userId}")
+    public ResponseMessage<User> query(@PathVariable Long userId) {
         User user = userService.query(userId);
         return ResponseMessage.success("query user success!", user);
     }
