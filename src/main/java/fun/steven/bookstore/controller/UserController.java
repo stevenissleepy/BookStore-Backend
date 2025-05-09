@@ -7,9 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import fun.steven.bookstore.dto.ResponseMessage;
+import fun.steven.bookstore.dto.UpdateUserDto;
 import fun.steven.bookstore.dto.UserDto;
 import fun.steven.bookstore.entity.User;
 import fun.steven.bookstore.service.IUserService;
@@ -26,7 +28,7 @@ public class UserController {
      * @brief 增加用户
      * @note 该方法使用 POST 请求，路径为 /user
      * 
-     * @param userDto 用户数据传输对象
+     * @param userDto UserDto
      * @return ResponseMessage<User> 返回响应消息对象
      */
     @PostMapping
@@ -39,38 +41,38 @@ public class UserController {
      * @brief 删除用户
      * @note 该方法使用 DELETE 请求，路径为 /user
      * 
-     * @param userDto 用户数据传输对象，至少包含用户 ID
-     * @return ResponseMessage<User> 返回响应消息对象
+     * @param userId 用户 ID
+     * @return ResponseMessage<String> 返回响应消息对象
      */
     @DeleteMapping()
-    public ResponseMessage<User> delete(@RequestBody UserDto userDto) {
-        User user = userService.delete(userDto.getUserId());
-        return ResponseMessage.success("del user success!", user);
+    public ResponseMessage<String> delete(@RequestParam Long userId) {
+        userService.delete(userId);
+        return ResponseMessage.success("del user success!", null);
     }
 
     /**
      * @brief 更新用户
      * @note 该方法使用 POST 请求，路径为 /user
      * 
-     * @param userDto 用户数据传输对象
+     * @param userDto UpdateUserDto
      * @return ResponseMessage<User> 返回响应消息对象
      */
     @PutMapping
-    public ResponseMessage<User> update(@RequestBody UserDto userDto) {
+    public ResponseMessage<User> update(@RequestBody UpdateUserDto userDto) {
         User user = userService.update(userDto);
         return ResponseMessage.success("update user success!", user);
     }
 
     /**
      * @brief 查询用户
-     * @note 该方法使用 GET 请求，路径为 /user/{userId}
+     * @note 该方法使用 GET 请求，路径为 /user
      * 
-     * @param userId 用户 ID，至少包含用户 ID
+     * @param userId 用户 ID
      * @return ResponseMessage<User> 返回响应消息对象
      */
     @GetMapping
-    public ResponseMessage<User> query(@RequestBody UserDto userDto) {
-        User user = userService.query(userDto.getUserId());
+    public ResponseMessage<User> query(@RequestParam Long userId) {
+        User user = userService.query(userId);
         return ResponseMessage.success("query user success!", user);
     }
 }

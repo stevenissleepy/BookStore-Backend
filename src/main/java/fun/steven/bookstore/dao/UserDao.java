@@ -4,6 +4,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import fun.steven.bookstore.dto.UpdateUserDto;
 import fun.steven.bookstore.dto.UserDto;
 import fun.steven.bookstore.entity.User;
 import fun.steven.bookstore.repository.UserRepository;
@@ -30,7 +31,7 @@ public class UserDao implements IUserDao {
     }
 
     @Override
-    public User update(UserDto userDto) {
+    public User update(UpdateUserDto userDto) {
         Long userId = userDto.getUserId();
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new RuntimeException("User not found"));

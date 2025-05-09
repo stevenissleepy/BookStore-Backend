@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fun.steven.bookstore.dao.UserDao;
+import fun.steven.bookstore.dto.UpdateUserDto;
 import fun.steven.bookstore.dto.UserDto;
 import fun.steven.bookstore.entity.User;
 
@@ -21,7 +22,7 @@ public class UserService implements IUserService {
         return userDao.delete(userId);
     }
 
-    public User update(UserDto userDto) {
+    public User update(UpdateUserDto userDto) {
         return userDao.update(userDto);
     }
 

@@ -1,5 +1,6 @@
 package fun.steven.bookstore.service;
 
+import fun.steven.bookstore.dto.UpdateUserDto;
 import fun.steven.bookstore.dto.UserDto;
 import fun.steven.bookstore.entity.User;
 
@@ -27,7 +28,7 @@ public interface IUserService {
      * @param userDto 用户数据传输对象，需要用户 ID 和其他信息
      * @return User 返回用户对象
      */
-    public User update(UserDto userDto);
+    public User update(UpdateUserDto userDto);
 
     /**
      * @brief 查询用户
