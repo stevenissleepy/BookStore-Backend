@@ -1,5 +1,6 @@
 package fun.steven.bookstore.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -44,7 +45,7 @@ public class UserController {
      * @param userId 用户 ID
      * @return ResponseMessage<String> 返回响应消息对象
      */
-    @DeleteMapping()
+    @DeleteMapping
     public ResponseMessage<String> delete(@RequestParam Long userId) {
         userService.delete(userId);
         return ResponseMessage.success("del user success!", null);
@@ -74,5 +75,20 @@ public class UserController {
     public ResponseMessage<User> query(@RequestParam Long userId) {
         User user = userService.query(userId);
         return ResponseMessage.success("query user success!", user);
+    }
+
+    /**
+     * @brief 登录
+     * @note 该方法使用 GET 请求，路径为 /user/login
+     * 
+     * @param userName 用户名
+     * @param password 密码
+     * @param request HttpServletRequest
+     * @return ResponseMessage<String> 返回响应消息对象
+     */
+    @PostMapping("/login")
+    public ResponseMessage<String> login(@RequestParam String userName, @RequestParam String password, HttpServletRequest request) {
+        
+        return ResponseMessage.success("login success!", null);
     }
 }
