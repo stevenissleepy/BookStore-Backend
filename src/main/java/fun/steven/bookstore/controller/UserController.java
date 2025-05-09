@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import fun.steven.bookstore.dto.LoginDto;
 import fun.steven.bookstore.dto.ResponseMessage;
 import fun.steven.bookstore.dto.UpdateUserDto;
 import fun.steven.bookstore.dto.UserDto;
@@ -88,9 +89,16 @@ public class UserController {
      * @return ResponseMessage<String> 返回响应消息对象
      */
     @PostMapping("/login")
-    public ResponseMessage<String> login(@RequestParam String userName, @RequestParam String password, HttpServletRequest request) {
+    public ResponseMessage<String> login(@RequestBody LoginDto loginDto,  HttpServletRequest request) {
+        String userName = loginDto.getUserName();
+        String password = loginDto.getPassword();
+        User user = null;
+        if (userName == null || password == null) {
+            return ResponseMessage.error(401, "用户名或密码不能为空");
+        }
+        
         try{
-            userService.login(userName, password);
+            user = userService.login(userName, password);
         }catch (LoginException e){
             if (e.getMessage().equals("Username is incorrect.")) {
                 return ResponseMessage.error(401, "用户名错误");
@@ -99,7 +107,7 @@ public class UserController {
             }
         }
         
-        request.getSession().setAttribute("userName", userName);
+        request.getSession().setAttribute("user", user);
         return ResponseMessage.success("login success!", null);
     }
 }
