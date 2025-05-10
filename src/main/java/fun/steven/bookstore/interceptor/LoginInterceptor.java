@@ -7,7 +7,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import fun.steven.bookstore.entity.User;
 import fun.steven.bookstore.exception.LoginException;
 
 @Component
@@ -19,9 +18,9 @@ public class LoginInterceptor implements HandlerInterceptor {
         @NonNull Object handler
     ) throws Exception {
 
-        User user = (User) request.getSession().getAttribute("user");
+        Long user = (Long) request.getSession().getAttribute("userId");
         if (user == null) {
-            throw new LoginException("未登录或登录已过期，请重新登录");
+            throw new LoginException("未登录或登录超时，请重新登录");
         }
         return true;
     }
