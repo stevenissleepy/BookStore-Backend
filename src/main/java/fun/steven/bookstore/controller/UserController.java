@@ -16,7 +16,6 @@ import fun.steven.bookstore.dto.ResponseMessage;
 import fun.steven.bookstore.dto.UpdateUserDto;
 import fun.steven.bookstore.dto.UserDto;
 import fun.steven.bookstore.entity.User;
-import fun.steven.bookstore.exception.LoginException;
 import fun.steven.bookstore.service.IUserService;
 
 
@@ -92,22 +91,12 @@ public class UserController {
     public ResponseMessage<String> login(@RequestBody LoginDto loginDto,  HttpServletRequest request) {
         String userName = loginDto.getUserName();
         String password = loginDto.getPassword();
-        User user = null;
         if (userName == null || password == null) {
             return ResponseMessage.error(401, "用户名或密码不能为空");
         }
         
-        try{
-            user = userService.login(userName, password);
-            request.getSession().setAttribute("userId", user.getUserId());
-        }catch (LoginException e){
-            if (e.getMessage().equals("Username is incorrect.")) {
-                return ResponseMessage.error(401, "用户名错误");
-            } else if (e.getMessage().equals("Password is incorrect.")) {
-                return ResponseMessage.error(401, "密码错误");
-            }
-        }
-
+        User user = userService.login(userName, password);
+        request.getSession().setAttribute("userId", user.getUserId());
         return ResponseMessage.success("login success!", null);
     }
 
@@ -122,7 +111,7 @@ public class UserController {
     public ResponseMessage<String> logout(HttpServletRequest request, @PathVariable Long userId) {
         Long sessionUserId = (Long) request.getSession().getAttribute("userId");
         if (sessionUserId == null || !sessionUserId.equals(userId)) {
-            return ResponseMessage.success("用户未登录或登录已过期", null);
+            return ResponseMessage.error(403, "用户未登录或登录已过期");
         }
         request.getSession().invalidate();
         return ResponseMessage.success("logout success!", null);

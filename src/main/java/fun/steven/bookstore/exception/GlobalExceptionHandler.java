@@ -10,13 +10,23 @@ import fun.steven.bookstore.dto.ResponseMessage;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    @ExceptionHandler({ Exception.class })
-    public ResponseMessage<Object> handleException(Exception e) {
-        logger.error("Global Exception: ", e);
+    /* 全局异常 */
+    @ExceptionHandler({ RuntimeException.class })
+    public ResponseMessage<Object> handleException(RuntimeException e) {
+        String message = e.getMessage();
+        logger.error("Global Exception: ", message);
+        ResponseMessage<Object> response = new ResponseMessage<Object>(500, message, null);
+        return response;
+    }
 
-        ResponseMessage<Object> response = new ResponseMessage<Object>(500, e.getMessage(), null);
+    /* 登录异常 */
+    @ExceptionHandler({ LoginException.class })
+    public ResponseMessage<Object> handleLoginException(LoginException e) {
+        String message = e.getMessage();
+        logger.error("Login Exception: ", message);
+        ResponseMessage<Object> response = new ResponseMessage<Object>(401, message, null);
         return response;
     }
 }

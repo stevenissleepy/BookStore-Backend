@@ -36,10 +36,10 @@ public class UserService implements IUserService {
         try {
             user = userDao.findByUserName(username);
         } catch (RuntimeException e) {
-            throw LoginException.usernameError();
+            throw new LoginException("Username not found");
         }
         if (!user.getPassword().equals(password)) {
-            throw LoginException.passwordError();
+            throw new LoginException("Password is incorrect");
         }
         return user;
     }
