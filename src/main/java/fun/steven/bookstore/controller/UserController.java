@@ -99,6 +99,7 @@ public class UserController {
         
         try{
             user = userService.login(userName, password);
+            request.getSession().setAttribute("userId", user.getUserId());
         }catch (LoginException e){
             if (e.getMessage().equals("Username is incorrect.")) {
                 return ResponseMessage.error(401, "用户名错误");
@@ -106,8 +107,7 @@ public class UserController {
                 return ResponseMessage.error(401, "密码错误");
             }
         }
-        
-        request.getSession().setAttribute("user", user);
+
         return ResponseMessage.success("login success!", null);
     }
 
@@ -120,11 +120,11 @@ public class UserController {
      */
     @PostMapping("/logout/{userId}")
     public ResponseMessage<String> logout(HttpServletRequest request, @PathVariable Long userId) {
-        User user = (User) request.getSession().getAttribute("user");
-        if (user == null || !user.getUserId().equals(userId)) {
-            return ResponseMessage.error(401, "用户未登录或登录信息错误");
+        Long sessionUserId = (Long) request.getSession().getAttribute("userId");
+        if (sessionUserId == null || !sessionUserId.equals(userId)) {
+            return ResponseMessage.success("用户未登录或登录已过期", null);
         }
-        request.getSession().removeAttribute("user");
+        request.getSession().invalidate();
         return ResponseMessage.success("logout success!", null);
     }
 }
