@@ -1,8 +1,10 @@
 package fun.steven.bookstore.service;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fun.steven.bookstore.dao.CartDao;
 import fun.steven.bookstore.dao.UserDao;
 import fun.steven.bookstore.dto.UpdateUserDto;
 import fun.steven.bookstore.dto.UserDto;
@@ -15,8 +17,15 @@ public class UserService implements IUserService {
     @Autowired
     private UserDao userDao;                /* 注入 UserDao 依赖 */
 
+    @Autowired
+    private CartDao cartDao;                /* 注入 CartDao 依赖 */
+
     public User add(UserDto userDto) {
-        return userDao.add(userDto);
+        User user = new User();
+        BeanUtils.copyProperties(userDto, user);
+        userDao.add(user);
+        cartDao.add(user);
+        return user;
     }
 
     public User delete(Long userId) {

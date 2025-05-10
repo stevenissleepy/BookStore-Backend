@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import fun.steven.bookstore.dto.UpdateUserDto;
-import fun.steven.bookstore.dto.UserDto;
 import fun.steven.bookstore.entity.User;
 import fun.steven.bookstore.repository.UserRepository;
 
@@ -16,9 +15,7 @@ public class UserDao implements IUserDao {
     private UserRepository userRepository;
 
     @Override
-    public User add(UserDto userDto) {
-        User user = new User();
-        BeanUtils.copyProperties(userDto, user);
+    public User add(User user) {
         return userRepository.save(user);
     }
 
