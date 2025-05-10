@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import fun.steven.bookstore.entity.User;
+import fun.steven.bookstore.exception.LoginException;
 
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
@@ -20,9 +21,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
         User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("未登录或登录已过期，请重新登录");
-            return false;
+            throw new LoginException("未登录或登录已过期，请重新登录");
         }
         return true;
     }
