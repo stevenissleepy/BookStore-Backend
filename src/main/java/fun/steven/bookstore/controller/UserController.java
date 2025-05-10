@@ -81,7 +81,7 @@ public class UserController {
 
     /**
      * @brief 登录
-     * @note 该方法使用 GET 请求，路径为 /user/login
+     * @note 该方法使用 POST 请求，路径为 /user/login
      * 
      * @param userName 用户名
      * @param password 密码
@@ -109,5 +109,22 @@ public class UserController {
         
         request.getSession().setAttribute("user", user);
         return ResponseMessage.success("login success!", null);
+    }
+
+    /**
+     * @brief 登出
+     * @note 该方法使用 GET 请求，路径为 /user/logout/{userId}
+     * 
+     * @param request HttpServletRequest
+     * @return ResponseMessage<String> 返回响应消息对象
+     */
+    @PostMapping("/logout/{userId}")
+    public ResponseMessage<String> logout(HttpServletRequest request, @PathVariable Long userId) {
+        User user = (User) request.getSession().getAttribute("user");
+        if (user == null || !user.getUserId().equals(userId)) {
+            return ResponseMessage.error(401, "用户未登录或登录信息错误");
+        }
+        request.getSession().removeAttribute("user");
+        return ResponseMessage.success("logout success!", null);
     }
 }
