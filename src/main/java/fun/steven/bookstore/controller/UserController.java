@@ -33,7 +33,7 @@ public class UserController {
      * @param userDto UserDto
      * @return ResponseMessage<User> 返回响应消息对象
      */
-    @PostMapping
+    @PostMapping("/register")
     public ResponseMessage<User> add(@RequestBody UserDto userDto) {
         User user = userService.add(userDto);
         return ResponseMessage.success("add user success!", user);
