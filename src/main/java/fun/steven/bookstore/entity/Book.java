@@ -6,11 +6,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
 @Entity
 @Table(name = "tb_book")
 public class Book {
@@ -25,6 +23,6 @@ public class Book {
     @Column(name = "price")
     private Double price;
 
-    @Column(name = "cover")
+    @Column(name = "cover", columnDefinition = "LONGTEXT")
     private String cover;
 }
