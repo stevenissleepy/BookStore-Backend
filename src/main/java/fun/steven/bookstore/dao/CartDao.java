@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import fun.steven.bookstore.entity.Cart;
+import fun.steven.bookstore.entity.CartItem;
 import fun.steven.bookstore.entity.User;
 import fun.steven.bookstore.repository.CartItemRepository;
 import fun.steven.bookstore.repository.CartRepository;
@@ -18,22 +19,14 @@ public class CartDao implements ICartDao {
     private CartItemRepository cartItemRepository;
 
     @Override
-    public Cart add(User user) {
+    public boolean add(User user) {
         Cart cart = new Cart();
         cart.setUser(user);
-        return cartRepository.save(cart);
+        return cartRepository.save(cart) != null;
     }
 
     @Override
-    public Cart addToCart(Long userId, Long bookId, Integer quantity) {
-        cartItemRepository.findById(bookId).orElseThrow(
-                () -> new RuntimeException("Book not found"));
-
-        return null;
-    }
-
-    @Override
-    public Cart deleteFromCart(Long userId, Long bookId, Integer quantity) {
-        return null;
+    public boolean addToCart(CartItem cartItem) {
+        return cartItemRepository.save(cartItem) != null;
     }
 }
