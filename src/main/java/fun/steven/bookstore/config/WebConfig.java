@@ -1,5 +1,7 @@
 package fun.steven.bookstore.config;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
@@ -16,8 +18,14 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(@NonNull InterceptorRegistry registry) {
+        List<String> excludePath = List.of(
+                "/user/login",
+                "/user/logout/**",
+                "/user/register",
+                "/book");
+
         registry.addInterceptor(loginInterceptor)
                 .addPathPatterns("/**") /* 拦截所有路径 */
-                .excludePathPatterns("/user/login", "/user/logout/**", "/user/register"); /* 排除登录、登出和注册 */
+                .excludePathPatterns(excludePath);
     }
 }
