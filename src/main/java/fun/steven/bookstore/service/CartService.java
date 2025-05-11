@@ -1,5 +1,8 @@
 package fun.steven.bookstore.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +13,8 @@ import fun.steven.bookstore.dto.CartItemDto;
 import fun.steven.bookstore.entity.Book;
 import fun.steven.bookstore.entity.Cart;
 import fun.steven.bookstore.entity.CartItem;
+import fun.steven.bookstore.entity.Order;
+import fun.steven.bookstore.entity.OrderItem;
 
 @Service
 public class CartService implements ICartService {
@@ -39,5 +44,27 @@ public class CartService implements ICartService {
             cartItem.setQuantity(cartItem.getQuantity() + cartItemDto.getQuantity());
             return cartDao.updateCartItem(cartItem);
         }
+    }
+
+    @Override
+    public Order cartToOrder(Long userId) {
+        Cart cart = userDao.getCart(userId);
+
+        /* 创建订单 */
+        Order order = new Order();
+        List<OrderItem> orderItems = new ArrayList<>();
+        for(CartItem item: cartDao.findCartItems(cart)) {
+            OrderItem orderItem = new OrderItem();
+            orderItem.setBook(item.getBook());
+            orderItem.setQuantity(item.getQuantity());
+            orderItems.add(orderItem);
+        }
+        order.setOrderItems(orderItems);
+        order.setUser(userDao.getById(userId));
+
+        /* 清空购物车 */
+        cartDao.clear(cart);
+
+        return order;
     }
 }

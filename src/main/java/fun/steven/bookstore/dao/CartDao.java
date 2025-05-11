@@ -1,5 +1,7 @@
 package fun.steven.bookstore.dao;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -7,6 +9,7 @@ import fun.steven.bookstore.entity.Book;
 import fun.steven.bookstore.entity.Cart;
 import fun.steven.bookstore.entity.CartItem;
 import fun.steven.bookstore.entity.User;
+import fun.steven.bookstore.exception.CartEmptyException;
 import fun.steven.bookstore.repository.CartItemRepository;
 import fun.steven.bookstore.repository.CartRepository;
 
@@ -40,5 +43,20 @@ public class CartDao implements ICartDao {
     @Override
     public boolean updateCartItem(CartItem cartItem) {
         return cartItemRepository.save(cartItem) != null;
+    }
+
+    @Override
+    public List<CartItem> findCartItems(Cart cart) {
+        return cartItemRepository.findByCartId(cart.getId()).orElseThrow(
+                () -> new CartEmptyException());
+    }
+
+    @Override
+    public boolean clear(Cart cart) {
+        List<CartItem> cartItems = findCartItems(cart);
+        for (CartItem item : cartItems) {
+            cartItemRepository.delete(item);
+        }
+        return true;
     }
 }

@@ -29,4 +29,13 @@ public class GlobalExceptionHandler {
         ResponseMessage<Object> response = new ResponseMessage<Object>(401, message, null);
         return response;
     }
+
+    /* 购物车为空异常 */
+    @ExceptionHandler({ CartEmptyException.class })
+    public ResponseMessage<Object> handleCartEmptyException(CartEmptyException e) {
+        String message = e.getMessage();
+        logger.error("Cart Empty Exception: ", message);
+        ResponseMessage<Object> response = new ResponseMessage<Object>(400, message, null);
+        return response;
+    }
 }

@@ -8,8 +8,9 @@ public interface IUserDao {
     User add(User user);
     User delete(Long userId);
     User update(UpdateUserDto user);
-    User find(Long userId);
-    User findByUserName(String username);
 
+    /* 查找 */
+    User getById(Long userId);
+    User getByUserName(String username);
     Cart getCart(Long userId);
 }

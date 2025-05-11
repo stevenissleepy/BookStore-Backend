@@ -37,13 +37,13 @@ public class UserService implements IUserService {
     }
 
     public User query(Long userId) {
-        return userDao.find(userId);
+        return userDao.getById(userId);
     }
     
     public User login(String username, String password) {
         User user = null;
         try {
-            user = userDao.findByUserName(username);
+            user = userDao.getByUserName(username);
         } catch (RuntimeException e) {
             throw new LoginException("Username not found");
         }
