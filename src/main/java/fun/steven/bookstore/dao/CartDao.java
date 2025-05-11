@@ -29,4 +29,10 @@ public class CartDao implements ICartDao {
     public boolean addToCart(CartItem cartItem) {
         return cartItemRepository.save(cartItem) != null;
     }
+
+    @Override
+    public Cart getCartById(Long cartId) {
+        return cartRepository.findById(cartId).orElseThrow(
+                () -> new RuntimeException("Cart not found: " + cartId));
+    }
 }

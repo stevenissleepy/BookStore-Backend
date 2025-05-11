@@ -6,5 +6,5 @@ public interface IBookDao {
     boolean add(Book book);
     boolean delete(Long id);
     boolean update(Book book);
-    Book get(Long id);
+    Book getBookById(Long id);
 }

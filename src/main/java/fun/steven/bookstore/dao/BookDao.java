@@ -30,8 +30,8 @@ public class BookDao implements IBookDao {
         return true;
     }
 
-    public Book get(Long id) {
+    public Book getBookById(Long id) {
         return bookRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Book not found"));
+                () -> new RuntimeException("Book not found: " + id));
     }
 }

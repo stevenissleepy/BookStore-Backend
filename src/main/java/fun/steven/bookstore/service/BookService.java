@@ -33,7 +33,7 @@ public class BookService implements IBookService {
     }
 
     public BookDto get(Long id) {
-        Book book = bookDao.get(id);
+        Book book = bookDao.getBookById(id);
         BookDto bookDto = new BookDto();
         BeanUtils.copyProperties(book, bookDto);
         return bookDto;
