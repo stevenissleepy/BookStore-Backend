@@ -3,6 +3,7 @@ package fun.steven.bookstore.dao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import fun.steven.bookstore.entity.Book;
 import fun.steven.bookstore.entity.Cart;
 import fun.steven.bookstore.entity.CartItem;
 import fun.steven.bookstore.entity.User;
@@ -27,6 +28,17 @@ public class CartDao implements ICartDao {
 
     @Override
     public boolean addToCart(CartItem cartItem) {
+        return cartItemRepository.save(cartItem) != null;
+    }
+
+    @Override
+    public CartItem findCartItem(Book book, Cart cart) {
+        return cartItemRepository.findByBookIdAndCartId(book.getId(), cart.getId())
+                .orElse(null);
+    }
+
+    @Override
+    public boolean updateCartItem(CartItem cartItem) {
         return cartItemRepository.save(cartItem) != null;
     }
 }

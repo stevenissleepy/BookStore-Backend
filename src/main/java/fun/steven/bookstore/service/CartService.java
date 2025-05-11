@@ -7,6 +7,8 @@ import fun.steven.bookstore.dao.IBookDao;
 import fun.steven.bookstore.dao.ICartDao;
 import fun.steven.bookstore.dao.IUserDao;
 import fun.steven.bookstore.dto.CartItemDto;
+import fun.steven.bookstore.entity.Book;
+import fun.steven.bookstore.entity.Cart;
 import fun.steven.bookstore.entity.CartItem;
 
 @Service
@@ -20,10 +22,22 @@ public class CartService implements ICartService {
 
     @Override
     public boolean addToCart(CartItemDto cartItemDto) {
-        CartItem cartItem = new CartItem();
-        cartItem.setBook(bookDao.getBookById(cartItemDto.getBookId()));
-        cartItem.setCart(userDao.getCart(cartItemDto.getUserId()));
-        cartItem.setQuantity(cartItemDto.getQuantity());
-        return cartDao.addToCart(cartItem);
+        Book book = bookDao.getBookById(cartItemDto.getBookId());
+        Cart cart = userDao.getCart(cartItemDto.getUserId());
+        CartItem cartItem = cartDao.findCartItem(book, cart);
+        
+        /* 如果购物车中没有这本书 */
+        if (cartItem == null) {
+            cartItem = new CartItem();
+            cartItem.setBook(book);
+            cartItem.setCart(cart);
+            cartItem.setQuantity(cartItemDto.getQuantity());
+            return cartDao.addToCart(cartItem);
+        
+        /* 如果购物车中已经有这本书 */
+        } else {
+            cartItem.setQuantity(cartItem.getQuantity() + cartItemDto.getQuantity());
+            return cartDao.updateCartItem(cartItem);
+        }
     }
 }

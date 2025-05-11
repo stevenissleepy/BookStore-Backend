@@ -8,11 +8,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "tb_cart_item")
+@Table(name = "tb_cart_item", uniqueConstraints = @UniqueConstraint(columnNames = { "cart_id", "book_id" }))
 public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
