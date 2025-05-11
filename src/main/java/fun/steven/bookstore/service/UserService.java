@@ -4,8 +4,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fun.steven.bookstore.dao.CartDao;
-import fun.steven.bookstore.dao.UserDao;
+import fun.steven.bookstore.dao.ICartDao;
+import fun.steven.bookstore.dao.IUserDao;
 import fun.steven.bookstore.dto.UpdateUserDto;
 import fun.steven.bookstore.dto.UserDto;
 import fun.steven.bookstore.entity.User;
@@ -15,10 +15,10 @@ import fun.steven.bookstore.exception.LoginException;
 public class UserService implements IUserService {
 
     @Autowired
-    private UserDao userDao;                /* 注入 UserDao 依赖 */
+    private IUserDao userDao;                /* 注入 UserDao 依赖 */
 
     @Autowired
-    private CartDao cartDao;                /* 注入 CartDao 依赖 */
+    private ICartDao cartDao;                /* 注入 CartDao 依赖 */
 
     public User add(UserDto userDto) {
         User user = new User();
