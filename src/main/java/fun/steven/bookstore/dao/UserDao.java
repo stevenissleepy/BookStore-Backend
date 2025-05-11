@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import fun.steven.bookstore.dto.UpdateUserDto;
+import fun.steven.bookstore.entity.Cart;
 import fun.steven.bookstore.entity.User;
 import fun.steven.bookstore.repository.UserRepository;
 
@@ -48,5 +49,12 @@ public class UserDao implements IUserDao {
     public User findByUserName(String username) {
         return userRepository.findByUserName(username).orElseThrow(
                 () -> new RuntimeException("User not found"));
+    }
+
+    @Override
+    public Cart getCart(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new RuntimeException("User not found"));
+        return user.getCart();
     }
 }
