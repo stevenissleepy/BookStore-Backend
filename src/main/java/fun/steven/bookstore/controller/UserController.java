@@ -96,7 +96,7 @@ public class UserController {
         }
         
         User user = userService.login(userName, password);
-        request.getSession().setAttribute("userId", user.getUserId());
+        request.getSession().setAttribute("userId", user.getId());
         return ResponseMessage.success("login success!", null);
     }
 
