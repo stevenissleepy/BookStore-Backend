@@ -23,7 +23,7 @@ public class CartDao implements ICartDao {
     private CartItemRepository cartItemRepository;
 
     @Override
-    public boolean add(User user) {
+    public boolean addCart(User user) {
         Cart cart = new Cart();
         cart.setUser(user);
         return cartRepository.save(cart) != null;

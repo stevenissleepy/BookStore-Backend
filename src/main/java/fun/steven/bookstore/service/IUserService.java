@@ -1,5 +1,6 @@
 package fun.steven.bookstore.service;
 
+import fun.steven.bookstore.dto.AddressDto;
 import fun.steven.bookstore.dto.UpdateUserDto;
 import fun.steven.bookstore.dto.UserDto;
 import fun.steven.bookstore.entity.User;
@@ -46,4 +47,6 @@ public interface IUserService {
      * @return 是否登录成功
      */
     public User login(String username, String password);
+
+    public boolean addAddress(AddressDto addressDto);
 }

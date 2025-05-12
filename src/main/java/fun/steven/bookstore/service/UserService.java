@@ -6,8 +6,10 @@ import org.springframework.stereotype.Service;
 
 import fun.steven.bookstore.dao.ICartDao;
 import fun.steven.bookstore.dao.IUserDao;
+import fun.steven.bookstore.dto.AddressDto;
 import fun.steven.bookstore.dto.UpdateUserDto;
 import fun.steven.bookstore.dto.UserDto;
+import fun.steven.bookstore.entity.Address;
 import fun.steven.bookstore.entity.User;
 import fun.steven.bookstore.exception.LoginException;
 
@@ -23,8 +25,8 @@ public class UserService implements IUserService {
     public User add(UserDto userDto) {
         User user = new User();
         BeanUtils.copyProperties(userDto, user);
-        userDao.add(user);
-        cartDao.add(user);
+        userDao.addUser(user);
+        cartDao.addCart(user);
         return user;
     }
 
@@ -51,5 +53,13 @@ public class UserService implements IUserService {
             throw new LoginException("Password is incorrect");
         }
         return user;
+    }
+
+    public boolean addAddress(AddressDto addressDto) {
+        Address address = new Address();
+        BeanUtils.copyProperties(addressDto, address);
+        User user = userDao.getById(addressDto.getUserId());
+        address.setUser(user);
+        return userDao.addAddress(address);
     }
 }

@@ -8,7 +8,7 @@ import fun.steven.bookstore.entity.CartItem;
 import fun.steven.bookstore.entity.User;
 
 public interface ICartDao {
-    boolean add(User user);
+    boolean addCart(User user);
     boolean addToCart(CartItem cartItem);
 
     boolean clear(Cart cart);
