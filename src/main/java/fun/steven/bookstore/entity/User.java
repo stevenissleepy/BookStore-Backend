@@ -17,15 +17,24 @@ import lombok.Data;
 @Table(name = "tb_user")
 public class User {
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
 
     @Column(name = "user_name", unique = true)
     private String userName;
-    
+
     @Column(name = "password")
     private String password;
+
+    @Column(name = "balance")
+    private Double balance;
+
+    @Column(name = "avatar", columnDefinition = "LONGTEXT")
+    private String avatar;
+
+    @OneToMany(mappedBy = "user")
+    private List<Address> addresses;
 
     @OneToOne(mappedBy = "user")
     private Cart cart;

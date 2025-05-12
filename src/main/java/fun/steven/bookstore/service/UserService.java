@@ -2,6 +2,7 @@ package fun.steven.bookstore.service;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import fun.steven.bookstore.dao.ICartDao;
@@ -15,16 +16,19 @@ import fun.steven.bookstore.exception.LoginException;
 
 @Service                                    /* 将该类标记为一个 Spring Bean */
 public class UserService implements IUserService {
-
     @Autowired
     private IUserDao userDao;                /* 注入 UserDao 依赖 */
-
     @Autowired
     private ICartDao cartDao;                /* 注入 CartDao 依赖 */
+
+    @Value("${default.avatar.base64}")
+    private String defaultAvatarBase64;
 
     public User add(UserDto userDto) {
         User user = new User();
         BeanUtils.copyProperties(userDto, user);
+        user.setBalance(0.0);                 
+        user.setAvatar(defaultAvatarBase64);
         userDao.addUser(user);
         cartDao.addCart(user);
         return user;
