@@ -20,9 +20,24 @@ public class Book {
     @Column(name = "title")
     private String title;
 
+    @Column(name = "author")
+    private String author;
+
     @Column(name = "price")
     private Double price;
 
+    @Column(name = "description", columnDefinition = "LONGTEXT")
+    private String description;
+
     @Column(name = "cover", columnDefinition = "LONGTEXT")
     private String cover;
+
+    @Column(name = "category")
+    private String category;
+
+    @Column(name = "language")
+    private String language;
+
+    @Column(name = "isbn")
+    private String isbn;
 }
