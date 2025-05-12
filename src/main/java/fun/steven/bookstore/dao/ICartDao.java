@@ -5,11 +5,9 @@ import java.util.List;
 import fun.steven.bookstore.entity.Book;
 import fun.steven.bookstore.entity.Cart;
 import fun.steven.bookstore.entity.CartItem;
-import fun.steven.bookstore.entity.User;
 
 public interface ICartDao {
-    boolean addCart(User user);
-    boolean addToCart(CartItem cartItem);
+    CartItem addToCart(CartItem cartItem);
 
     boolean clear(Cart cart);
 

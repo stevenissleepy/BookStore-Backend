@@ -9,6 +9,7 @@ import fun.steven.bookstore.entity.Address;
 import fun.steven.bookstore.entity.Cart;
 import fun.steven.bookstore.entity.User;
 import fun.steven.bookstore.repository.AddressRepository;
+import fun.steven.bookstore.repository.CartRepository;
 import fun.steven.bookstore.repository.UserRepository;
 
 @Repository
@@ -16,12 +17,24 @@ public class UserDao implements IUserDao {
     @Autowired
     private UserRepository userRepository;
     @Autowired
+    private CartRepository cartRepository;
+    @Autowired
     private AddressRepository addressRepository;
 
 
     @Override
     public User addUser(User user) {
-        return userRepository.save(user);
+        // 保存用户
+        User savedUser = userRepository.save(user);
+
+        // 创建购物车
+        Cart cart = new Cart();
+        cart.setUser(savedUser);
+        cartRepository.save(cart);
+
+        // 设置用户的购物车
+        savedUser.setCart(cart);
+        return savedUser;
     }
 
     @Override

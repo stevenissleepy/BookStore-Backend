@@ -32,7 +32,7 @@ public class CartService implements ICartService {
             cartItem.setBook(book);
             cartItem.setCart(cart);
             cartItem.setQuantity(cartItemDto.getQuantity());
-            return cartDao.addToCart(cartItem);
+            return cartDao.addToCart(cartItem) != null;
         
         /* 如果购物车中已经有这本书 */
         } else {

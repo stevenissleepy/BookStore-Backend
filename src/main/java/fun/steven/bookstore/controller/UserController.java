@@ -1,6 +1,8 @@
 package fun.steven.bookstore.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import fun.steven.bookstore.dto.AddressDto;
 import fun.steven.bookstore.dto.LoginDto;
 import fun.steven.bookstore.dto.ResponseMessage;
+import fun.steven.bookstore.dto.ResponseUserDto;
 import fun.steven.bookstore.dto.UpdateUserDto;
 import fun.steven.bookstore.dto.UserDto;
 import fun.steven.bookstore.entity.User;
@@ -35,9 +38,13 @@ public class UserController {
      * @return ResponseMessage<User> 返回响应消息对象
      */
     @PostMapping("/register")
-    public ResponseMessage<User> add(@RequestBody UserDto userDto) {
+    public ResponseMessage<ResponseUserDto> add(@RequestBody UserDto userDto) {
         User user = userService.add(userDto);
-        return ResponseMessage.success("add user success!", user);
+
+        ResponseUserDto responseUserDto = new ResponseUserDto();
+        BeanUtils.copyProperties(user, responseUserDto);
+        responseUserDto.setCartId(user.getCart().getId());
+        return ResponseMessage.success("add user success!", responseUserDto);
     }
 
     /**
