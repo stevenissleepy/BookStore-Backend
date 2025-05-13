@@ -41,10 +41,7 @@ public class CartDao implements ICartDao {
     @Override
     public boolean clear(Cart cart) {
         List<CartItem> cartItems = getCartItems(cart);
-        for (CartItem item : cartItems) {
-            cartItemRepository.delete(item);
-        }
+        cartItemRepository.deleteAll(cartItems);
         return true;
     }
-    
 }
