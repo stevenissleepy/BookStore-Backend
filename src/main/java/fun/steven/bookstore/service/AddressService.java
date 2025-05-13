@@ -10,7 +10,6 @@ import fun.steven.bookstore.dao.IAddressDao;
 import fun.steven.bookstore.dao.IUserDao;
 import fun.steven.bookstore.dto.address.AddressDto;
 import fun.steven.bookstore.dto.address.GetAddressesDto;
-import fun.steven.bookstore.dto.address.GetAddressDto;
 import fun.steven.bookstore.entity.Address;
 import fun.steven.bookstore.entity.User;
 
@@ -32,16 +31,7 @@ public class AddressService implements IAddressService {
 
     @Override
     public GetAddressesDto getUserAddresses(Long userId) {
-        GetAddressesDto getAddressesDto = new GetAddressesDto();
-
         List<Address> addresses = addressDao.getUserAddresses(userId);
-        List<GetAddressDto> addressDtos = addresses.stream().map(address -> {
-            GetAddressDto addressDto = new GetAddressDto();
-            BeanUtils.copyProperties(address, addressDto);
-            return addressDto;
-        }).toList();
-        getAddressesDto.setAddresses(addressDtos);
-
-        return getAddressesDto;
+        return new GetAddressesDto(addresses);
     }
 }
