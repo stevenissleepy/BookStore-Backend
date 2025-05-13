@@ -5,7 +5,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,8 +50,8 @@ public class UserController {
      * @return ResponseMessage<User> 返回响应消息对象
      */
     @PutMapping
-    public ResponseMessage<UserInfoDto> update(@RequestBody UpdateUserDto userDto) {
-        User user = userService.update(userDto);
+    public ResponseMessage<UserInfoDto> update(@RequestBody UpdateUserDto userDto, @CurrentUserId Long userId) {
+        User user = userService.update(userId, userDto);
         UserInfoDto userInfoDto = new UserInfoDto(user);
 
         return ResponseMessage.success("update user success!", userInfoDto);
@@ -102,8 +101,8 @@ public class UserController {
      * @param request HttpServletRequest
      * @return ResponseMessage<String> 返回响应消息对象
      */
-    @PostMapping("/logout/{userId}")
-    public ResponseMessage<String> logout(HttpServletRequest request, @PathVariable Long userId) {
+    @PostMapping("/logout")
+    public ResponseMessage<String> logout(HttpServletRequest request, @CurrentUserId Long userId) {
         Long sessionUserId = (Long) request.getSession().getAttribute("userId");
         if (sessionUserId == null || !sessionUserId.equals(userId)) {
             return ResponseMessage.error(403, "用户未登录或登录已过期");

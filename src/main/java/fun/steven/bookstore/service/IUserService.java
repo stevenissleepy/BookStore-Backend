@@ -28,7 +28,7 @@ public interface IUserService {
      * @param userDto UpdateUserDto
      * @return User 返回更新后用户对象
      */
-    public User update(UpdateUserDto userDto);
+    public User update(Long userId, UpdateUserDto userDto);
 
     /**
      * @brief 查询用户

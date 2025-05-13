@@ -41,8 +41,7 @@ public class UserDao implements IUserDao {
     }
 
     @Override
-    public User update(UpdateUserDto userDto) {
-        Long userId = userDto.getUserId();
+    public User update(Long userId, UpdateUserDto userDto) {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new RuntimeException("User not found"));
         BeanUtils.copyProperties(userDto, user);

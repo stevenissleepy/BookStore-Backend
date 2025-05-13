@@ -13,5 +13,5 @@ public interface IUserDao {
     User getByUserName(String username);
     Cart getCart(Long userId);
 
-    User update(UpdateUserDto user);
+    User update(Long userId, UpdateUserDto user);
 }

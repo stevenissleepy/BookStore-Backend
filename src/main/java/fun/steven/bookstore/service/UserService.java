@@ -31,8 +31,8 @@ public class UserService implements IUserService {
         return userDao.delete(userId);
     }
 
-    public User update(UpdateUserDto userDto) {
-        return userDao.update(userDto);
+    public User update(Long userId, UpdateUserDto userDto) {
+        return userDao.update(userId, userDto);
     }
 
     public User query(Long userId) {
