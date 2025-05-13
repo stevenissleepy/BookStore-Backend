@@ -1,7 +1,9 @@
 package fun.steven.bookstore.service;
 
 import fun.steven.bookstore.dto.order.AddOrderDto;
+import fun.steven.bookstore.dto.order.GetOrdersDto;
 
 public interface IOrderService {
     boolean cartToOrder(AddOrderDto addOrderDto);
+    GetOrdersDto getUserOrders(Long userId);
 }

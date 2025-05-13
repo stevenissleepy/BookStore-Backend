@@ -1,8 +1,15 @@
 package fun.steven.bookstore.dto.book;
 
+import org.springframework.beans.BeanUtils;
+
+import fun.steven.bookstore.entity.Book;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class BookDto {
     private String title;
     private String author;
@@ -12,4 +19,8 @@ public class BookDto {
     private String isbn;
     private Double price;
     private String cover;
+
+    public BookDto(Book book){
+        BeanUtils.copyProperties(book, this);
+    }
 }

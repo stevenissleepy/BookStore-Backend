@@ -1,5 +1,8 @@
 package fun.steven.bookstore.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -25,5 +28,10 @@ public class OrderDao implements IOrderDao {
     public boolean addOrderItem(OrderItem orderItem) {
         orderItemRepository.save(orderItem);
         return true;
+    }
+
+    @Override
+    public List<Order> getUserOrders(Long userId) {
+        return orderRepository.findByUserId(userId).orElse(new ArrayList<>());
     }
 }

@@ -10,6 +10,7 @@ import fun.steven.bookstore.dao.ICartDao;
 import fun.steven.bookstore.dao.IOrderDao;
 import fun.steven.bookstore.dao.IUserDao;
 import fun.steven.bookstore.dto.order.AddOrderDto;
+import fun.steven.bookstore.dto.order.GetOrdersDto;
 import fun.steven.bookstore.entity.Address;
 import fun.steven.bookstore.entity.Cart;
 import fun.steven.bookstore.entity.CartItem;
@@ -56,5 +57,11 @@ public class OrderService implements IOrderService {
         cartDao.clear(cart);
 
         return true;
+    }
+
+    @Override
+    public GetOrdersDto getUserOrders(Long userId) {
+        List<Order> orders = orderDao.getUserOrders(userId);
+        return new GetOrdersDto(orders);
     }
 }
