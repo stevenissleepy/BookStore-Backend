@@ -23,9 +23,9 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(@NonNull InterceptorRegistry registry) {
         List<String> excludePath = List.of(
                 "/user/login",
-                "/user/logout/**",
                 "/user/register",
-                "/book");
+                "/book",
+                "/book/**");
 
         registry.addInterceptor(loginInterceptor)
                 .addPathPatterns("/**") /* 拦截所有路径 */
