@@ -12,7 +12,8 @@ public interface IUserDao {
     User delete(Long userId);
 
     /* 查找 */
-    User getById(Long userId);
+    User getUserById(Long userId);
+    Address getAddressById(Long addressId);
     User getByUserName(String username);
     Cart getCart(Long userId);
 

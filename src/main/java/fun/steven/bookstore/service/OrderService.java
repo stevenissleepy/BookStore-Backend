@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import fun.steven.bookstore.dao.ICartDao;
 import fun.steven.bookstore.dao.IOrderDao;
 import fun.steven.bookstore.dao.IUserDao;
+import fun.steven.bookstore.dto.order.AddOrderDto;
+import fun.steven.bookstore.entity.Address;
 import fun.steven.bookstore.entity.Cart;
 import fun.steven.bookstore.entity.CartItem;
 import fun.steven.bookstore.entity.Order;
@@ -24,8 +26,9 @@ public class OrderService implements IOrderService {
     private IOrderDao orderDao;
 
     @Override
-    public boolean cartToOrder(Long userId) {
-        User user = userDao.getById(userId);
+    public boolean cartToOrder(AddOrderDto addOrderDto) {
+        User user = userDao.getUserById(addOrderDto.getUserId());
+        Address address = userDao.getAddressById(addOrderDto.getAddressId());
         Cart cart = user.getCart();
         List<CartItem> cartItems = cartDao.getCartItems(cart);
 
@@ -44,6 +47,7 @@ public class OrderService implements IOrderService {
             return orderItem;
         }).toList();
         order.setOrderItems(orderItems);
+        order.setAddress(address);
 
         /* 清空购物车 */
         cartDao.clear(cart);

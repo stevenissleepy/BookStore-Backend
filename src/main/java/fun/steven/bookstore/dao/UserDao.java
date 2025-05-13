@@ -57,7 +57,7 @@ public class UserDao implements IUserDao {
     }
 
     @Override
-    public User getById(Long userId) {
+    public User getUserById(Long userId) {
         return userRepository.findById(userId).orElseThrow(
                 () -> new RuntimeException("User not found"));
     }
@@ -78,5 +78,10 @@ public class UserDao implements IUserDao {
     @Override
     public boolean addAddress(Address address) {
         return addressRepository.save(address) != null;
+    }
+    @Override
+    public Address getAddressById(Long addressId) {
+        return addressRepository.findById(addressId).orElseThrow(
+                () -> new RuntimeException("Address not found"));
     }
 }

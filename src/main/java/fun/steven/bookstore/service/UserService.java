@@ -38,7 +38,7 @@ public class UserService implements IUserService {
     }
 
     public User query(Long userId) {
-        return userDao.getById(userId);
+        return userDao.getUserById(userId);
     }
     
     public User login(String username, String password) {
@@ -57,7 +57,7 @@ public class UserService implements IUserService {
     public boolean addAddress(AddressDto addressDto) {
         Address address = new Address();
         BeanUtils.copyProperties(addressDto, address);
-        User user = userDao.getById(addressDto.getUserId());
+        User user = userDao.getUserById(addressDto.getUserId());
         address.setUser(user);
         return userDao.addAddress(address);
     }
