@@ -21,10 +21,10 @@ public class AddressService implements IAddressService {
     private IUserDao userDao;
 
     @Override
-    public boolean addAddress(AddressDto addressDto) {
+    public boolean addAddress(Long userId, AddressDto addressDto) {
         Address address = new Address();
         BeanUtils.copyProperties(addressDto, address);
-        User user = userDao.getUserById(addressDto.getUserId());
+        User user = userDao.getUserById(userId);
         address.setUser(user);
         return addressDao.addAddress(address);
     }
