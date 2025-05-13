@@ -4,6 +4,6 @@ import fun.steven.bookstore.dto.order.AddOrderDto;
 import fun.steven.bookstore.dto.order.GetOrdersDto;
 
 public interface IOrderService {
-    boolean cartToOrder(AddOrderDto addOrderDto);
+    boolean cartToOrder(Long userId, AddOrderDto addOrderDto);
     GetOrdersDto getUserOrders(Long userId);
 }

@@ -30,8 +30,8 @@ public class OrderService implements IOrderService {
     private IAddressDao addressDao;
 
     @Override
-    public boolean cartToOrder(AddOrderDto addOrderDto) {
-        User user = userDao.getUserById(addOrderDto.getUserId());
+    public boolean cartToOrder(Long userId, AddOrderDto addOrderDto) {
+        User user = userDao.getUserById(userId);
         Address address = addressDao.getAddressById(addOrderDto.getAddressId());
         Cart cart = user.getCart();
         List<CartItem> cartItems = cartDao.getCartItems(cart);
