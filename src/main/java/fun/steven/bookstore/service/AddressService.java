@@ -2,7 +2,6 @@ package fun.steven.bookstore.service;
 
 import java.util.List;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +21,7 @@ public class AddressService implements IAddressService {
 
     @Override
     public boolean addAddress(Long userId, AddressDto addressDto) {
-        Address address = new Address();
-        BeanUtils.copyProperties(addressDto, address);
+        Address address = new Address(addressDto);
         User user = userDao.getUserById(userId);
         address.setUser(user);
         return addressDao.addAddress(address);
