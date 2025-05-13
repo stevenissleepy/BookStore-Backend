@@ -1,6 +1,7 @@
 package fun.steven.bookstore.annotation;
 
 import org.springframework.core.MethodParameter;
+import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -15,16 +16,16 @@ import jakarta.servlet.http.HttpServletRequest;
 public class CurrentUserIdArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Override
-    public boolean supportsParameter(MethodParameter parameter) {
+    public boolean supportsParameter(@NonNull MethodParameter parameter) {
         /* 检查参数是否标注了 @CurrentUserId 注解 */
         return parameter.hasParameterAnnotation(CurrentUserId.class);
     }
 
     @Override
     public Object resolveArgument(
-        MethodParameter parameter, 
+        @NonNull MethodParameter parameter, 
         @Nullable ModelAndViewContainer mavContainer,
-        NativeWebRequest webRequest, 
+        @NonNull NativeWebRequest webRequest, 
         @Nullable WebDataBinderFactory binderFactory
     ) {
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
