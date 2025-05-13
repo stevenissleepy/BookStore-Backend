@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import fun.steven.bookstore.dto.AddressDto;
 import fun.steven.bookstore.dto.LoginDto;
 import fun.steven.bookstore.dto.ResponseMessage;
-import fun.steven.bookstore.dto.ResponseUserDto;
+import fun.steven.bookstore.dto.UserInfoDto;
 import fun.steven.bookstore.dto.UpdateUserDto;
 import fun.steven.bookstore.dto.UserDto;
 import fun.steven.bookstore.entity.User;
@@ -38,13 +38,12 @@ public class UserController {
      * @return ResponseMessage<User> 返回响应消息对象
      */
     @PostMapping("/register")
-    public ResponseMessage<ResponseUserDto> add(@RequestBody UserDto userDto) {
+    public ResponseMessage<UserInfoDto> add(@RequestBody UserDto userDto) {
         User user = userService.add(userDto);
 
-        ResponseUserDto responseUserDto = new ResponseUserDto();
-        BeanUtils.copyProperties(user, responseUserDto);
-        responseUserDto.setCartId(user.getCart().getId());
-        return ResponseMessage.success("add user success!", responseUserDto);
+        UserInfoDto userInfoDto = new UserInfoDto();
+        BeanUtils.copyProperties(user, userInfoDto);
+        return ResponseMessage.success("add user success!", userInfoDto);
     }
 
     /**
@@ -68,9 +67,12 @@ public class UserController {
      * @return ResponseMessage<User> 返回响应消息对象
      */
     @PutMapping
-    public ResponseMessage<User> update(@RequestBody UpdateUserDto userDto) {
+    public ResponseMessage<UserInfoDto> update(@RequestBody UpdateUserDto userDto) {
         User user = userService.update(userDto);
-        return ResponseMessage.success("update user success!", user);
+
+        UserInfoDto userInfoDto = new UserInfoDto();
+        BeanUtils.copyProperties(user, userInfoDto);
+        return ResponseMessage.success("update user success!", userInfoDto);
     }
 
     /**
@@ -81,9 +83,12 @@ public class UserController {
      * @return ResponseMessage<User> 返回响应消息对象
      */
     @GetMapping("/{userId}")
-    public ResponseMessage<User> query(@PathVariable Long userId) {
+    public ResponseMessage<UserInfoDto> query(@PathVariable Long userId) {
         User user = userService.query(userId);
-        return ResponseMessage.success("query user success!", user);
+
+        UserInfoDto userInfoDto = new UserInfoDto();
+        BeanUtils.copyProperties(user, userInfoDto);
+        return ResponseMessage.success("query user success!", userInfoDto);
     }
 
     /**
