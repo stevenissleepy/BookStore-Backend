@@ -2,14 +2,18 @@ package fun.steven.bookstore.dto.cart;
 
 import java.util.List;
 
+import fun.steven.bookstore.entity.Cart;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-/**
- * @brief 查询用户的购物车时返回的对象
- */
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class GetCartDto {
     List<GetCartItemDto> cartItems;
+
+    public GetCartDto(Cart cart) {
+        this.cartItems = cart.getCartItems().stream().map(GetCartItemDto::new).toList();
+    }
 }
