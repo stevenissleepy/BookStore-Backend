@@ -47,10 +47,14 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(@NonNull CorsRegistry registry) {
-        registry.addMapping("/**")                  /* 允许所有 api 路径 */
-                .allowedOrigins("http://127.0.0.1:5173")
+        final String[] origins = {
+                "http://127.0.0.1:5173",
+                "http://localhost:5173" };
+
+        registry.addMapping("/**") /* 允许所有 api 路径 */
+                .allowedOrigins(origins)
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                .allowedHeaders("*")                 /* 允许的请求头 */
-                .allowCredentials(true);       /* 是否允许发送 Cookie */
+                .allowedHeaders("*") /* 允许的请求头 */
+                .allowCredentials(true); /* 是否允许发送 Cookie */
     }
 }
