@@ -1,5 +1,7 @@
 package fun.steven.bookstore.dao;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -20,5 +22,12 @@ public class AddressDao implements IAddressDao {
     public Address getAddressById(Long addressId) {
         return addressRepository.findById(addressId).orElseThrow(
                 () -> new RuntimeException("Address not found"));
+    }
+
+    @Override
+    public List<Address> getUserAddresses(Long userId) {
+        return addressRepository.findByUserId(userId).orElseThrow(
+                () -> new RuntimeException("No address found")
+        );
     }
 }
