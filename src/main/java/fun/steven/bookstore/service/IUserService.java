@@ -1,8 +1,8 @@
 package fun.steven.bookstore.service;
 
-import fun.steven.bookstore.dto.AddressDto;
-import fun.steven.bookstore.dto.UpdateUserDto;
-import fun.steven.bookstore.dto.UserDto;
+import fun.steven.bookstore.dto.address.AddressDto;
+import fun.steven.bookstore.dto.user.UpdateUserDto;
+import fun.steven.bookstore.dto.user.UserDto;
 import fun.steven.bookstore.entity.User;
 
 public interface IUserService {

@@ -1,6 +1,6 @@
 package fun.steven.bookstore.dao;
 
-import fun.steven.bookstore.dto.UpdateUserDto;
+import fun.steven.bookstore.dto.user.UpdateUserDto;
 import fun.steven.bookstore.entity.Address;
 import fun.steven.bookstore.entity.Cart;
 import fun.steven.bookstore.entity.User;

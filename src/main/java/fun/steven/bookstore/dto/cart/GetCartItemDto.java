@@ -1,5 +1,6 @@
-package fun.steven.bookstore.dto;
+package fun.steven.bookstore.dto.cart;
 
+import fun.steven.bookstore.dto.book.BookDto;
 import lombok.Data;
 
 @Data

@@ -1,4 +1,4 @@
-package fun.steven.bookstore.dto;
+package fun.steven.bookstore.dto.order;
 
 import java.util.List;
 

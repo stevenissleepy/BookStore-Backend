@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import fun.steven.bookstore.dao.IUserDao;
-import fun.steven.bookstore.dto.AddressDto;
-import fun.steven.bookstore.dto.UpdateUserDto;
-import fun.steven.bookstore.dto.UserDto;
+import fun.steven.bookstore.dto.address.AddressDto;
+import fun.steven.bookstore.dto.user.UpdateUserDto;
+import fun.steven.bookstore.dto.user.UserDto;
 import fun.steven.bookstore.entity.Address;
 import fun.steven.bookstore.entity.User;
 import fun.steven.bookstore.exception.LoginException;

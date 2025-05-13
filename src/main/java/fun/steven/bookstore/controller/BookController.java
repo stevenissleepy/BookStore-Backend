@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import fun.steven.bookstore.dto.BookDto;
 import fun.steven.bookstore.dto.ResponseMessage;
+import fun.steven.bookstore.dto.book.BookDto;
 import fun.steven.bookstore.service.IBookService;
 
 @RestController

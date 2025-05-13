@@ -1,7 +1,7 @@
 package fun.steven.bookstore.service;
 
-import fun.steven.bookstore.dto.BookDto;
-import fun.steven.bookstore.dto.UpdateBookDto;
+import fun.steven.bookstore.dto.book.BookDto;
+import fun.steven.bookstore.dto.book.UpdateBookDto;
 
 public interface IBookService {
     boolean add(BookDto bookDto);

@@ -5,8 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fun.steven.bookstore.dao.IBookDao;
-import fun.steven.bookstore.dto.BookDto;
-import fun.steven.bookstore.dto.UpdateBookDto;
+import fun.steven.bookstore.dto.book.BookDto;
+import fun.steven.bookstore.dto.book.UpdateBookDto;
 import fun.steven.bookstore.entity.Book;
 
 @Service
