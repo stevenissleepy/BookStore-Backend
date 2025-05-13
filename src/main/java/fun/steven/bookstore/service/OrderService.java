@@ -1,6 +1,5 @@
 package fun.steven.bookstore.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,16 +35,14 @@ public class OrderService implements IOrderService {
         orderDao.add(order);
 
         /* 将购物车中的商品加到订单中 */
-        List<OrderItem> orderItems = new ArrayList<>();
-        for (CartItem item : cartItems) {
+        List<OrderItem> orderItems = cartItems.stream().map(item -> {
             OrderItem orderItem = new OrderItem();
             orderItem.setOrder(order);
             orderItem.setBook(item.getBook());
             orderItem.setQuantity(item.getQuantity());
             orderDao.addOrderItem(orderItem);
-
-            orderItems.add(orderItem);
-        }
+            return orderItem;
+        }).toList();
         order.setOrderItems(orderItems);
 
         /* 清空购物车 */
