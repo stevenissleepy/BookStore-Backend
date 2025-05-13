@@ -4,8 +4,10 @@ import org.springframework.beans.BeanUtils;
 
 import fun.steven.bookstore.entity.Address;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class AddressDto {
     private String receiver;
     private String phone;

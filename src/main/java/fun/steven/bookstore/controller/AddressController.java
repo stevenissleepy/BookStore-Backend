@@ -26,7 +26,7 @@ public class AddressController {
         return ResponseMessage.success("add address success!", null);
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping
     public ResponseMessage<AddressesDto> getUserAddresses(@CurrentUserId Long userId) {
         AddressesDto addresses = addressService.getUserAddresses(userId);
         return ResponseMessage.success("get address success!", addresses);
