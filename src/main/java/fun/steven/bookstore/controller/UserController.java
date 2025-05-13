@@ -4,7 +4,6 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,19 +42,6 @@ public class UserController {
         UserInfoDto userInfoDto = new UserInfoDto();
         BeanUtils.copyProperties(user, userInfoDto);
         return ResponseMessage.success("add user success!", userInfoDto);
-    }
-
-    /**
-     * @brief 删除用户
-     * @note 该方法使用 DELETE 请求，路径为 /user
-     * 
-     * @param userId 用户 ID
-     * @return ResponseMessage<String> 返回响应消息对象
-     */
-    @DeleteMapping("/{userId}")
-    public ResponseMessage<String> delete(@PathVariable Long userId) {
-        userService.delete(userId);
-        return ResponseMessage.success("del user success!", null);
     }
 
     /**
