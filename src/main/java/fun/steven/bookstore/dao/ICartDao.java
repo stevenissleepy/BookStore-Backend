@@ -11,8 +11,8 @@ public interface ICartDao {
 
     boolean clear(Cart cart);
 
-    CartItem findCartItem(Book book, Cart cart);
-    List<CartItem> findCartItems(Cart cart);
+    CartItem getCartItem(Book book, Cart cart);
+    List<CartItem> getCartItems(Cart cart);
     
     boolean updateCartItem(CartItem cartItem);
 }

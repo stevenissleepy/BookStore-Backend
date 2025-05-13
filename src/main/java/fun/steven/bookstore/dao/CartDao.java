@@ -22,7 +22,7 @@ public class CartDao implements ICartDao {
     }
 
     @Override
-    public CartItem findCartItem(Book book, Cart cart) {
+    public CartItem getCartItem(Book book, Cart cart) {
         return cartItemRepository.findByBookIdAndCartId(book.getId(), cart.getId())
                 .orElse(null);
     }
@@ -33,17 +33,18 @@ public class CartDao implements ICartDao {
     }
 
     @Override
-    public List<CartItem> findCartItems(Cart cart) {
+    public List<CartItem> getCartItems(Cart cart) {
         return cartItemRepository.findByCartId(cart.getId()).orElseThrow(
                 () -> new CartEmptyException());
     }
 
     @Override
     public boolean clear(Cart cart) {
-        List<CartItem> cartItems = findCartItems(cart);
+        List<CartItem> cartItems = getCartItems(cart);
         for (CartItem item : cartItems) {
             cartItemRepository.delete(item);
         }
         return true;
     }
+    
 }

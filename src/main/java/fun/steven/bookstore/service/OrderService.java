@@ -28,7 +28,7 @@ public class OrderService implements IOrderService {
     public boolean cartToOrder(Long userId) {
         User user = userDao.getById(userId);
         Cart cart = user.getCart();
-        List<CartItem> cartItems = cartDao.findCartItems(cart);
+        List<CartItem> cartItems = cartDao.getCartItems(cart);
 
         /* 创建订单 */
         Order order = new Order();
