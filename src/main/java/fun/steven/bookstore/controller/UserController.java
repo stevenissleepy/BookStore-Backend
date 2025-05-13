@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import fun.steven.bookstore.dto.ResponseMessage;
-import fun.steven.bookstore.dto.address.AddressDto;
 import fun.steven.bookstore.dto.user.LoginDto;
 import fun.steven.bookstore.dto.user.UpdateUserDto;
 import fun.steven.bookstore.dto.user.UserDto;
@@ -128,11 +127,5 @@ public class UserController {
         }
         request.getSession().invalidate();
         return ResponseMessage.success("logout success!", null);
-    }
-
-    @PostMapping("/address")
-    public ResponseMessage<String> addAddress(@RequestBody AddressDto addressDto) {
-        userService.addAddress(addressDto);
-        return ResponseMessage.success("add address success!", null);
     }
 }

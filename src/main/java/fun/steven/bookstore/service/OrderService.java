@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fun.steven.bookstore.dao.IAddressDao;
 import fun.steven.bookstore.dao.ICartDao;
 import fun.steven.bookstore.dao.IOrderDao;
 import fun.steven.bookstore.dao.IUserDao;
@@ -24,11 +25,13 @@ public class OrderService implements IOrderService {
     private IUserDao userDao;
     @Autowired
     private IOrderDao orderDao;
+    @Autowired
+    private IAddressDao addressDao;
 
     @Override
     public boolean cartToOrder(AddOrderDto addOrderDto) {
         User user = userDao.getUserById(addOrderDto.getUserId());
-        Address address = userDao.getAddressById(addOrderDto.getAddressId());
+        Address address = addressDao.getAddressById(addOrderDto.getAddressId());
         Cart cart = user.getCart();
         List<CartItem> cartItems = cartDao.getCartItems(cart);
 

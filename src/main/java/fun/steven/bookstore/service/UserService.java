@@ -6,10 +6,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import fun.steven.bookstore.dao.IUserDao;
-import fun.steven.bookstore.dto.address.AddressDto;
 import fun.steven.bookstore.dto.user.UpdateUserDto;
 import fun.steven.bookstore.dto.user.UserDto;
-import fun.steven.bookstore.entity.Address;
 import fun.steven.bookstore.entity.User;
 import fun.steven.bookstore.exception.LoginException;
 
@@ -54,11 +52,4 @@ public class UserService implements IUserService {
         return user;
     }
 
-    public boolean addAddress(AddressDto addressDto) {
-        Address address = new Address();
-        BeanUtils.copyProperties(addressDto, address);
-        User user = userDao.getUserById(addressDto.getUserId());
-        address.setUser(user);
-        return userDao.addAddress(address);
-    }
 }

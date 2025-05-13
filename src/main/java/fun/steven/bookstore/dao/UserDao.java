@@ -5,10 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import fun.steven.bookstore.dto.user.UpdateUserDto;
-import fun.steven.bookstore.entity.Address;
 import fun.steven.bookstore.entity.Cart;
 import fun.steven.bookstore.entity.User;
-import fun.steven.bookstore.repository.AddressRepository;
 import fun.steven.bookstore.repository.CartRepository;
 import fun.steven.bookstore.repository.UserRepository;
 
@@ -18,9 +16,6 @@ public class UserDao implements IUserDao {
     private UserRepository userRepository;
     @Autowired
     private CartRepository cartRepository;
-    @Autowired
-    private AddressRepository addressRepository;
-
 
     @Override
     public User addUser(User user) {
@@ -73,15 +68,5 @@ public class UserDao implements IUserDao {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new RuntimeException("User not found"));
         return user.getCart();
-    }
-
-    @Override
-    public boolean addAddress(Address address) {
-        return addressRepository.save(address) != null;
-    }
-    @Override
-    public Address getAddressById(Long addressId) {
-        return addressRepository.findById(addressId).orElseThrow(
-                () -> new RuntimeException("Address not found"));
     }
 }
