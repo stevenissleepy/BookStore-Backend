@@ -4,6 +4,6 @@ import fun.steven.bookstore.dto.cart.AddCartItemDto;
 import fun.steven.bookstore.dto.cart.GetCartDto;
 
 public interface ICartService {
-    boolean addToCart(AddCartItemDto cartItemDto);
+    boolean addToCart(Long userId, AddCartItemDto cartItemDto);
     GetCartDto getCart(Long userId);
 }

@@ -22,9 +22,9 @@ public class CartService implements ICartService {
     private IUserDao userDao;
 
     @Override
-    public boolean addToCart(AddCartItemDto cartItemDto) {
+    public boolean addToCart(Long userId, AddCartItemDto cartItemDto) {
         Book book = bookDao.getBookById(cartItemDto.getBookId());
-        Cart cart = userDao.getCart(cartItemDto.getUserId());
+        Cart cart = userDao.getCart(userId);
         CartItem cartItem = cartDao.getCartItem(book, cart);
         
         /* 如果购物车中没有这本书 */
