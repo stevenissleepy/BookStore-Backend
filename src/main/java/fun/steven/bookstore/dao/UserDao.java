@@ -57,8 +57,8 @@ public class UserDao implements IUserDao {
     }
 
     @Override
-    public User getByUserName(String username) {
-        return userRepository.findByUserName(username).orElseThrow(
+    public User getByUsername(String username) {
+        return userRepository.findByUsername(username).orElseThrow(
                 () -> new RuntimeException("User not found"));
     }
 

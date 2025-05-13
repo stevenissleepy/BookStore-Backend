@@ -76,20 +76,20 @@ public class UserController {
      * @brief 登录
      * @note 该方法使用 POST 请求，路径为 /user/login
      * 
-     * @param userName 用户名
+     * @param username 用户名
      * @param password 密码
      * @param request HttpServletRequest
      * @return ResponseMessage<String> 返回响应消息对象
      */
     @PostMapping("/login")
     public ResponseMessage<String> login(@RequestBody LoginDto loginDto,  HttpServletRequest request) {
-        String userName = loginDto.getUserName();
+        String username = loginDto.getUsername();
         String password = loginDto.getPassword();
-        if (userName == null || password == null) {
+        if (username == null || password == null) {
             return ResponseMessage.error(401, "用户名或密码不能为空");
         }
         
-        User user = userService.login(userName, password);
+        User user = userService.login(username, password);
         request.getSession().setAttribute("userId", user.getId());
         return ResponseMessage.success("login success!", null);
     }

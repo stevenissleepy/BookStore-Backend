@@ -42,7 +42,7 @@ public class UserService implements IUserService {
     public User login(String username, String password) {
         User user = null;
         try {
-            user = userDao.getByUserName(username);
+            user = userDao.getByUsername(username);
         } catch (RuntimeException e) {
             throw new LoginException("Username not found");
         }

@@ -10,7 +10,7 @@ public interface IUserDao {
     User delete(Long userId);
 
     User getUserById(Long userId);
-    User getByUserName(String username);
+    User getByUsername(String username);
     Cart getCart(Long userId);
 
     User update(Long userId, UpdateUserDto user);

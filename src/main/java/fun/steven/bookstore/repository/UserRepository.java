@@ -9,5 +9,5 @@ import fun.steven.bookstore.entity.User;
 
 @Repository             /* 标记为 Spring Bean */
 public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findByUserName(String username);
+    Optional<User> findByUsername(String username);
 } 
