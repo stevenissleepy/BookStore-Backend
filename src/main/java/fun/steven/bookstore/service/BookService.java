@@ -15,9 +15,7 @@ public class BookService implements IBookService {
     private IBookDao bookDao;
 
     public boolean add(BookDto bookDto) {
-        Book book = new Book();
-        BeanUtils.copyProperties(bookDto, book);
-
+        Book book = new Book(bookDto);
         return bookDao.add(book);
     }
 
@@ -26,9 +24,7 @@ public class BookService implements IBookService {
     }
 
     public boolean update(UpdateBookDto bookDto) {
-        Book book = new Book();
-        BeanUtils.copyProperties(bookDto, book);
-
+        Book book = new Book(bookDto);
         return bookDao.update(book);
     }
 
