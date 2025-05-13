@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import fun.steven.bookstore.annotation.CurrentUserId;
 import fun.steven.bookstore.dto.ResponseMessage;
 import fun.steven.bookstore.dto.address.AddressDto;
-import fun.steven.bookstore.dto.address.GetAddressesDto;
+import fun.steven.bookstore.dto.address.AddressesDto;
 import fun.steven.bookstore.service.IAddressService;
 
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,8 +27,8 @@ public class AddressController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseMessage<GetAddressesDto> getUserAddresses(@CurrentUserId Long userId) {
-        GetAddressesDto addresses = addressService.getUserAddresses(userId);
+    public ResponseMessage<AddressesDto> getUserAddresses(@CurrentUserId Long userId) {
+        AddressesDto addresses = addressService.getUserAddresses(userId);
         return ResponseMessage.success("get address success!", addresses);
     }
 }

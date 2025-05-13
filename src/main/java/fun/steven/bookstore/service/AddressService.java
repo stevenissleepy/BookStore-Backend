@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import fun.steven.bookstore.dao.IAddressDao;
 import fun.steven.bookstore.dao.IUserDao;
 import fun.steven.bookstore.dto.address.AddressDto;
-import fun.steven.bookstore.dto.address.GetAddressesDto;
+import fun.steven.bookstore.dto.address.AddressesDto;
 import fun.steven.bookstore.entity.Address;
 import fun.steven.bookstore.entity.User;
 
@@ -30,8 +30,8 @@ public class AddressService implements IAddressService {
     }
 
     @Override
-    public GetAddressesDto getUserAddresses(Long userId) {
+    public AddressesDto getUserAddresses(Long userId) {
         List<Address> addresses = addressDao.getUserAddresses(userId);
-        return new GetAddressesDto(addresses);
+        return new AddressesDto(addresses);
     }
 }
