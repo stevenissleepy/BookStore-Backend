@@ -2,7 +2,6 @@ package fun.steven.bookstore.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import fun.steven.bookstore.annotation.CurrentUserId;
 import fun.steven.bookstore.dto.ResponseMessage;
 import fun.steven.bookstore.dto.user.LoginDto;
 import fun.steven.bookstore.dto.user.UpdateUserDto;
@@ -38,9 +38,8 @@ public class UserController {
     @PostMapping("/register")
     public ResponseMessage<UserInfoDto> add(@RequestBody UserDto userDto) {
         User user = userService.add(userDto);
+        UserInfoDto userInfoDto = new UserInfoDto(user);
 
-        UserInfoDto userInfoDto = new UserInfoDto();
-        BeanUtils.copyProperties(user, userInfoDto);
         return ResponseMessage.success("add user success!", userInfoDto);
     }
 
@@ -54,9 +53,8 @@ public class UserController {
     @PutMapping
     public ResponseMessage<UserInfoDto> update(@RequestBody UpdateUserDto userDto) {
         User user = userService.update(userDto);
+        UserInfoDto userInfoDto = new UserInfoDto(user);
 
-        UserInfoDto userInfoDto = new UserInfoDto();
-        BeanUtils.copyProperties(user, userInfoDto);
         return ResponseMessage.success("update user success!", userInfoDto);
     }
 
@@ -67,12 +65,11 @@ public class UserController {
      * @param userId 用户 ID
      * @return ResponseMessage<User> 返回响应消息对象
      */
-    @GetMapping("/{userId}")
-    public ResponseMessage<UserInfoDto> query(@PathVariable Long userId) {
+    @GetMapping
+    public ResponseMessage<UserInfoDto> query(@CurrentUserId Long userId) {
         User user = userService.query(userId);
+        UserInfoDto userInfoDto = new UserInfoDto(user);
 
-        UserInfoDto userInfoDto = new UserInfoDto();
-        BeanUtils.copyProperties(user, userInfoDto);
         return ResponseMessage.success("query user success!", userInfoDto);
     }
 
