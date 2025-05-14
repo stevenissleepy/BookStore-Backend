@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetCartDto {
-    List<GetCartItemDto> cartItems;
+    List<GetCartItemDto> cart;
 
     public GetCartDto(Cart cart) {
-        this.cartItems = cart.getCartItems().stream().map(GetCartItemDto::new).toList();
+        this.cart = cart.getCartItems().stream().map(GetCartItemDto::new).toList();
     }
 }
