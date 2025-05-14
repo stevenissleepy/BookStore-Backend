@@ -53,6 +53,11 @@ public class OrderService implements IOrderService {
         order.setOrderItems(orderItems);
         order.setAddress(address);
 
+        /* 计算总价格 */
+        Double totalPrice = cartItems.stream().mapToDouble(
+                item -> item.getBook().getPrice() * item.getQuantity()).sum();
+        order.setTotalPrice(totalPrice);
+
         /* 清空购物车 */
         cartDao.clear(cart);
 

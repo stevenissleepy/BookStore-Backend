@@ -32,4 +32,7 @@ public class Order {
 
     @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems;
+
+    @Column(name = "total_price")
+    private Double totalPrice;
 }
