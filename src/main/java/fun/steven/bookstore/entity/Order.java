@@ -35,4 +35,7 @@ public class Order {
 
     @Column(name = "total_price")
     private Double totalPrice;
+
+    @Column(name = "date")
+    private java.time.LocalDateTime date;
 }

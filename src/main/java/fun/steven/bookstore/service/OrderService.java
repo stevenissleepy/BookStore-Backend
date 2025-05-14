@@ -58,6 +58,9 @@ public class OrderService implements IOrderService {
                 item -> item.getBook().getPrice() * item.getQuantity()).sum();
         order.setTotalPrice(totalPrice);
 
+        /* 设置时间 */
+        order.setDate(java.time.LocalDateTime.now());
+
         /* 清空购物车 */
         cartDao.clear(cart);
 
