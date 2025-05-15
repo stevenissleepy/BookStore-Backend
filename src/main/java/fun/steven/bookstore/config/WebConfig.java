@@ -45,6 +45,7 @@ public class WebConfig implements WebMvcConfigurer {
         resolvers.add(currentUserIdArgumentResolver);
     }
 
+    /* 配置 cors */
     @Override
     public void addCorsMappings(@NonNull CorsRegistry registry) {
         final String[] origins = {
