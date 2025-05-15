@@ -41,6 +41,12 @@ public class OrderService implements IOrderService {
         order.setUser(user);
         orderDao.add(order);
 
+        /* 设置订单信息 */
+        order.setAddress(address.getAddress());
+        order.setPhone(address.getPhone());
+        order.setReceiver(address.getReceiver());
+        order.setDate(java.time.LocalDateTime.now());
+
         /* 将购物车中的商品加到订单中 */
         List<OrderItem> orderItems = cartItems.stream().map(item -> {
             OrderItem orderItem = new OrderItem();
@@ -51,15 +57,11 @@ public class OrderService implements IOrderService {
             return orderItem;
         }).toList();
         order.setOrderItems(orderItems);
-        order.setAddress(address);
 
         /* 计算总价格 */
         Double totalPrice = cartItems.stream().mapToDouble(
                 item -> item.getBook().getPrice() * item.getQuantity()).sum();
         order.setTotalPrice(totalPrice);
-
-        /* 设置时间 */
-        order.setDate(java.time.LocalDateTime.now());
 
         /* 清空购物车 */
         cartDao.clear(cart);

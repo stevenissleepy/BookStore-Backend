@@ -26,16 +26,21 @@ public class Order {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "address_id")
-    private Address address;
+    @Column(name = "address")
+    private String address;
 
-    @OneToMany(mappedBy = "order")
-    private List<OrderItem> orderItems;
+    @Column(name = "phone")
+    private String phone;
+
+    @Column(name = "receiver")
+    private String receiver;
 
     @Column(name = "total_price")
     private Double totalPrice;
 
     @Column(name = "date")
     private java.time.LocalDateTime date;
+
+    @OneToMany(mappedBy = "order")
+    private List<OrderItem> orderItems;
 }
