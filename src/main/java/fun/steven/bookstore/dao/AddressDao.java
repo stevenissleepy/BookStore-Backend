@@ -30,4 +30,16 @@ public class AddressDao implements IAddressDao {
                 () -> new RuntimeException("No address found")
         );
     }
+
+    @Override
+    public boolean deleteAddress(Long userId, Long addressId) {
+        Address address = addressRepository.findById(addressId).orElseThrow(
+                () -> new RuntimeException("Address not found"));
+
+        if (address.getUser().getId() != userId) {
+            throw new RuntimeException("You don't have permission to delete this address");
+        }
+        addressRepository.delete(address);
+        return true;
+    }
 }

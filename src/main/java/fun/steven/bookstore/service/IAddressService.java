@@ -7,4 +7,6 @@ public interface IAddressService {
     public boolean addAddress(Long userId, AddressDto addressDto);
 
     public AddressesDto getUserAddresses(Long userId);
+
+    public boolean deleteAddress(Long userId, Long addressId);
 }

@@ -32,4 +32,9 @@ public class AddressService implements IAddressService {
         List<Address> addresses = addressDao.getUserAddresses(userId);
         return new AddressesDto(addresses);
     }
+
+    @Override
+    public boolean deleteAddress(Long userId, Long addressId) {
+        return addressDao.deleteAddress(userId, addressId);
+    }
 }

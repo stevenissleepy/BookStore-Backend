@@ -1,7 +1,9 @@
 package fun.steven.bookstore.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,5 +32,11 @@ public class AddressController {
     public ResponseMessage<AddressesDto> getUserAddresses(@CurrentUserId Long userId) {
         AddressesDto addresses = addressService.getUserAddresses(userId);
         return ResponseMessage.success("get address success!", addresses);
+    }
+
+    @DeleteMapping("/{addressId}")
+    public ResponseMessage<String> deleteAddress(@PathVariable Long addressId, @CurrentUserId Long userId) {
+        addressService.deleteAddress(userId, addressId);
+        return ResponseMessage.success("delete address success!", null);
     }
 }

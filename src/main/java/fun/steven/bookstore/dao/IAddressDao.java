@@ -9,4 +9,6 @@ public interface IAddressDao {
 
     Address getAddressById(Long addressId);
     List<Address> getUserAddresses(Long userId);
+
+    boolean deleteAddress(Long userId, Long addressId);
 }
