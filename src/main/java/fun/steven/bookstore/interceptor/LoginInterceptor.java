@@ -21,7 +21,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         // 从 Session 中获取用户 ID
         Long userId = (Long) request.getSession().getAttribute("userId");
         if (userId == null) {
-            throw new LoginException("未登录或登录超时，请重新登录");
+            throw new LoginException("Session 中没有用户 ID");
         }
         return true;
     }

@@ -16,7 +16,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({ RuntimeException.class })
     public ResponseMessage<Object> handleException(RuntimeException e) {
         String message = e.getMessage();
-        logger.error("Global Exception: ", message);
+        logger.error("Global Exception: ", e);
         ResponseMessage<Object> response = new ResponseMessage<Object>(500, message, null);
         return response;
     }
@@ -25,7 +25,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({ LoginException.class })
     public ResponseMessage<Object> handleLoginException(LoginException e) {
         String message = e.getMessage();
-        logger.error("Login Exception: ", message);
+        logger.error("Login Exception: ", e);
         ResponseMessage<Object> response = new ResponseMessage<Object>(401, message, null);
         return response;
     }
@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({ CartEmptyException.class })
     public ResponseMessage<Object> handleCartEmptyException(CartEmptyException e) {
         String message = e.getMessage();
-        logger.error("Cart Empty Exception: ", message);
+        logger.error("Cart Empty Exception: ", e);
         ResponseMessage<Object> response = new ResponseMessage<Object>(400, message, null);
         return response;
     }
