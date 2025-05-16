@@ -5,13 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fun.steven.bookstore.dao.IAddressDao;
 import fun.steven.bookstore.dao.ICartDao;
 import fun.steven.bookstore.dao.IOrderDao;
 import fun.steven.bookstore.dao.IUserDao;
 import fun.steven.bookstore.dto.order.AddOrderDto;
 import fun.steven.bookstore.dto.order.GetOrdersDto;
-import fun.steven.bookstore.entity.Address;
 import fun.steven.bookstore.entity.Cart;
 import fun.steven.bookstore.entity.CartItem;
 import fun.steven.bookstore.entity.Order;
@@ -26,13 +24,10 @@ public class OrderService implements IOrderService {
     private IUserDao userDao;
     @Autowired
     private IOrderDao orderDao;
-    @Autowired
-    private IAddressDao addressDao;
 
     @Override
     public boolean cartToOrder(Long userId, AddOrderDto addOrderDto) {
         User user = userDao.getUserById(userId);
-        Address address = addressDao.getAddressById(addOrderDto.getAddressId());
         Cart cart = user.getCart();
         List<CartItem> cartItems = cartDao.getCartItems(cart);
 
@@ -42,9 +37,9 @@ public class OrderService implements IOrderService {
         orderDao.add(order);
 
         /* 设置订单信息 */
-        order.setAddress(address.getAddress());
-        order.setPhone(address.getPhone());
-        order.setReceiver(address.getReceiver());
+        order.setReceiver(addOrderDto.getReceiver());
+        order.setPhone(addOrderDto.getPhone());
+        order.setAddress(addOrderDto.getAddress());
         order.setDate(java.time.LocalDateTime.now());
 
         /* 将购物车中的商品加到订单中 */

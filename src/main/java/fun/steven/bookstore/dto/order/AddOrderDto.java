@@ -4,5 +4,7 @@ import lombok.Data;
 
 @Data
 public class AddOrderDto {
-    private Long addressId;
+    private String receiver;
+    private String phone;
+    private String address;
 }
