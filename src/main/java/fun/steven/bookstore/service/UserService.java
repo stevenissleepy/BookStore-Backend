@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import fun.steven.bookstore.dao.IUserDao;
 import fun.steven.bookstore.dto.user.UpdateUserDto;
 import fun.steven.bookstore.dto.user.UserDto;
+import fun.steven.bookstore.dto.user.UserInfoDto;
 import fun.steven.bookstore.entity.User;
 import fun.steven.bookstore.exception.LoginException;
 
@@ -17,7 +18,7 @@ public class UserService implements IUserService {
     @Value("${default.avatar.base64}")
     private String defaultAvatarBase64;
 
-    public User add(UserDto userDto) {
+    public UserInfoDto add(UserDto userDto) {
         // 如果头像为空，则设置为默认头像
         if(userDto.getAvatar() == null || userDto.getAvatar().isEmpty()) {
             userDto.setAvatar(defaultAvatarBase64);
@@ -26,22 +27,23 @@ public class UserService implements IUserService {
         return userDao.addUser(userDto);
     }
 
-    public User delete(Long userId) {
-        return userDao.delete(userId);
+    public boolean delete(Long userId) {
+        userDao.delete(userId);
+        return true;
     }
 
-    public User update(Long userId, UpdateUserDto userDto) {
+    public UserInfoDto update(Long userId, UpdateUserDto userDto) {
         return userDao.update(userId, userDto);
     }
 
-    public User query(Long userId) {
+    public UserInfoDto query(Long userId) {
         return userDao.getUserById(userId);
     }
     
-    public User login(String username, String password) {
-        User user = null;
+    public UserInfoDto login(String username, String password) {
+        UserInfoDto userInfoDto;
         try {
-            user = userDao.getByUsername(username);
+            userInfoDto = userDao.getByUsername(username);
         } catch (RuntimeException e) {
             throw new LoginException("Username not found");
         }

@@ -2,16 +2,16 @@ package fun.steven.bookstore.dao;
 
 import fun.steven.bookstore.dto.user.UpdateUserDto;
 import fun.steven.bookstore.dto.user.UserDto;
-import fun.steven.bookstore.entity.User;
+import fun.steven.bookstore.dto.user.UserInfoDto;
 
 public interface IUserDao {
-    User addUser(UserDto user);
+    UserInfoDto addUser(UserDto user);
 
-    User delete(Long userId);
+    boolean delete(Long userId);
 
-    User getUserById(Long userId);
-    User getByUsername(String username);
+    UserInfoDto getUserById(Long userId);
+    UserInfoDto getByUsername(String username);
     Long getCartId(Long userId);
 
-    User update(Long userId, UpdateUserDto user);
+    UserInfoDto update(Long userId, UpdateUserDto user);
 }

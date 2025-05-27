@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import fun.steven.bookstore.dto.user.UpdateUserDto;
 import fun.steven.bookstore.dto.user.UserDto;
+import fun.steven.bookstore.dto.user.UserInfoDto;
 import fun.steven.bookstore.entity.Cart;
 import fun.steven.bookstore.entity.User;
 import fun.steven.bookstore.repository.UserRepository;
@@ -16,7 +17,7 @@ public class UserDao implements IUserDao {
     private UserRepository userRepository;
 
     @Override
-    public User addUser(UserDto userDto) {
+    public UserInfoDto addUser(UserDto userDto) {
         User user = new User();
         BeanUtils.copyProperties(userDto, user);
         user.setBalance(0.00);
@@ -25,37 +26,42 @@ public class UserDao implements IUserDao {
         cart.setUser(user);
         user.setCart(cart);
 
-        return userRepository.save(user);
+        user = userRepository.save(user);
+        return new UserInfoDto(user);
     }
 
     @Override
-    public User delete(Long userId) {
+    public boolean delete(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new RuntimeException("User not found"));
         userRepository.delete(user);
-        return user;
+        return true;
     }
 
     @Override
-    public User update(Long userId, UpdateUserDto userDto) {
+    public UserInfoDto update(Long userId, UpdateUserDto userDto) {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new RuntimeException("User not found"));
         BeanUtils.copyProperties(userDto, user);
-        userRepository.save(user);
+        user = userRepository.save(user);
 
-        return user;
+        return new UserInfoDto(user);
     }
 
     @Override
-    public User getUserById(Long userId) {
-        return userRepository.findById(userId).orElseThrow(
+    public UserInfoDto getUserById(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(
                 () -> new RuntimeException("User not found"));
+
+        return new UserInfoDto(user);
     }
 
     @Override
-    public User getByUsername(String username) {
-        return userRepository.findByUsername(username).orElseThrow(
+    public UserInfoDto getByUsername(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(
                 () -> new RuntimeException("User not found"));
+
+        return new UserInfoDto(user);
     }
 
     @Override

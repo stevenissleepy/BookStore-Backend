@@ -36,8 +36,7 @@ public class UserController {
      */
     @PostMapping("/register")
     public ResponseMessage<UserInfoDto> add(@RequestBody UserDto userDto) {
-        User user = userService.add(userDto);
-        UserInfoDto userInfoDto = new UserInfoDto(user);
+        UserInfoDto userInfoDto = userService.add(userDto);
 
         return ResponseMessage.success("add user success!", userInfoDto);
     }
@@ -51,8 +50,7 @@ public class UserController {
      */
     @PutMapping
     public ResponseMessage<UserInfoDto> update(@RequestBody UpdateUserDto userDto, @CurrentUserId Long userId) {
-        User user = userService.update(userId, userDto);
-        UserInfoDto userInfoDto = new UserInfoDto(user);
+        UserInfoDto userInfoDto = userService.update(userId, userDto);
 
         return ResponseMessage.success("update user success!", userInfoDto);
     }
@@ -66,8 +64,7 @@ public class UserController {
      */
     @GetMapping
     public ResponseMessage<UserInfoDto> query(@CurrentUserId Long userId) {
-        User user = userService.query(userId);
-        UserInfoDto userInfoDto = new UserInfoDto(user);
+        UserInfoDto userInfoDto = userService.query(userId);
 
         return ResponseMessage.success("query user success!", userInfoDto);
     }
@@ -89,7 +86,7 @@ public class UserController {
             return ResponseMessage.error(401, "用户名或密码不能为空");
         }
         
-        User user = userService.login(username, password);
+        UserInfoDto userInfoDto = userService.login(username, password);
         request.getSession().setAttribute("userId", user.getId());
         return ResponseMessage.success("login success!", null);
     }
