@@ -5,31 +5,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import fun.steven.bookstore.dto.user.UpdateUserDto;
+import fun.steven.bookstore.dto.user.UserDto;
 import fun.steven.bookstore.entity.Cart;
 import fun.steven.bookstore.entity.User;
-import fun.steven.bookstore.repository.CartRepository;
 import fun.steven.bookstore.repository.UserRepository;
 
 @Repository
 public class UserDao implements IUserDao {
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private CartRepository cartRepository;
 
     @Override
-    public User addUser(User user) {
-        // 保存用户
-        User savedUser = userRepository.save(user);
+    public User addUser(UserDto userDto) {
+        User user = new User();
+        BeanUtils.copyProperties(userDto, user);
+        user.setBalance(0.00);
 
-        // 创建购物车
         Cart cart = new Cart();
-        cart.setUser(savedUser);
-        cartRepository.save(cart);
+        cart.setUser(user);
+        user.setCart(cart);
 
-        // 设置用户的购物车
-        savedUser.setCart(cart);
-        return savedUser;
+        return userRepository.save(user);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package fun.steven.bookstore.service;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -19,12 +18,12 @@ public class UserService implements IUserService {
     private String defaultAvatarBase64;
 
     public User add(UserDto userDto) {
-        User user = new User();
-        BeanUtils.copyProperties(userDto, user);
-        user.setAvatar(defaultAvatarBase64);
-        user.setBalance(0.0);
-        user = userDao.addUser(user);
-        return user;
+        // 如果头像为空，则设置为默认头像
+        if(userDto.getAvatar() == null || userDto.getAvatar().isEmpty()) {
+            userDto.setAvatar(defaultAvatarBase64);
+        }
+        
+        return userDao.addUser(userDto);
     }
 
     public User delete(Long userId) {
