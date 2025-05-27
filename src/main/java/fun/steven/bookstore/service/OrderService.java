@@ -28,6 +28,7 @@ public class OrderService implements IOrderService {
     @Override
     public boolean cartToOrder(Long userId, AddOrderDto addOrderDto) {
         User user = userDao.getUserById(userId);
+        Long cartId = userDao.getCartId(userId);
         Cart cart = user.getCart();
         List<CartItem> cartItems = cartDao.getCartItems(cart);
 
@@ -58,7 +59,7 @@ public class OrderService implements IOrderService {
         order.setTotalPrice(totalPrice);
 
         /* 清空购物车 */
-        cartDao.clear(cart);
+        cartDao.clear(cartId);
 
         return true;
     }

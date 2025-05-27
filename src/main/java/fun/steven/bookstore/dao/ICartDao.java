@@ -9,7 +9,7 @@ import fun.steven.bookstore.entity.CartItem;
 public interface ICartDao {
     boolean addToCart(Long cartId, AddCartItemDto cartItemDto);
 
-    boolean clear(Cart cart);
+    boolean clear(Long cartId);
 
     List<CartItem> getCartItems(Cart cart);
 }

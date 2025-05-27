@@ -9,15 +9,11 @@ import fun.steven.bookstore.dto.cart.AddCartItemDto;
 import fun.steven.bookstore.entity.Book;
 import fun.steven.bookstore.entity.Cart;
 import fun.steven.bookstore.entity.CartItem;
-import fun.steven.bookstore.exception.CartEmptyException;
 import fun.steven.bookstore.repository.BookRepository;
-import fun.steven.bookstore.repository.CartItemRepository;
 import fun.steven.bookstore.repository.CartRepository;
 
 @Repository
 public class CartDao implements ICartDao {
-    @Autowired
-    private CartItemRepository cartItemRepository;
     @Autowired
     private CartRepository cartRepository;
     @Autowired
@@ -57,14 +53,15 @@ public class CartDao implements ICartDao {
 
     @Override
     public List<CartItem> getCartItems(Cart cart) {
-        return cartItemRepository.findByCartId(cart.getId()).orElseThrow(
-                () -> new CartEmptyException());
+        return cart.getCartItems();
     }
 
     @Override
-    public boolean clear(Cart cart) {
-        List<CartItem> cartItems = getCartItems(cart);
-        cartItemRepository.deleteAll(cartItems);
+    public boolean clear(Long cartId) {
+        Cart cart = cartRepository.findById(cartId)
+                .orElseThrow(() -> new RuntimeException("Cart not found: " + cartId));
+        cart.getCartItems().clear();
+        cartRepository.save(cart);
         return true;
     }
 }
