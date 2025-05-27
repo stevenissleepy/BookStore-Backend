@@ -1,13 +1,11 @@
 package fun.steven.bookstore.service;
 
-import java.util.List;
-
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fun.steven.bookstore.dao.IBookDao;
 import fun.steven.bookstore.dto.book.BookDto;
+import fun.steven.bookstore.dto.book.BooksDto;
 import fun.steven.bookstore.dto.book.UpdateBookDto;
 import fun.steven.bookstore.entity.Book;
 
@@ -31,19 +29,10 @@ public class BookService implements IBookService {
     }
 
     public BookDto get(Long id) {
-        Book book = bookDao.getBookById(id);
-        BookDto bookDto = new BookDto();
-        BeanUtils.copyProperties(book, bookDto);
-        return bookDto;
+        return bookDao.getBookById(id);
     }
 
-    public List<BookDto> getAllBooks() {
-        List<Book> books = bookDao.getAllBooks();
-        List<BookDto> bookDtos = books.stream().map(book -> {
-            BookDto bookDto = new BookDto();
-            BeanUtils.copyProperties(book, bookDto);
-            return bookDto;
-        }).toList();
-        return bookDtos;
+    public BooksDto getAllBooks() {
+        return bookDao.getAllBooks();
     }
 }

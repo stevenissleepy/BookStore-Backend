@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import fun.steven.bookstore.dto.book.BookDto;
+import fun.steven.bookstore.dto.book.BooksDto;
 import fun.steven.bookstore.entity.Book;
 import fun.steven.bookstore.repository.BookRepository;
 
@@ -36,13 +38,15 @@ public class BookDao implements IBookDao {
     }
 
     @Override
-    public Book getBookById(Long id) {
-        return bookRepository.findById(id).orElseThrow(
+    public BookDto getBookById(Long id) {
+        Book book = bookRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Book not found: " + id));
+        return new BookDto(book);
     }
 
     @Override
-    public List<Book> getAllBooks() {
-        return bookRepository.findAll();
+    public BooksDto getAllBooks() {
+        List<Book> books = bookRepository.findAll();
+        return new BooksDto(books);
     }
 }
