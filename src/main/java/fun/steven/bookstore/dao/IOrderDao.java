@@ -1,12 +1,10 @@
 package fun.steven.bookstore.dao;
 
-import java.util.List;
-
 import fun.steven.bookstore.dto.order.AddOrderDto;
-import fun.steven.bookstore.entity.Order;
+import fun.steven.bookstore.dto.order.GetOrdersDto;
 
 public interface IOrderDao {
     boolean createOrder(Long cartId, AddOrderDto orderDto);
 
-    List<Order> getUserOrders(Long userId);
+    GetOrdersDto getOrders(Long userId);
 }

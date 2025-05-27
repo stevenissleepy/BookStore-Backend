@@ -1,12 +1,12 @@
 package fun.steven.bookstore.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import fun.steven.bookstore.dto.order.AddOrderDto;
+import fun.steven.bookstore.dto.order.GetOrdersDto;
 import fun.steven.bookstore.entity.CartItem;
 import fun.steven.bookstore.entity.Order;
 import fun.steven.bookstore.entity.OrderItem;
@@ -17,9 +17,9 @@ import fun.steven.bookstore.repository.UserRepository;
 @Repository
 public class OrderDao implements IOrderDao {
     @Autowired
-    private OrderRepository orderRepository;
-    @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private OrderRepository orderRepository;
 
     @Override
     public boolean createOrder(Long userId, AddOrderDto addOrderDto) {
@@ -58,7 +58,8 @@ public class OrderDao implements IOrderDao {
     }
 
     @Override
-    public List<Order> getUserOrders(Long userId) {
-        return orderRepository.findByUserId(userId).orElse(new ArrayList<>());
+    public GetOrdersDto getOrders(Long userId) {
+        List<Order> orders = orderRepository.findByUserId(userId).orElse(List.of());
+        return new GetOrdersDto(orders);
     }
 }
