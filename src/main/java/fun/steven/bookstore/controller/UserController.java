@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import fun.steven.bookstore.annotation.CurrentUserId;
 import fun.steven.bookstore.dto.ResponseMessage;
 import fun.steven.bookstore.dto.user.LoginDto;
 import fun.steven.bookstore.dto.user.UpdateUserDto;
 import fun.steven.bookstore.dto.user.UserDto;
 import fun.steven.bookstore.dto.user.UserInfoDto;
 import fun.steven.bookstore.service.IUserService;
+import fun.steven.bookstore.utils.annotation.CurrentUserId;
 
 
 @RestController                         /* 将接口方法返回的对象自动转化成 json */

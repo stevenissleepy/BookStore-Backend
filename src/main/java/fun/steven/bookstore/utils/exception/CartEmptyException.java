@@ -1,4 +1,4 @@
-package fun.steven.bookstore.exception;
+package fun.steven.bookstore.utils.exception;
 
 public class CartEmptyException extends RuntimeException {
     public CartEmptyException() {

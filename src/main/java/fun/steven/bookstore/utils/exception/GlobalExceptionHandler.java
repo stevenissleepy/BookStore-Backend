@@ -1,4 +1,4 @@
-package fun.steven.bookstore.exception;
+package fun.steven.bookstore.utils.exception;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

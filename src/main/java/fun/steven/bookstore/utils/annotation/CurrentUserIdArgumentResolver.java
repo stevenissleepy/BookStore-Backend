@@ -1,4 +1,4 @@
-package fun.steven.bookstore.annotation;
+package fun.steven.bookstore.utils.annotation;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.lang.NonNull;
@@ -9,7 +9,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import fun.steven.bookstore.exception.LoginException;
+import fun.steven.bookstore.utils.exception.LoginException;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Component

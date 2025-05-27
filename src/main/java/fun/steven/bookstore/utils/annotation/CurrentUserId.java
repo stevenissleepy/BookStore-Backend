@@ -1,4 +1,4 @@
-package fun.steven.bookstore.annotation;
+package fun.steven.bookstore.utils.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

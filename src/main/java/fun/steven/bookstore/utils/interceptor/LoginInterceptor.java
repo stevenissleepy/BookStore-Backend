@@ -1,13 +1,12 @@
-package fun.steven.bookstore.interceptor;
+package fun.steven.bookstore.utils.interceptor;
 
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import fun.steven.bookstore.utils.exception.LoginException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-import fun.steven.bookstore.exception.LoginException;
 
 @Component
 public class LoginInterceptor implements HandlerInterceptor {

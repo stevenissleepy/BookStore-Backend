@@ -1,4 +1,4 @@
-package fun.steven.bookstore.config;
+package fun.steven.bookstore.utils.config;
 
 import java.util.List;
 
@@ -10,8 +10,8 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import fun.steven.bookstore.annotation.CurrentUserIdArgumentResolver;
-import fun.steven.bookstore.interceptor.LoginInterceptor;
+import fun.steven.bookstore.utils.annotation.CurrentUserIdArgumentResolver;
+import fun.steven.bookstore.utils.interceptor.LoginInterceptor;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {

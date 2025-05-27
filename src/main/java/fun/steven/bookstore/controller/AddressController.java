@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import fun.steven.bookstore.annotation.CurrentUserId;
 import fun.steven.bookstore.dto.ResponseMessage;
 import fun.steven.bookstore.dto.address.AddressDto;
 import fun.steven.bookstore.dto.address.AddressesDto;
 import fun.steven.bookstore.service.IAddressService;
+import fun.steven.bookstore.utils.annotation.CurrentUserId;
 
 import org.springframework.web.bind.annotation.RequestBody;
 

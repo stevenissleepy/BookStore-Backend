@@ -11,8 +11,8 @@ import fun.steven.bookstore.dto.user.UserInfoDto;
 import fun.steven.bookstore.entity.Cart;
 import fun.steven.bookstore.entity.User;
 import fun.steven.bookstore.entity.UserAuth;
-import fun.steven.bookstore.exception.LoginException;
 import fun.steven.bookstore.repository.UserRepository;
+import fun.steven.bookstore.utils.exception.LoginException;
 
 @Repository
 public class UserDao implements IUserDao {
