@@ -16,7 +16,6 @@ import fun.steven.bookstore.dto.user.LoginDto;
 import fun.steven.bookstore.dto.user.UpdateUserDto;
 import fun.steven.bookstore.dto.user.UserDto;
 import fun.steven.bookstore.dto.user.UserInfoDto;
-import fun.steven.bookstore.entity.User;
 import fun.steven.bookstore.service.IUserService;
 
 
@@ -86,8 +85,8 @@ public class UserController {
             return ResponseMessage.error(401, "用户名或密码不能为空");
         }
         
-        UserInfoDto userInfoDto = userService.login(username, password);
-        request.getSession().setAttribute("userId", user.getId());
+        Long userId = userService.login(loginDto);
+        request.getSession().setAttribute("userId", userId);
         return ResponseMessage.success("login success!", null);
     }
 

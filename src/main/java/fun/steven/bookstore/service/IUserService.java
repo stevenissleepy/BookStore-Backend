@@ -1,5 +1,6 @@
 package fun.steven.bookstore.service;
 
+import fun.steven.bookstore.dto.user.LoginDto;
 import fun.steven.bookstore.dto.user.UpdateUserDto;
 import fun.steven.bookstore.dto.user.UserDto;
 import fun.steven.bookstore.dto.user.UserInfoDto;
@@ -14,6 +15,5 @@ public interface IUserService {
 
     public UserInfoDto query(Long userId);
 
-    public UserInfoDto login(String username, String password);
-
+    public Long login(LoginDto loginDto);
 }

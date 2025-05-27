@@ -5,11 +5,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import fun.steven.bookstore.dao.IUserDao;
+import fun.steven.bookstore.dto.user.LoginDto;
 import fun.steven.bookstore.dto.user.UpdateUserDto;
 import fun.steven.bookstore.dto.user.UserDto;
 import fun.steven.bookstore.dto.user.UserInfoDto;
-import fun.steven.bookstore.entity.User;
-import fun.steven.bookstore.exception.LoginException;
 
 @Service                                    /* 将该类标记为一个 Spring Bean */
 public class UserService implements IUserService {
@@ -40,17 +39,7 @@ public class UserService implements IUserService {
         return userDao.getUserById(userId);
     }
     
-    public UserInfoDto login(String username, String password) {
-        UserInfoDto userInfoDto;
-        try {
-            userInfoDto = userDao.getByUsername(username);
-        } catch (RuntimeException e) {
-            throw new LoginException("Username not found");
-        }
-        if (!user.getPassword().equals(password)) {
-            throw new LoginException("Password is incorrect");
-        }
-        return user;
+    public Long login(LoginDto loginDto) {
+        return userDao.checkLogin(loginDto);
     }
-
 }

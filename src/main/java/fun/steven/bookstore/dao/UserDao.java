@@ -4,11 +4,14 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import fun.steven.bookstore.dto.user.LoginDto;
 import fun.steven.bookstore.dto.user.UpdateUserDto;
 import fun.steven.bookstore.dto.user.UserDto;
 import fun.steven.bookstore.dto.user.UserInfoDto;
 import fun.steven.bookstore.entity.Cart;
 import fun.steven.bookstore.entity.User;
+import fun.steven.bookstore.entity.UserAuth;
+import fun.steven.bookstore.exception.LoginException;
 import fun.steven.bookstore.repository.UserRepository;
 
 @Repository
@@ -19,8 +22,14 @@ public class UserDao implements IUserDao {
     @Override
     public UserInfoDto addUser(UserDto userDto) {
         User user = new User();
-        BeanUtils.copyProperties(userDto, user);
+        user.setUsername(userDto.getUsername());
+        user.setAvatar(userDto.getAvatar());
         user.setBalance(0.00);
+
+        UserAuth userAuth = new UserAuth();
+        userAuth.setPassword(userDto.getPassword());
+        userAuth.setUser(user);
+        user.setUserAuth(userAuth);
 
         Cart cart = new Cart();
         cart.setUser(user);
@@ -57,17 +66,24 @@ public class UserDao implements IUserDao {
     }
 
     @Override
-    public UserInfoDto getByUsername(String username) {
-        User user = userRepository.findByUsername(username).orElseThrow(
-                () -> new RuntimeException("User not found"));
-
-        return new UserInfoDto(user);
-    }
-
-    @Override
     public Long getCartId(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new RuntimeException("User not found"));
         return user.getCart().getId();
+    }
+
+    @Override
+    public Long checkLogin(LoginDto loginDto) {
+        String username = loginDto.getUsername();
+        String password = loginDto.getPassword();
+
+        User user = userRepository.findByUsername(username).orElseThrow(
+                () -> new LoginException("User not found"));
+        
+        if (!user.getUserAuth().getPassword().equals(password)) {
+            throw new LoginException("Incorrect password");
+        }
+
+        return user.getId();
     }
 }

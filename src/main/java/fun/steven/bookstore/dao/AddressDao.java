@@ -2,20 +2,35 @@ package fun.steven.bookstore.dao;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import fun.steven.bookstore.dto.address.AddressDto;
 import fun.steven.bookstore.entity.Address;
+import fun.steven.bookstore.entity.User;
 import fun.steven.bookstore.repository.AddressRepository;
+import fun.steven.bookstore.repository.UserRepository;
 
 @Repository
 public class AddressDao implements IAddressDao {
     @Autowired
     private AddressRepository addressRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
-    public boolean addAddress(Address address) {
-        return addressRepository.save(address) != null;
+    public boolean addAddress(Long userId, AddressDto addressDto) {
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new RuntimeException("User not found"));
+        
+        Address address = new Address();
+        BeanUtils.copyProperties(addressDto, address);
+        address.setUser(user);
+        user.getAddresses().add(address);
+        userRepository.save(user);
+
+        return true;
     }
 
     @Override
