@@ -64,6 +64,7 @@ public class CartDao implements ICartDao {
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new RuntimeException("Cart not found: " + cartId));
         cart.getCartItems().clear();
+        cartRepository.save(cart);
         return true;
     }
 }
