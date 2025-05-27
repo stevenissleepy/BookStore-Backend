@@ -5,26 +5,54 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import fun.steven.bookstore.dto.cart.AddCartItemDto;
 import fun.steven.bookstore.entity.Book;
 import fun.steven.bookstore.entity.Cart;
 import fun.steven.bookstore.entity.CartItem;
 import fun.steven.bookstore.exception.CartEmptyException;
+import fun.steven.bookstore.repository.BookRepository;
 import fun.steven.bookstore.repository.CartItemRepository;
+import fun.steven.bookstore.repository.CartRepository;
 
 @Repository
 public class CartDao implements ICartDao {
     @Autowired
     private CartItemRepository cartItemRepository;
+    @Autowired
+    private CartRepository cartRepository;
+    @Autowired
+    private BookRepository bookRepository;
 
     @Override
-    public CartItem addToCart(CartItem cartItem) {
-        return cartItemRepository.save(cartItem);
-    }
+    public boolean addToCart(Long userId, AddCartItemDto cartItemDto) {
+        Long bookId = cartItemDto.getBookId();
+        Cart cart = cartRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Cart not found for userId: " + userId));
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new RuntimeException("Book not found for bookId: " + bookId));
 
-    @Override
-    public CartItem getCartItem(Book book, Cart cart) {
-        return cartItemRepository.findByBookIdAndCartId(book.getId(), cart.getId())
-                .orElse(null);
+        // 在cart的cartItems集合中查找是否已存在该商品
+        List<CartItem> cartItems = cart.getCartItems();
+        for (CartItem item : cartItems) {
+            if (item.getBook().getId().equals(bookId)) {
+                // 如果已存在，则更新数量
+                item.setQuantity(item.getQuantity() + cartItemDto.getQuantity());
+                cart.setCartItems(cartItems);
+                cartRepository.save(cart);
+                return true;
+            }
+        }
+
+        // 否则创建新的CartItem并添加到购物车
+        CartItem newCartItem = new CartItem();
+        newCartItem.setCart(cart);
+        newCartItem.setBook(book);
+        newCartItem.setQuantity(cartItemDto.getQuantity());
+        cartItems.add(newCartItem);
+        cart.setCartItems(cartItems);
+        cartRepository.save(cart);
+        
+        return true;
     }
 
     @Override
