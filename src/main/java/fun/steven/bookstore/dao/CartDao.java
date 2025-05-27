@@ -24,12 +24,12 @@ public class CartDao implements ICartDao {
     private BookRepository bookRepository;
 
     @Override
-    public boolean addToCart(Long userId, AddCartItemDto cartItemDto) {
+    public boolean addToCart(Long cartId, AddCartItemDto cartItemDto) {
         Long bookId = cartItemDto.getBookId();
-        Cart cart = cartRepository.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("Cart not found for userId: " + userId));
+        Cart cart = cartRepository.findById(cartId)
+                .orElseThrow(() -> new RuntimeException("Cart not found: " + cartId));
         Book book = bookRepository.findById(bookId)
-                .orElseThrow(() -> new RuntimeException("Book not found for bookId: " + bookId));
+                .orElseThrow(() -> new RuntimeException("Book not found: " + bookId));
 
         // 在cart的cartItems集合中查找是否已存在该商品
         List<CartItem> cartItems = cart.getCartItems();
@@ -53,11 +53,6 @@ public class CartDao implements ICartDao {
         cartRepository.save(cart);
         
         return true;
-    }
-
-    @Override
-    public boolean updateCartItem(CartItem cartItem) {
-        return cartItemRepository.save(cartItem) != null;
     }
 
     @Override

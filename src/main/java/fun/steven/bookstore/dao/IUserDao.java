@@ -13,6 +13,7 @@ public interface IUserDao {
     User getUserById(Long userId);
     User getByUsername(String username);
     Cart getCart(Long userId);
+    Long getCartId(Long userId);
 
     User update(Long userId, UpdateUserDto user);
 }

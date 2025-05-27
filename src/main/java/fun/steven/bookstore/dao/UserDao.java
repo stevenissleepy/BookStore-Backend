@@ -64,4 +64,11 @@ public class UserDao implements IUserDao {
                 () -> new RuntimeException("User not found"));
         return user.getCart();
     }
+
+    @Override
+    public Long getCartId(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new RuntimeException("User not found"));
+        return user.getCart().getId();
+    }
 }
