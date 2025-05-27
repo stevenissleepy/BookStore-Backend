@@ -30,7 +30,7 @@ public class OrderService implements IOrderService {
         User user = userDao.getUserById(userId);
         Long cartId = userDao.getCartId(userId);
         Cart cart = user.getCart();
-        List<CartItem> cartItems = cartDao.getCartItems(cart);
+        List<CartItem> cartItems = cart.getCartItems();
 
         /* 创建订单 */
         Order order = new Order();

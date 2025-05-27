@@ -7,7 +7,6 @@ import fun.steven.bookstore.dao.ICartDao;
 import fun.steven.bookstore.dao.IUserDao;
 import fun.steven.bookstore.dto.cart.AddCartItemDto;
 import fun.steven.bookstore.dto.cart.GetCartDto;
-import fun.steven.bookstore.entity.Cart;
 
 @Service
 public class CartService implements ICartService {
@@ -24,7 +23,7 @@ public class CartService implements ICartService {
 
     @Override
     public GetCartDto getCart(Long userId) {
-        Cart cart = userDao.getCart(userId);
-        return new GetCartDto(cart);
+        Long cartId = userDao.getCartId(userId);
+        return cartDao.getCart(cartId);
     }
 }
