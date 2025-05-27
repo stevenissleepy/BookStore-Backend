@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class AddressDto {
     private Long id;
     private String receiver;
-    private String phone;
+    private String tel;
     private String address;
 
     public AddressDto(Address address) {

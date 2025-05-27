@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class GetOrderDto {
     private String address;
-    private String phone;
+    private String tel;
     private String receiver;
     private Double totalPrice; 
     private List<GetOrderItemDto> orderItems;
@@ -20,7 +20,7 @@ public class GetOrderDto {
 
     public GetOrderDto(Order order) {
         this.address = order.getAddress();
-        this.phone = order.getPhone();
+        this.tel = order.getTel();
         this.receiver = order.getReceiver();
         this.totalPrice = order.getTotalPrice();
         this.orderItems = order.getOrderItems().stream().map(GetOrderItemDto::new).toList();

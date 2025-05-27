@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class AddOrderDto {
     private String receiver;
-    private String phone;
+    private String tel;
     private String address;
 }

@@ -10,11 +10,7 @@ import fun.steven.bookstore.dao.IOrderDao;
 import fun.steven.bookstore.dao.IUserDao;
 import fun.steven.bookstore.dto.order.AddOrderDto;
 import fun.steven.bookstore.dto.order.GetOrdersDto;
-import fun.steven.bookstore.entity.Cart;
-import fun.steven.bookstore.entity.CartItem;
 import fun.steven.bookstore.entity.Order;
-import fun.steven.bookstore.entity.OrderItem;
-import fun.steven.bookstore.entity.User;
 
 @Service
 public class OrderService implements IOrderService {
@@ -27,40 +23,9 @@ public class OrderService implements IOrderService {
 
     @Override
     public boolean cartToOrder(Long userId, AddOrderDto addOrderDto) {
-        User user = userDao.getUserById(userId);
-        Long cartId = userDao.getCartId(userId);
-        Cart cart = user.getCart();
-        List<CartItem> cartItems = cart.getCartItems();
-
-        /* 创建订单 */
-        Order order = new Order();
-        order.setUser(user);
-        orderDao.add(order);
-
-        /* 设置订单信息 */
-        order.setReceiver(addOrderDto.getReceiver());
-        order.setPhone(addOrderDto.getPhone());
-        order.setAddress(addOrderDto.getAddress());
-        order.setDate(java.time.LocalDateTime.now());
-
-        /* 将购物车中的商品加到订单中 */
-        List<OrderItem> orderItems = cartItems.stream().map(item -> {
-            OrderItem orderItem = new OrderItem();
-            orderItem.setOrder(order);
-            orderItem.setBook(item.getBook());
-            orderItem.setQuantity(item.getQuantity());
-            return orderItem;
-        }).toList();
-        order.setOrderItems(orderItems);
-
-        /* 计算总价格 */
-        Double totalPrice = cartItems.stream().mapToDouble(
-                item -> item.getBook().getPrice() * item.getQuantity()).sum();
-        order.setTotalPrice(totalPrice);
-
-        /* 清空购物车 */
-        cartDao.clear(cartId);
-
+        orderDao.createOrder(userId, addOrderDto);
+        cartDao.clear(userDao.getCartId(userId));
+        
         return true;
     }
 
