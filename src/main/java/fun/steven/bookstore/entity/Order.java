@@ -2,6 +2,7 @@ package fun.steven.bookstore.entity;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,12 +19,12 @@ import lombok.Data;
 @Table(name = "tb_order")
 public class Order {
     @Id
-    @Column(name = "order_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     @Column(name = "address")
@@ -41,6 +42,6 @@ public class Order {
     @Column(name = "date")
     private java.time.LocalDateTime date;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems;
 }

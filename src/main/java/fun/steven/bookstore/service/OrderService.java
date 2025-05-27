@@ -48,7 +48,6 @@ public class OrderService implements IOrderService {
             orderItem.setOrder(order);
             orderItem.setBook(item.getBook());
             orderItem.setQuantity(item.getQuantity());
-            orderDao.addOrderItem(orderItem);
             return orderItem;
         }).toList();
         order.setOrderItems(orderItems);

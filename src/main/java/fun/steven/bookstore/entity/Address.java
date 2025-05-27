@@ -2,6 +2,8 @@ package fun.steven.bookstore.entity;
 
 import org.springframework.beans.BeanUtils;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import fun.steven.bookstore.dto.address.AddressDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,21 +23,22 @@ import lombok.NoArgsConstructor;
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "address_id")
+    @Column(name = "id")
     private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
 
     @Column(name = "receiver")
     private String receiver;
 
+    @Column(name = "tel")
+    private String tel;
+
     @Column(name = "address", columnDefinition = "LONGTEXT")
     private String address;
 
-    @Column(name = "phone")
-    private String phone;
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
     public Address(AddressDto addressDto) {
         BeanUtils.copyProperties(addressDto, this);
