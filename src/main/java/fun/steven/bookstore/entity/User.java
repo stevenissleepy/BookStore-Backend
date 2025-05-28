@@ -15,7 +15,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(exclude = "cart")
+@EqualsAndHashCode(exclude = {"cart", "userAuth"})
 @Entity
 @Table(name = "tb_user")
 public class User {
