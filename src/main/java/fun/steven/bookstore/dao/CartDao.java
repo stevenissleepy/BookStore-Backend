@@ -60,11 +60,16 @@ public class CartDao implements ICartDao {
     }
 
     @Override
-    public boolean clear(Long cartId) {
+    public boolean deleteFromCart(Long cartId, Long bookId) {
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new RuntimeException("Cart not found: " + cartId));
-        cart.getCartItems().clear();
+        List<CartItem> cartItems = cart.getCartItems();
+        
+        // 查找并删除指定的CartItem
+        cartItems.removeIf(item -> item.getBook().getId().equals(bookId));
+        cart.setCartItems(cartItems);
         cartRepository.save(cart);
+        
         return true;
     }
 }

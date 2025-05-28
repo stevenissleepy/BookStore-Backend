@@ -27,6 +27,12 @@ public class OrderDao implements IOrderDao {
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
         List<CartItem> cartItems = user.getCart().getCartItems();
 
+        /* 只保留选中的 cartItem */
+        List<Long> bookIds = addOrderDto.getBookIds();
+        List<CartItem> selectedCartItems = cartItems.stream()
+                .filter(item -> bookIds.contains(item.getBook().getId()))
+                .toList();
+
         /* 创建订单 */
         Order order = new Order();
         order.setUser(user);
@@ -36,7 +42,7 @@ public class OrderDao implements IOrderDao {
         order.setDate(java.time.LocalDateTime.now());
 
         /* 将购物车中的商品加到订单中 */
-        List<OrderItem> orderItems = cartItems.stream().map(item -> {
+        List<OrderItem> orderItems = selectedCartItems.stream().map(item -> {
             OrderItem orderItem = new OrderItem();
             orderItem.setOrder(order);
             orderItem.setBook(item.getBook());
@@ -46,7 +52,7 @@ public class OrderDao implements IOrderDao {
         order.setOrderItems(orderItems);
 
         /* 计算总价格 */
-        Double totalPrice = cartItems.stream().mapToDouble(
+        Double totalPrice = selectedCartItems.stream().mapToDouble(
                 item -> item.getBook().getPrice() * item.getQuantity()).sum();
         order.setTotalPrice(totalPrice);
 

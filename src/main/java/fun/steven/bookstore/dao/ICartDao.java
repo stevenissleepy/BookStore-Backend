@@ -6,7 +6,7 @@ import fun.steven.bookstore.dto.cart.GetCartDto;
 public interface ICartDao {
     boolean addToCart(Long cartId, AddCartItemDto cartItemDto);
 
-    boolean clear(Long cartId);
+    boolean deleteFromCart(Long cartId, Long bookId);
 
     GetCartDto getCart(Long cartId);
 }

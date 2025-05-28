@@ -21,7 +21,11 @@ public class OrderService implements IOrderService {
     @Override
     public boolean cartToOrder(Long userId, AddOrderDto addOrderDto) {
         orderDao.createOrder(userId, addOrderDto);
-        cartDao.clear(userDao.getCartId(userId));
+        
+        Long cartId = userDao.getCartId(userId);
+        for(Long bookId : addOrderDto.getBookIds()) {
+            cartDao.deleteFromCart(cartId, bookId);
+        }
 
         return true;
     }
