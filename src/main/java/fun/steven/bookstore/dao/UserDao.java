@@ -1,5 +1,6 @@
 package fun.steven.bookstore.dao;
 
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -27,7 +28,9 @@ public class UserDao implements IUserDao {
         user.setBalance(0.00);
 
         UserAuth userAuth = new UserAuth();
-        userAuth.setPassword(userDto.getPassword());
+        String password = userDto.getPassword();
+        password = BCrypt.hashpw(password, BCrypt.gensalt());
+        userAuth.setPassword(password);
         userAuth.setUser(user);
         user.setUserAuth(userAuth);
 
@@ -80,7 +83,7 @@ public class UserDao implements IUserDao {
         User user = userRepository.findByUsername(username).orElseThrow(
                 () -> new LoginException("User not found"));
         
-        if (!user.getUserAuth().getPassword().equals(password)) {
+        if (!BCrypt.checkpw(password, user.getUserAuth().getPassword())) {
             throw new LoginException("Incorrect password");
         }
 

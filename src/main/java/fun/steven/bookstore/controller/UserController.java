@@ -26,13 +26,6 @@ public class UserController {
     @Autowired
     private IUserService userService;   /* 注入用户服务 */
 
-    /**
-     * @brief 增加用户
-     * @note 该方法使用 POST 请求，路径为 /user
-     * 
-     * @param userDto UserDto
-     * @return ResponseMessage<User> 返回响应消息对象
-     */
     @PostMapping("/register")
     public ResponseMessage<UserInfoDto> add(@RequestBody UserDto userDto) {
         UserInfoDto userInfoDto = userService.add(userDto);
@@ -40,13 +33,6 @@ public class UserController {
         return ResponseMessage.success("add user success!", userInfoDto);
     }
 
-    /**
-     * @brief 更新用户
-     * @note 该方法使用 POST 请求，路径为 /user
-     * 
-     * @param userDto UpdateUserDto
-     * @return ResponseMessage<User> 返回响应消息对象
-     */
     @PutMapping
     public ResponseMessage<UserInfoDto> update(@RequestBody UpdateUserDto userDto, @CurrentUserId Long userId) {
         UserInfoDto userInfoDto = userService.update(userId, userDto);
@@ -54,13 +40,6 @@ public class UserController {
         return ResponseMessage.success("update user success!", userInfoDto);
     }
 
-    /**
-     * @brief 查询用户
-     * @note 该方法使用 GET 请求，路径为 /user
-     * 
-     * @param userId 用户 ID
-     * @return ResponseMessage<User> 返回响应消息对象
-     */
     @GetMapping
     public ResponseMessage<UserInfoDto> query(@CurrentUserId Long userId) {
         UserInfoDto userInfoDto = userService.query(userId);
@@ -68,15 +47,6 @@ public class UserController {
         return ResponseMessage.success("query user success!", userInfoDto);
     }
 
-    /**
-     * @brief 登录
-     * @note 该方法使用 POST 请求，路径为 /user/login
-     * 
-     * @param username 用户名
-     * @param password 密码
-     * @param request HttpServletRequest
-     * @return ResponseMessage<String> 返回响应消息对象
-     */
     @PostMapping("/login")
     public ResponseMessage<String> login(@RequestBody LoginDto loginDto,  HttpServletRequest request) {
         String username = loginDto.getUsername();
@@ -90,13 +60,6 @@ public class UserController {
         return ResponseMessage.success("login success!", null);
     }
 
-    /**
-     * @brief 登出
-     * @note 该方法使用 GET 请求，路径为 /user/logout/{userId}
-     * 
-     * @param request HttpServletRequest
-     * @return ResponseMessage<String> 返回响应消息对象
-     */
     @PostMapping("/logout")
     public ResponseMessage<String> logout(HttpServletRequest request, @CurrentUserId Long userId) {
         Long sessionUserId = (Long) request.getSession().getAttribute("userId");
