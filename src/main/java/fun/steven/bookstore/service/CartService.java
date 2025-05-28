@@ -22,6 +22,12 @@ public class CartService implements ICartService {
     }
 
     @Override
+    public boolean updateCartItem(Long userId, CartItemDto cartItemDto) {
+        Long cartId = userDao.getCartId(userId);
+        return cartDao.updateCartItem(cartId, cartItemDto);
+    }
+
+    @Override
     public GetCartDto getCart(Long userId) {
         Long cartId = userDao.getCartId(userId);
         return cartDao.getCart(cartId);

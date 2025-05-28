@@ -25,6 +25,12 @@ public class CartController {
         return ResponseMessage.success("Item added to cart successfully", null);
     }
 
+    @PostMapping("/update")
+    public ResponseMessage<String> updateCartItem(@CurrentUserId Long userId, @RequestBody CartItemDto cartItemDto) {
+        cartService.updateCartItem(userId, cartItemDto);
+        return ResponseMessage.success("Cart item updated successfully", null);
+    }
+
     @GetMapping
     public ResponseMessage<GetCartDto> getCart(@CurrentUserId Long userId) {
         GetCartDto cart = cartService.getCart(userId);

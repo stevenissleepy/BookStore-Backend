@@ -8,5 +8,7 @@ public interface ICartDao {
 
     boolean deleteFromCart(Long cartId, Long bookId);
 
+    boolean updateCartItem(Long cartId, CartItemDto cartItemDto);
+
     GetCartDto getCart(Long cartId);
 }

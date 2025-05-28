@@ -48,15 +48,8 @@ public class CartDao implements ICartDao {
         cartItems.add(newCartItem);
         cart.setCartItems(cartItems);
         cartRepository.save(cart);
-        
-        return true;
-    }
 
-    @Override
-    public GetCartDto getCart(Long cartId) {
-        Cart cart = cartRepository.findById(cartId)
-                .orElseThrow(() -> new RuntimeException("Cart not found: " + cartId));
-        return new GetCartDto(cart);
+        return true;
     }
 
     @Override
@@ -64,12 +57,39 @@ public class CartDao implements ICartDao {
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new RuntimeException("Cart not found: " + cartId));
         List<CartItem> cartItems = cart.getCartItems();
-        
+
         // 查找并删除指定的CartItem
         cartItems.removeIf(item -> item.getBook().getId().equals(bookId));
         cart.setCartItems(cartItems);
         cartRepository.save(cart);
-        
+
         return true;
+    }
+
+    @Override
+    public boolean updateCartItem(Long cartId, CartItemDto cartItemDto) {
+        Long bookId = cartItemDto.getBookId();
+        Cart cart = cartRepository.findById(cartId)
+                .orElseThrow(() -> new RuntimeException("Cart not found: " + cartId));
+        List<CartItem> cartItems = cart.getCartItems();
+
+        // 查找并更新指定的CartItem
+        for (CartItem item : cartItems) {
+            if (item.getBook().getId().equals(bookId)) {
+                item.setQuantity(cartItemDto.getQuantity());
+                cart.setCartItems(cartItems);
+                cartRepository.save(cart);
+                return true;
+            }
+        }
+
+        throw new RuntimeException("Cart item with book id " + bookId + " not found in cart: " + cartId);
+    }
+
+    @Override
+    public GetCartDto getCart(Long cartId) {
+        Cart cart = cartRepository.findById(cartId)
+                .orElseThrow(() -> new RuntimeException("Cart not found: " + cartId));
+        return new GetCartDto(cart);
     }
 }
