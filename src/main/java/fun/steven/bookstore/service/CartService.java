@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import fun.steven.bookstore.dao.ICartDao;
 import fun.steven.bookstore.dao.IUserDao;
-import fun.steven.bookstore.dto.cart.AddCartItemDto;
+import fun.steven.bookstore.dto.cart.CartItemDto;
 import fun.steven.bookstore.dto.cart.GetCartDto;
 
 @Service
@@ -16,7 +16,7 @@ public class CartService implements ICartService {
     private IUserDao userDao;
 
     @Override
-    public boolean addToCart(Long userId, AddCartItemDto cartItemDto) {
+    public boolean addToCart(Long userId, CartItemDto cartItemDto) {
         Long cartId = userDao.getCartId(userId);
         return cartDao.addToCart(cartId, cartItemDto);
     }
