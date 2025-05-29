@@ -6,6 +6,6 @@ import lombok.Data;
 public class UpdateBookDto {
     private Long id;
     private String title;
-    private Double price;
+    private Integer price;
     private String cover;
 }

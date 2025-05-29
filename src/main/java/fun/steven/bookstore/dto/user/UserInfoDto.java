@@ -9,7 +9,7 @@ import lombok.Data;
 public class UserInfoDto {
     private String username;
     private String avatar;
-    private Double balance;
+    private Integer balance;
 
     public UserInfoDto(User user) {
         BeanUtils.copyProperties(user, this);

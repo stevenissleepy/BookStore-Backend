@@ -25,7 +25,7 @@ public class UserDao implements IUserDao {
         User user = new User();
         user.setUsername(userDto.getUsername());
         user.setAvatar(userDto.getAvatar());
-        user.setBalance(0.00);
+        user.setBalance(0);
 
         UserAuth userAuth = new UserAuth();
         String password = userDto.getPassword();

@@ -14,7 +14,7 @@ public class GetOrderDto {
     private String address;
     private String tel;
     private String receiver;
-    private Double totalPrice; 
+    private Integer totalPrice; 
     private List<GetOrderItemDto> orderItems;
     private String date;
 

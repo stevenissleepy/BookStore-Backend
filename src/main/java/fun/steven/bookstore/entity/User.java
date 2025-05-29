@@ -28,7 +28,7 @@ public class User {
     private String username;
 
     @Column(name = "balance")
-    private Double balance;
+    private Integer balance;
 
     @Column(name = "avatar", columnDefinition = "LONGTEXT")
     private String avatar;

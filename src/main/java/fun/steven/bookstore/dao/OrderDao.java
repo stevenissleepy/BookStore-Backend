@@ -52,7 +52,7 @@ public class OrderDao implements IOrderDao {
         order.setOrderItems(orderItems);
 
         /* 计算总价格 */
-        Double totalPrice = selectedCartItems.stream().mapToDouble(
+        Integer totalPrice = selectedCartItems.stream().mapToInt(
                 item -> item.getBook().getPrice() * item.getQuantity()).sum();
         order.setTotalPrice(totalPrice);
 

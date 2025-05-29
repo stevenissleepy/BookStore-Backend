@@ -30,7 +30,7 @@ public class Book {
     private String author;
 
     @Column(name = "price")
-    private Double price;
+    private Integer price;
 
     @Column(name = "description", columnDefinition = "LONGTEXT")
     private String description;

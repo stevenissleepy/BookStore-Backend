@@ -40,7 +40,7 @@ public class Order {
     private String receiver;
 
     @Column(name = "total_price")
-    private Double totalPrice;
+    private Integer totalPrice;
 
     @Column(name = "date")
     private java.time.LocalDateTime date;
