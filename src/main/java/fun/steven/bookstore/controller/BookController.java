@@ -13,6 +13,7 @@ import fun.steven.bookstore.dto.ResponseMessage;
 import fun.steven.bookstore.dto.book.BookDto;
 import fun.steven.bookstore.dto.book.BooksDto;
 import fun.steven.bookstore.service.IBookService;
+import fun.steven.bookstore.utils.annotation.AdminOnly;
 
 @RestController
 @RequestMapping("/book")
@@ -20,12 +21,14 @@ public class BookController {
     @Autowired
     private IBookService bookService;
 
+    @AdminOnly
     @PostMapping
     public ResponseMessage<String> add(@RequestBody BookDto bookDto) {
         bookService.add(bookDto);
         return ResponseMessage.success("add book success", null);
     }
 
+    @AdminOnly
     @DeleteMapping("/{id}")
     public ResponseMessage<String> delete(@PathVariable Long id) {
         bookService.delete(id);
