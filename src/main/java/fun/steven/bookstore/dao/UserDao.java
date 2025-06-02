@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import fun.steven.bookstore.dto.user.LoginDto;
+import fun.steven.bookstore.dto.user.SessionDto;
 import fun.steven.bookstore.dto.user.UpdateUserDto;
 import fun.steven.bookstore.dto.user.UserDto;
 import fun.steven.bookstore.dto.user.UserInfoDto;
@@ -77,7 +78,7 @@ public class UserDao implements IUserDao {
     }
 
     @Override
-    public Long checkLogin(LoginDto loginDto) {
+    public SessionDto checkLogin(LoginDto loginDto) {
         String username = loginDto.getUsername();
         String password = loginDto.getPassword();
 
@@ -88,6 +89,6 @@ public class UserDao implements IUserDao {
             throw new LoginException("Incorrect password");
         }
 
-        return user.getId();
+        return new SessionDto(user);
     }
 }

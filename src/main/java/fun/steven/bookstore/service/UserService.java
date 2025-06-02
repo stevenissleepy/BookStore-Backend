@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import fun.steven.bookstore.dao.IUserDao;
 import fun.steven.bookstore.dto.user.LoginDto;
+import fun.steven.bookstore.dto.user.SessionDto;
 import fun.steven.bookstore.dto.user.UpdateUserDto;
 import fun.steven.bookstore.dto.user.UserDto;
 import fun.steven.bookstore.dto.user.UserInfoDto;
@@ -39,7 +40,7 @@ public class UserService implements IUserService {
         return userDao.getUserById(userId);
     }
     
-    public Long login(LoginDto loginDto) {
+    public SessionDto login(LoginDto loginDto) {
         return userDao.checkLogin(loginDto);
     }
 }

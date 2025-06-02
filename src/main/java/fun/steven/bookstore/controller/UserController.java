@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fun.steven.bookstore.dto.ResponseMessage;
 import fun.steven.bookstore.dto.user.LoginDto;
+import fun.steven.bookstore.dto.user.SessionDto;
 import fun.steven.bookstore.dto.user.UpdateUserDto;
 import fun.steven.bookstore.dto.user.UserDto;
 import fun.steven.bookstore.dto.user.UserInfoDto;
@@ -55,8 +56,9 @@ public class UserController {
             return ResponseMessage.error(401, "用户名或密码不能为空");
         }
         
-        Long userId = userService.login(loginDto);
-        request.getSession().setAttribute("userId", userId);
+        SessionDto userSession = userService.login(loginDto);
+        request.getSession().setAttribute("userId", userSession.getUserId());
+        request.getSession().setAttribute("userRole", userSession.getUserRole());
         return ResponseMessage.success("login success!", null);
     }
 
