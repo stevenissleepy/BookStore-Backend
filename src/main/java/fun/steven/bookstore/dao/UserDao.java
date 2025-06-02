@@ -31,6 +31,7 @@ public class UserDao implements IUserDao {
         String password = userDto.getPassword();
         password = BCrypt.hashpw(password, BCrypt.gensalt());
         userAuth.setPassword(password);
+        userAuth.setRole("user");
         userAuth.setUser(user);
         user.setUserAuth(userAuth);
 

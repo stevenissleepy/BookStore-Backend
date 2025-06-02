@@ -2,6 +2,7 @@ package fun.steven.bookstore.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,9 +20,14 @@ import lombok.EqualsAndHashCode;
 public class UserAuth {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
+    @Column(name = "password")
     private String password;
+
+    @Column(name = "role")
+    private String role;
 
     @JsonIgnore
     @OneToOne
