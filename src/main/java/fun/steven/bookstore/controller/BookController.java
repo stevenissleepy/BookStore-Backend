@@ -1,7 +1,9 @@
 package fun.steven.bookstore.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,10 +20,16 @@ public class BookController {
     @Autowired
     private IBookService bookService;
 
-    @PostMapping("/add")
+    @PostMapping
     public ResponseMessage<String> add(@RequestBody BookDto bookDto) {
         bookService.add(bookDto);
         return ResponseMessage.success("add book success", null);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseMessage<String> delete(@PathVariable Long id) {
+        bookService.delete(id);
+        return ResponseMessage.success("delete book success", null);
     }
 
     @GetMapping("/all")
