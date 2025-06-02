@@ -18,7 +18,7 @@ public class BookController {
     @Autowired
     private IBookService bookService;
 
-    @PostMapping
+    @PostMapping("/add")
     public ResponseMessage<String> add(@RequestBody BookDto bookDto) {
         bookService.add(bookDto);
         return ResponseMessage.success("add book success", null);
