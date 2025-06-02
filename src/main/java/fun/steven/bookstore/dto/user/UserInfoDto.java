@@ -10,8 +10,10 @@ public class UserInfoDto {
     private String username;
     private String avatar;
     private Integer balance;
+    private String role;
 
     public UserInfoDto(User user) {
         BeanUtils.copyProperties(user, this);
+        this.role = user.getUserAuth().getRole();
     }
 }
