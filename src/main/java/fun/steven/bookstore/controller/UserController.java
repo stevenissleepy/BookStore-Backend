@@ -28,10 +28,10 @@ public class UserController {
     private IUserService userService;   /* 注入用户服务 */
 
     @PostMapping("/register")
-    public ResponseMessage<UserInfoDto> add(@RequestBody UserDto userDto) {
-        UserInfoDto userInfoDto = userService.add(userDto);
+    public ResponseMessage<String> add(@RequestBody UserDto userDto) {
+        userService.add(userDto);
 
-        return ResponseMessage.success("add user success!", userInfoDto);
+        return ResponseMessage.success("注册成功", null);
     }
 
     @PutMapping

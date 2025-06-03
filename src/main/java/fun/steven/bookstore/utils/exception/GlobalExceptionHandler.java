@@ -38,4 +38,13 @@ public class GlobalExceptionHandler {
         ResponseMessage<Object> response = new ResponseMessage<Object>(400, message, null);
         return response;
     }
+
+    /* 注册异常 */
+    @ExceptionHandler({ RegisterException.class })
+    public ResponseMessage<Object> handleRegisterException(RegisterException e) {
+        String message = e.getMessage();
+        logger.error("Register Exception: ", e);
+        ResponseMessage<Object> response = new ResponseMessage<Object>(400, message, null);
+        return response;
+    }
 }

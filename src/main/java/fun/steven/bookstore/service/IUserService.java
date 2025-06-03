@@ -8,7 +8,7 @@ import fun.steven.bookstore.dto.user.UserInfoDto;
 
 public interface IUserService {
     
-    public UserInfoDto add(UserDto userDto);
+    public boolean add(UserDto userDto);
 
     public boolean delete(Long userId);
 

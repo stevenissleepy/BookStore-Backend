@@ -15,6 +15,7 @@ import fun.steven.bookstore.entity.User;
 import fun.steven.bookstore.entity.UserAuth;
 import fun.steven.bookstore.repository.UserRepository;
 import fun.steven.bookstore.utils.exception.LoginException;
+import fun.steven.bookstore.utils.exception.RegisterException;
 
 @Repository
 public class UserDao implements IUserDao {
@@ -22,7 +23,12 @@ public class UserDao implements IUserDao {
     private UserRepository userRepository;
 
     @Override
-    public UserInfoDto addUser(UserDto userDto) {
+    public boolean addUser(UserDto userDto) {
+        // Check if the username already exists
+        if (userRepository.findByUsername(userDto.getUsername()).isPresent()) {
+            throw new RegisterException("用户名已存在");
+        }
+
         User user = new User();
         user.setUsername(userDto.getUsername());
         user.setAvatar(userDto.getAvatar());
@@ -41,7 +47,7 @@ public class UserDao implements IUserDao {
         user.setCart(cart);
 
         user = userRepository.save(user);
-        return new UserInfoDto(user);
+        return true;
     }
 
     @Override

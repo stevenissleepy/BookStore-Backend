@@ -7,7 +7,7 @@ import fun.steven.bookstore.dto.user.UserDto;
 import fun.steven.bookstore.dto.user.UserInfoDto;
 
 public interface IUserDao {
-    UserInfoDto addUser(UserDto user);
+    boolean addUser(UserDto user);
 
     boolean delete(Long userId);
 
