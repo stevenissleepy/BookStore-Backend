@@ -3,7 +3,6 @@ package fun.steven.bookstore.entity;
 import org.springframework.beans.BeanUtils;
 
 import fun.steven.bookstore.dto.book.BookDto;
-import fun.steven.bookstore.dto.book.UpdateBookDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -48,10 +47,6 @@ public class Book {
     private String isbn;
 
     public Book(BookDto bookDto) {
-        BeanUtils.copyProperties(bookDto, this);
-    }
-
-    public Book(UpdateBookDto bookDto) {
         BeanUtils.copyProperties(bookDto, this);
     }
 }

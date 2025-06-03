@@ -2,6 +2,7 @@ package fun.steven.bookstore.dao;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +17,8 @@ public class BookDao implements IBookDao {
     private BookRepository bookRepository;
 
     @Override
-    public boolean add(Book book) {
+    public boolean add(BookDto bookDto) {
+        Book book = new Book(bookDto);
         return bookRepository.save(book) != null;
     }
 
@@ -27,12 +29,11 @@ public class BookDao implements IBookDao {
     }
 
     @Override
-    public boolean update(Book book) {
-        Book updateBook = bookRepository.findById(book.getId()).orElseThrow(
+    public boolean update(BookDto bookDto) {
+        Book updateBook = bookRepository.findById(bookDto.getId()).orElseThrow(
                 () -> new RuntimeException("Book not found"));
 
-        updateBook.setTitle(book.getTitle());
-        updateBook.setPrice(book.getPrice());
+        BeanUtils.copyProperties(bookDto, updateBook);
         bookRepository.save(updateBook);
         return true;
     }
