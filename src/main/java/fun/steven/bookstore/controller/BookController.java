@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +27,13 @@ public class BookController {
     public ResponseMessage<String> add(@RequestBody BookDto bookDto) {
         bookService.add(bookDto);
         return ResponseMessage.success("add book success", null);
+    }
+
+    @AdminOnly
+    @PutMapping
+    public ResponseMessage<String> update(@RequestBody BookDto bookDto) {
+        bookService.update(bookDto);
+        return ResponseMessage.success("update book success", null);
     }
 
     @AdminOnly
