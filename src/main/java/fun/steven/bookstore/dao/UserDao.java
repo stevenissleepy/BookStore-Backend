@@ -4,11 +4,12 @@ import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.beans.factory.annotation.Value;
 
 import fun.steven.bookstore.dto.user.LoginDto;
 import fun.steven.bookstore.dto.user.SessionDto;
 import fun.steven.bookstore.dto.user.UpdateUserDto;
-import fun.steven.bookstore.dto.user.UserDto;
+import fun.steven.bookstore.dto.user.RegisterDto;
 import fun.steven.bookstore.dto.user.UserInfoDto;
 import fun.steven.bookstore.entity.Cart;
 import fun.steven.bookstore.entity.User;
@@ -22,16 +23,24 @@ public class UserDao implements IUserDao {
     @Autowired
     private UserRepository userRepository;
 
+    @Value("${default.avatar.base64}")
+    private String defaultAvatar;
+
     @Override
-    public boolean addUser(UserDto userDto) {
+    public boolean addUser(RegisterDto userDto) {
         // Check if the username already exists
         if (userRepository.findByUsername(userDto.getUsername()).isPresent()) {
             throw new RegisterException("用户名已存在");
         }
+        // Check if the email already exists
+        if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
+            throw new RegisterException("邮箱已被注册");
+        }
 
         User user = new User();
         user.setUsername(userDto.getUsername());
-        user.setAvatar(userDto.getAvatar());
+        user.setEmail(userDto.getEmail());
+        user.setAvatar(defaultAvatar);
         user.setBalance(0);
 
         UserAuth userAuth = new UserAuth();

@@ -3,8 +3,8 @@ package fun.steven.bookstore.dto.user;
 import lombok.Data;
 
 @Data
-public class UserDto {
+public class RegisterDto {
     private String username;
     private String password;
-    private String avatar;
+    private String email;
 }

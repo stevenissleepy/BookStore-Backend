@@ -3,12 +3,12 @@ package fun.steven.bookstore.service;
 import fun.steven.bookstore.dto.user.LoginDto;
 import fun.steven.bookstore.dto.user.SessionDto;
 import fun.steven.bookstore.dto.user.UpdateUserDto;
-import fun.steven.bookstore.dto.user.UserDto;
+import fun.steven.bookstore.dto.user.RegisterDto;
 import fun.steven.bookstore.dto.user.UserInfoDto;
 
 public interface IUserService {
     
-    public boolean add(UserDto userDto);
+    public boolean add(RegisterDto userDto);
 
     public boolean delete(Long userId);
 

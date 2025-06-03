@@ -14,7 +14,7 @@ import fun.steven.bookstore.dto.ResponseMessage;
 import fun.steven.bookstore.dto.user.LoginDto;
 import fun.steven.bookstore.dto.user.SessionDto;
 import fun.steven.bookstore.dto.user.UpdateUserDto;
-import fun.steven.bookstore.dto.user.UserDto;
+import fun.steven.bookstore.dto.user.RegisterDto;
 import fun.steven.bookstore.dto.user.UserInfoDto;
 import fun.steven.bookstore.service.IUserService;
 import fun.steven.bookstore.utils.annotation.CurrentUserId;
@@ -28,7 +28,7 @@ public class UserController {
     private IUserService userService;   /* 注入用户服务 */
 
     @PostMapping("/register")
-    public ResponseMessage<String> add(@RequestBody UserDto userDto) {
+    public ResponseMessage<String> add(@RequestBody RegisterDto userDto) {
         userService.add(userDto);
 
         return ResponseMessage.success("注册成功", null);
