@@ -21,8 +21,8 @@ public class AdminInterceptor implements HandlerInterceptor {
             // Check if the method has the AdminOnly annotation
             AdminOnly adminOnly = handlerMethod.getMethodAnnotation(AdminOnly.class);
             if (adminOnly != null) {
-                String userRole = (String) request.getSession().getAttribute("userRole");
-                if(userRole == null || !userRole.equals("admin")) {
+                String username = (String) request.getSession().getAttribute("username");
+                if(username == null || !username.equals("admin")) {
                     throw new LoginException("Access denied: Admin role required.");
                 }
             }

@@ -58,7 +58,7 @@ public class UserController {
         
         SessionDto userSession = userService.login(loginDto);
         request.getSession().setAttribute("userId", userSession.getUserId());
-        request.getSession().setAttribute("userRole", userSession.getUserRole());
+        request.getSession().setAttribute("username", userSession.getUsername());
         return ResponseMessage.success("login success!", null);
     }
 

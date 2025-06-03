@@ -6,10 +6,10 @@ import lombok.Data;
 @Data
 public class SessionDto {
     Long userId;
-    String userRole;
+    String username;
 
     public SessionDto(User user) {
         this.userId = user.getId();
-        this.userRole = user.getUserAuth().getRole();
+        this.username = user.getUsername();
     }
 }

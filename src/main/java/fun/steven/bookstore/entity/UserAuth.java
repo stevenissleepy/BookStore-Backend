@@ -26,8 +26,8 @@ public class UserAuth {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "role")
-    private String role;
+    @Column(name = "state")
+    private String state;
 
     @JsonIgnore
     @OneToOne
