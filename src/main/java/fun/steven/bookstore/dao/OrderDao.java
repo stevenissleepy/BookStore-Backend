@@ -7,10 +7,12 @@ import org.springframework.stereotype.Repository;
 
 import fun.steven.bookstore.dto.order.AddOrderDto;
 import fun.steven.bookstore.dto.order.GetOrdersDto;
+import fun.steven.bookstore.entity.Book;
 import fun.steven.bookstore.entity.CartItem;
 import fun.steven.bookstore.entity.Order;
 import fun.steven.bookstore.entity.OrderItem;
 import fun.steven.bookstore.entity.User;
+import fun.steven.bookstore.repository.BookRepository;
 import fun.steven.bookstore.repository.OrderRepository;
 import fun.steven.bookstore.repository.UserRepository;
 
@@ -20,6 +22,8 @@ public class OrderDao implements IOrderDao {
     private UserRepository userRepository;
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private BookRepository bookRepository;
 
     @Override
     public boolean createOrder(Long userId, AddOrderDto addOrderDto) {
@@ -50,6 +54,14 @@ public class OrderDao implements IOrderDao {
             return orderItem;
         }).toList();
         order.setOrderItems(orderItems);
+
+        /* 从库存中删去已经被购买的书 */
+        selectedCartItems.forEach(item -> {
+            Book book = bookRepository.findById(item.getBook().getId())
+                    .orElseThrow(() -> new RuntimeException("Book not found"));
+            book.setStock(book.getStock() - item.getQuantity());
+            bookRepository.save(book);
+        });
 
         /* 计算总价格 */
         Integer totalPrice = selectedCartItems.stream().mapToInt(

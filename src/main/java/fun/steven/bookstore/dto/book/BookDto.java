@@ -19,6 +19,7 @@ public class BookDto {
     private String language;
     private String isbn;
     private Integer price;
+    private Integer stock;
     private String cover;
 
     public BookDto(Book book){
