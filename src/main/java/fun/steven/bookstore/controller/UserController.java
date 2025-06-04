@@ -35,7 +35,7 @@ public class UserController {
     }
 
     @PutMapping
-    public ResponseMessage<UserInfoDto> update(@RequestBody UpdateUserDto userDto, @CurrentUserId Long userId) {
+    public ResponseMessage<UserInfoDto> update(@CurrentUserId Long userId, @RequestBody UpdateUserDto userDto) {
         UserInfoDto userInfoDto = userService.update(userId, userDto);
 
         return ResponseMessage.success("update user success!", userInfoDto);
