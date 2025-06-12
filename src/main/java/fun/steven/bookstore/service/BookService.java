@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import fun.steven.bookstore.dao.IBookDao;
 import fun.steven.bookstore.pojo.dto.book.BookDto;
 import fun.steven.bookstore.pojo.dto.book.BooksDto;
+import fun.steven.bookstore.pojo.dto.book.SearchBooksDto;
 
 @Service
 public class BookService implements IBookService {
@@ -30,5 +31,9 @@ public class BookService implements IBookService {
 
     public BooksDto getAllBooks() {
         return bookDao.getAllBooks();
+    }
+
+    public BooksDto searchBooks(SearchBooksDto searchBooksDto) {        
+        return bookDao.searchBooks(searchBooksDto);
     }
 }

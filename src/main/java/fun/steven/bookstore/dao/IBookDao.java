@@ -2,6 +2,7 @@ package fun.steven.bookstore.dao;
 
 import fun.steven.bookstore.pojo.dto.book.BookDto;
 import fun.steven.bookstore.pojo.dto.book.BooksDto;
+import fun.steven.bookstore.pojo.dto.book.SearchBooksDto;
 
 public interface IBookDao {
     boolean add(BookDto book);
@@ -9,4 +10,5 @@ public interface IBookDao {
     boolean update(BookDto book);
     BookDto getBookById(Long id);
     BooksDto getAllBooks();
+    BooksDto searchBooks(SearchBooksDto searchBooksDto);
 }
