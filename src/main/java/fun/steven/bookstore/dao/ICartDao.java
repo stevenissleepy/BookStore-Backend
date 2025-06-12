@@ -1,7 +1,7 @@
 package fun.steven.bookstore.dao;
 
-import fun.steven.bookstore.dto.cart.CartItemDto;
-import fun.steven.bookstore.dto.cart.GetCartDto;
+import fun.steven.bookstore.pojo.dto.cart.CartItemDto;
+import fun.steven.bookstore.pojo.dto.cart.GetCartDto;
 
 public interface ICartDao {
     boolean addToCart(Long cartId, CartItemDto cartItemDto);

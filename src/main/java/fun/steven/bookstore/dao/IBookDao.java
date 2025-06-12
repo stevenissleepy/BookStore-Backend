@@ -1,7 +1,7 @@
 package fun.steven.bookstore.dao;
 
-import fun.steven.bookstore.dto.book.BookDto;
-import fun.steven.bookstore.dto.book.BooksDto;
+import fun.steven.bookstore.pojo.dto.book.BookDto;
+import fun.steven.bookstore.pojo.dto.book.BooksDto;
 
 public interface IBookDao {
     boolean add(BookDto book);

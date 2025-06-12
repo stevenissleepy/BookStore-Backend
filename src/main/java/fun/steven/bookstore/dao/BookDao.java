@@ -6,9 +6,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import fun.steven.bookstore.dto.book.BookDto;
-import fun.steven.bookstore.dto.book.BooksDto;
-import fun.steven.bookstore.entity.Book;
+import fun.steven.bookstore.pojo.dto.book.BookDto;
+import fun.steven.bookstore.pojo.dto.book.BooksDto;
+import fun.steven.bookstore.pojo.entity.Book;
 import fun.steven.bookstore.repository.BookRepository;
 
 @Repository

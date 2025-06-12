@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import fun.steven.bookstore.dto.ResponseMessage;
-import fun.steven.bookstore.dto.cart.CartItemDto;
-import fun.steven.bookstore.dto.cart.GetCartDto;
+import fun.steven.bookstore.pojo.dto.ResponseMessage;
+import fun.steven.bookstore.pojo.dto.cart.CartItemDto;
+import fun.steven.bookstore.pojo.dto.cart.GetCartDto;
 import fun.steven.bookstore.service.ICartService;
 import fun.steven.bookstore.utils.annotation.CurrentUserId;
 

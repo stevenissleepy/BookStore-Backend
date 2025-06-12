@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fun.steven.bookstore.dao.IAddressDao;
-import fun.steven.bookstore.dto.address.AddressDto;
-import fun.steven.bookstore.dto.address.AddressesDto;
-import fun.steven.bookstore.entity.Address;
+import fun.steven.bookstore.pojo.dto.address.AddressDto;
+import fun.steven.bookstore.pojo.dto.address.AddressesDto;
+import fun.steven.bookstore.pojo.entity.Address;
 
 @Service
 public class AddressService implements IAddressService {

@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 
 import fun.steven.bookstore.dao.ICartDao;
 import fun.steven.bookstore.dao.IUserDao;
-import fun.steven.bookstore.dto.cart.CartItemDto;
-import fun.steven.bookstore.dto.cart.GetCartDto;
+import fun.steven.bookstore.pojo.dto.cart.CartItemDto;
+import fun.steven.bookstore.pojo.dto.cart.GetCartDto;
 
 @Service
 public class CartService implements ICartService {

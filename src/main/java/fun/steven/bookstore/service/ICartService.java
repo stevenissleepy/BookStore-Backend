@@ -1,7 +1,7 @@
 package fun.steven.bookstore.service;
 
-import fun.steven.bookstore.dto.cart.CartItemDto;
-import fun.steven.bookstore.dto.cart.GetCartDto;
+import fun.steven.bookstore.pojo.dto.cart.CartItemDto;
+import fun.steven.bookstore.pojo.dto.cart.GetCartDto;
 
 public interface ICartService {
     boolean addToCart(Long userId, CartItemDto cartItemDto);

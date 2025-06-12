@@ -6,9 +6,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import fun.steven.bookstore.dto.address.AddressDto;
-import fun.steven.bookstore.entity.Address;
-import fun.steven.bookstore.entity.User;
+import fun.steven.bookstore.pojo.dto.address.AddressDto;
+import fun.steven.bookstore.pojo.entity.Address;
+import fun.steven.bookstore.pojo.entity.User;
 import fun.steven.bookstore.repository.AddressRepository;
 import fun.steven.bookstore.repository.UserRepository;
 

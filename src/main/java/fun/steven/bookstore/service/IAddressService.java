@@ -1,7 +1,7 @@
 package fun.steven.bookstore.service;
 
-import fun.steven.bookstore.dto.address.AddressDto;
-import fun.steven.bookstore.dto.address.AddressesDto;
+import fun.steven.bookstore.pojo.dto.address.AddressDto;
+import fun.steven.bookstore.pojo.dto.address.AddressesDto;
 
 public interface IAddressService {
     public boolean addAddress(Long userId, AddressDto addressDto);

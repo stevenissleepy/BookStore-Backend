@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import fun.steven.bookstore.dao.ICartDao;
 import fun.steven.bookstore.dao.IOrderDao;
 import fun.steven.bookstore.dao.IUserDao;
-import fun.steven.bookstore.dto.order.AddOrderDto;
-import fun.steven.bookstore.dto.order.GetOrdersDto;
+import fun.steven.bookstore.pojo.dto.order.AddOrderDto;
+import fun.steven.bookstore.pojo.dto.order.GetOrdersDto;
 
 @Service
 public class OrderService implements IOrderService {

@@ -3,9 +3,9 @@ package fun.steven.bookstore.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import fun.steven.bookstore.dto.ResponseMessage;
-import fun.steven.bookstore.dto.order.AddOrderDto;
-import fun.steven.bookstore.dto.order.GetOrdersDto;
+import fun.steven.bookstore.pojo.dto.ResponseMessage;
+import fun.steven.bookstore.pojo.dto.order.AddOrderDto;
+import fun.steven.bookstore.pojo.dto.order.GetOrdersDto;
 import fun.steven.bookstore.service.IOrderService;
 import fun.steven.bookstore.utils.annotation.CurrentUserId;
 

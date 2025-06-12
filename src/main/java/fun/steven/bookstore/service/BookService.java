@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fun.steven.bookstore.dao.IBookDao;
-import fun.steven.bookstore.dto.book.BookDto;
-import fun.steven.bookstore.dto.book.BooksDto;
+import fun.steven.bookstore.pojo.dto.book.BookDto;
+import fun.steven.bookstore.pojo.dto.book.BooksDto;
 
 @Service
 public class BookService implements IBookService {

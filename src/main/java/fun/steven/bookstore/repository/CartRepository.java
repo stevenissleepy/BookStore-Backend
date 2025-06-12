@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import fun.steven.bookstore.entity.Cart;
+import fun.steven.bookstore.pojo.entity.Cart;
 
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Long> {

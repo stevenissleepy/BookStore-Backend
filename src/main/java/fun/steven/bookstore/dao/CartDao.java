@@ -5,11 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import fun.steven.bookstore.dto.cart.CartItemDto;
-import fun.steven.bookstore.dto.cart.GetCartDto;
-import fun.steven.bookstore.entity.Book;
-import fun.steven.bookstore.entity.Cart;
-import fun.steven.bookstore.entity.CartItem;
+import fun.steven.bookstore.pojo.dto.cart.CartItemDto;
+import fun.steven.bookstore.pojo.dto.cart.GetCartDto;
+import fun.steven.bookstore.pojo.entity.Book;
+import fun.steven.bookstore.pojo.entity.Cart;
+import fun.steven.bookstore.pojo.entity.CartItem;
 import fun.steven.bookstore.repository.BookRepository;
 import fun.steven.bookstore.repository.CartRepository;
 
