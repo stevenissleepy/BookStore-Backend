@@ -48,4 +48,10 @@ public class BookController {
         BooksDto booksDto = bookService.getAllBooks();
         return ResponseMessage.success("get book success", booksDto);
     }
+
+    @GetMapping("/{id}")
+    public ResponseMessage<BookDto> getBookById(@PathVariable Long id) {
+        BookDto bookDto = bookService.get(id);
+        return ResponseMessage.success("get book success", bookDto);
+    }
 }
