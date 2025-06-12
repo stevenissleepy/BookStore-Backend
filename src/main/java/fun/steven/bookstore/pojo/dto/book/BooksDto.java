@@ -9,9 +9,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class BooksDto {
+    Integer quantity;
     List<BookDto> books;
 
     public BooksDto(List<Book> books) {
+        this.quantity = books.size();
         this.books = books.stream().map(BookDto::new).toList();
     }
 }
