@@ -40,23 +40,23 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
         /* 统计所有订单中书籍的销量并排序 */
         @Query(value = "SELECT b.title, SUM(oi.quantity) as total_sales " +
-                        "FROM books b " +
-                        "JOIN order_items oi ON b.id = oi.book_id " +
-                        "JOIN orders o ON oi.order_id = o.id " +
+                        "FROM tb_book b " +
+                        "JOIN tb_order_item oi ON b.id = oi.book_id " +
+                        "JOIN tb_order o ON oi.order_id = o.id " +
                         "GROUP BY b.id, b.title " +
                         "ORDER BY total_sales DESC " +
-                        "LIMIT 10")
+                        "LIMIT 10", nativeQuery = true)
         List<Object[]> findTop10BookSales();
 
         /* 按日期范围统计书籍销量 */
         @Query(value = "SELECT b.title, SUM(oi.quantity) as total_sales " +
-                        "FROM books b " +
-                        "JOIN order_items oi ON b.id = oi.book_id " +
-                        "JOIN orders o ON oi.order_id = o.id " +
+                        "FROM tb_book b " +
+                        "JOIN tb_order_item oi ON b.id = oi.book_id " +
+                        "JOIN tb_order o ON oi.order_id = o.id " +
                         "WHERE o.date >= :startDate AND o.date <= :endDate " +
                         "GROUP BY b.id, b.title " +
                         "ORDER BY total_sales DESC " +
-                        "LIMIT 10")
+                        "LIMIT 10", nativeQuery = true)
         List<Object[]> findTop10BookSalesByDateRange(
                         @Param("startDate") LocalDateTime startDate,
                         @Param("endDate") LocalDateTime endDate);

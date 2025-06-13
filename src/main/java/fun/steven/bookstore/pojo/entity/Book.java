@@ -34,9 +34,6 @@ public class Book {
     @Column(name = "stock")
     private Integer stock;
 
-    @Column(name = "sales")
-    private Integer sales;
-
     @Column(name = "description", columnDefinition = "LONGTEXT")
     private String description;
 

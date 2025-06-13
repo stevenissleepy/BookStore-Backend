@@ -15,6 +15,7 @@ import fun.steven.bookstore.pojo.dto.book.BookDto;
 import fun.steven.bookstore.pojo.dto.book.BooksDto;
 import fun.steven.bookstore.pojo.dto.book.CategoriesDto;
 import fun.steven.bookstore.pojo.dto.book.SalesDto;
+import fun.steven.bookstore.pojo.dto.book.SalesDto.SalesItemDto;
 import fun.steven.bookstore.pojo.dto.book.SearchBooksDto;
 import fun.steven.bookstore.pojo.dto.book.SearchSalesDto;
 import fun.steven.bookstore.pojo.entity.Book;
@@ -109,8 +110,8 @@ public class BookDao implements IBookDao {
             salesList = bookRepository.findTop10BookSalesByDateRange(startDate, endDate);
         }
 
-        List<SalesDto.SalesItemDto> salesItems = salesList.stream()
-                .map(sale -> new SalesDto.SalesItemDto((String) sale[0], ((Number) sale[1]).intValue()))
+        List<SalesItemDto> salesItems = salesList.stream()
+                .map(sale -> new SalesItemDto((String) sale[0], ((Number) sale[1]).intValue()))
                 .toList();
 
         return new SalesDto(salesItems);
