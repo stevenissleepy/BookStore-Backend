@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import fun.steven.bookstore.pojo.dto.book.BookDto;
@@ -57,31 +60,35 @@ public class BookDao implements IBookDao {
     public BooksDto searchBooks(SearchBooksDto searchBooksDto) {
         String query = searchBooksDto.getQuery();
         List<String> categories = searchBooksDto.getCategories();
-        List<Book> books;
+        Integer page = searchBooksDto.getPage();
+        Integer limit = searchBooksDto.getLimit();
+
+        Pageable pageable = PageRequest.of(page, limit);
+        Page<Book> bookPage;
 
         // 如果查询条件和分类都为空，返回所有书籍
         if ((query == null || query.trim().isEmpty()) &&
                 (categories == null || categories.isEmpty())) {
-            books = bookRepository.findAll();
+            bookPage = bookRepository.findAll(pageable);
         }
 
         // 如果只有查询条件，没有分类限制
         else if (categories == null || categories.isEmpty()) {
             query = (query == null) ? "" : query;
-            books = bookRepository.findByQuery(query).orElse(List.of());
+            bookPage = bookRepository.findByQuery(query, pageable);
         }
 
         // 如果只有分类限制，没有查询条件
         else if (query == null || query.trim().isEmpty()) {
-            books = bookRepository.findByCategories(categories).orElse(List.of());
+            bookPage = bookRepository.findByCategories(categories, pageable);
         }
 
         // 如果查询条件和分类都有
         else {
-            books = bookRepository.findByQueryAndCategories(query.trim(), categories).orElse(List.of());
+            bookPage = bookRepository.findByQueryAndCategories(query.trim(), categories, pageable);
         }
 
-        return new BooksDto(books);
+        return new BooksDto(bookPage);
     }
 
     @Override
