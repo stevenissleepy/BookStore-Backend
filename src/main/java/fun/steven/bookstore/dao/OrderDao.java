@@ -1,5 +1,7 @@
 package fun.steven.bookstore.dao;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import fun.steven.bookstore.pojo.dto.order.AddOrderDto;
 import fun.steven.bookstore.pojo.dto.order.GetOrdersDto;
+import fun.steven.bookstore.pojo.dto.order.SearchDto;
 import fun.steven.bookstore.pojo.entity.Book;
 import fun.steven.bookstore.pojo.entity.CartItem;
 import fun.steven.bookstore.pojo.entity.Order;
@@ -78,6 +81,38 @@ public class OrderDao implements IOrderDao {
     @Override
     public GetOrdersDto getOrders(Long userId) {
         List<Order> orders = orderRepository.findByUserId(userId).orElse(List.of());
+        return new GetOrdersDto(orders);
+    }
+
+    @Override
+    public GetOrdersDto searchAllOrders(SearchDto searchDto) {
+        String startDateStr = searchDto.getStartDate();
+        String endDateStr = searchDto.getEndDate();
+        String bookTitle = searchDto.getBookTitle();
+
+        boolean hasStartDate = startDateStr != null && !startDateStr.isEmpty();
+        boolean hasEndDate = endDateStr != null && !endDateStr.isEmpty();
+        boolean hasBookTitle = bookTitle != null && !bookTitle.isEmpty();
+
+        List<Order> orders;
+
+        if (hasStartDate && hasEndDate && hasBookTitle) {   // 有日期和书名
+            LocalDateTime startDate = LocalDate.parse(startDateStr).atStartOfDay();
+            LocalDateTime endDate = LocalDate.parse(endDateStr).atTime(23, 59, 59);
+            orders = orderRepository.findByDateRangeAndBookTitle(startDate, endDate, bookTitle);
+
+        } else if (hasStartDate && hasEndDate) {            // 有日期范围，没有书名
+            LocalDateTime startDate = LocalDate.parse(startDateStr).atStartOfDay();
+            LocalDateTime endDate = LocalDate.parse(endDateStr).atTime(23, 59, 59);
+            orders = orderRepository.findByDateRange(startDate, endDate);
+
+        } else if (hasBookTitle) {                          // 有书名，没有日期范围
+            orders = orderRepository.findByBookTitle(bookTitle);
+
+        } else {                                            // 没有任何条件
+            orders = orderRepository.findAll();
+        }
+
         return new GetOrdersDto(orders);
     }
 }

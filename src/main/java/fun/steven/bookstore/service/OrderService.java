@@ -8,6 +8,7 @@ import fun.steven.bookstore.dao.IOrderDao;
 import fun.steven.bookstore.dao.IUserDao;
 import fun.steven.bookstore.pojo.dto.order.AddOrderDto;
 import fun.steven.bookstore.pojo.dto.order.GetOrdersDto;
+import fun.steven.bookstore.pojo.dto.order.SearchDto;
 
 @Service
 public class OrderService implements IOrderService {
@@ -33,5 +34,10 @@ public class OrderService implements IOrderService {
     @Override
     public GetOrdersDto getUserOrders(Long userId) {
         return orderDao.getOrders(userId);
+    }
+
+    @Override
+    public GetOrdersDto searchAllOrders(SearchDto searchDto) {
+        return orderDao.searchAllOrders(searchDto);
     }
 }
