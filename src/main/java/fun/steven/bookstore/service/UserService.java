@@ -29,6 +29,14 @@ public class UserService implements IUserService {
         return userDao.update(userId, userDto);
     }
 
+    public boolean banUser(String username) {
+        return userDao.banUser(username);
+    }
+
+    public boolean unbanUser(String username) {
+        return userDao.unbanUser(username);
+    }
+
     public GetUserDto get(Long userId) {
         return userDao.getUserById(userId);
     }

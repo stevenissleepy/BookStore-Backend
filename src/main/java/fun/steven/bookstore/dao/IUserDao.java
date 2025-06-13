@@ -17,6 +17,8 @@ public interface IUserDao {
     Long getCartId(Long userId);
 
     GetUserDto update(Long userId, UpdateUserDto user);
+    boolean banUser(String username);
+    boolean unbanUser(String username);
 
     SessionDto checkLogin(LoginDto loginDto);
 }

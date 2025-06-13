@@ -94,6 +94,24 @@ public class UserDao implements IUserDao {
     }
 
     @Override
+    public boolean banUser(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(
+                () -> new RuntimeException("User not found"));
+        user.getUserAuth().setState("banned");
+        userRepository.save(user);
+        return true;
+    }
+
+    @Override
+    public boolean unbanUser(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(
+                () -> new RuntimeException("User not found"));
+        user.getUserAuth().setState("normal");
+        userRepository.save(user);
+        return true;
+    }
+
+    @Override
     public GetUserDto getUserById(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new RuntimeException("User not found"));

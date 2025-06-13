@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -79,5 +80,19 @@ public class UserController {
     public ResponseMessage<GetUsersDto> getAllUsers() {
         GetUsersDto users = userService.getAll();
         return ResponseMessage.success("get all users success!", users);
+    }
+
+    @AdminOnly
+    @PutMapping("/ban/{username}")
+    public ResponseMessage<String> banUser(@PathVariable String username) {
+        userService.banUser(username);
+        return ResponseMessage.success("ban user success!", null);
+    }
+
+    @AdminOnly
+    @PutMapping("/unban/{username}")
+    public ResponseMessage<String> unbanUser(@PathVariable String username) {
+        userService.unbanUser(username);
+        return ResponseMessage.success("unban user success!", null);
     }
 }

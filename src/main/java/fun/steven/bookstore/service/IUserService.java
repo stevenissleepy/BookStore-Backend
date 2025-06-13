@@ -14,6 +14,8 @@ public interface IUserService {
     public boolean delete(Long userId);
 
     public GetUserDto update(Long userId, UpdateUserDto userDto);
+    public boolean banUser(String username);
+    public boolean unbanUser(String username);
 
     public GetUserDto get(Long userId);
     public GetUsersDto getAll();
