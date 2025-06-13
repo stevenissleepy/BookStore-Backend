@@ -15,19 +15,23 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     /* 根据书名搜索 */
     @Query("SELECT b FROM Book b WHERE " +
-            "LOWER(b.title) LIKE LOWER(CONCAT('%', :query, '%'))")
+        "LOWER(b.title) LIKE LOWER(CONCAT('%', :query, '%'))")
     Optional<List<Book>> findByQuery(@Param("query") String query);
 
     /* 根据分类搜索 */
     @Query("SELECT b FROM Book b WHERE " +
-            "b.category IN :categories")
+        "b.category IN :categories")
     Optional<List<Book>> findByCategories(@Param("categories") List<String> categories);
 
     /* 根据书名和分类搜索 */
     @Query("SELECT b FROM Book b WHERE " +
-            "LOWER(b.title) LIKE LOWER(CONCAT('%', :query, '%')) " +
-            "AND b.category IN :categories")
+        "LOWER(b.title) LIKE LOWER(CONCAT('%', :query, '%')) " +
+        "AND b.category IN :categories")
     Optional<List<Book>> findByQueryAndCategories(
-            @Param("query") String query,
-            @Param("categories") List<String> categories);
+        @Param("query") String query,
+        @Param("categories") List<String> categories);
+
+    /* 获取 categories */
+    @Query("SELECT DISTINCT b.category FROM Book b")
+    Optional<List<String>> findDistinctCategories();
 }

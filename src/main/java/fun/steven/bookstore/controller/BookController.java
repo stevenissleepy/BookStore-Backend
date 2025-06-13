@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import fun.steven.bookstore.pojo.dto.ResponseMessage;
 import fun.steven.bookstore.pojo.dto.book.BookDto;
 import fun.steven.bookstore.pojo.dto.book.BooksDto;
+import fun.steven.bookstore.pojo.dto.book.CategoriesDto;
 import fun.steven.bookstore.pojo.dto.book.SearchBooksDto;
 import fun.steven.bookstore.service.IBookService;
 import fun.steven.bookstore.utils.annotation.AdminOnly;
@@ -54,6 +55,12 @@ public class BookController {
     public ResponseMessage<BooksDto> searchBooks(@RequestBody SearchBooksDto searchBooksDto) {
         BooksDto booksDto = bookService.searchBooks(searchBooksDto);
         return ResponseMessage.success("search book success", booksDto);
+    }
+
+    @GetMapping("/categories")
+    public ResponseMessage<CategoriesDto> getCategories() {
+        CategoriesDto categoriesDto = bookService.getCategories();
+        return ResponseMessage.success("get categories success", categoriesDto);
     }
 
     @GetMapping("/{id}")

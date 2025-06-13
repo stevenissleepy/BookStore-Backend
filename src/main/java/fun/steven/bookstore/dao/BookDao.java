@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import fun.steven.bookstore.pojo.dto.book.BookDto;
 import fun.steven.bookstore.pojo.dto.book.BooksDto;
+import fun.steven.bookstore.pojo.dto.book.CategoriesDto;
 import fun.steven.bookstore.pojo.dto.book.SearchBooksDto;
 import fun.steven.bookstore.pojo.entity.Book;
 import fun.steven.bookstore.repository.BookRepository;
@@ -81,5 +82,11 @@ public class BookDao implements IBookDao {
         }
 
         return new BooksDto(books);
+    }
+
+    @Override
+    public CategoriesDto getCategories() {
+        List<String> categories = bookRepository.findDistinctCategories().orElse(List.of());
+        return new CategoriesDto(categories);
     }
 }
