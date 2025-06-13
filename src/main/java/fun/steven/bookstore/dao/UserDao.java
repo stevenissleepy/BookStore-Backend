@@ -2,7 +2,6 @@ package fun.steven.bookstore.dao;
 
 import java.util.List;
 
-import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +16,7 @@ import fun.steven.bookstore.pojo.entity.Cart;
 import fun.steven.bookstore.pojo.entity.User;
 import fun.steven.bookstore.pojo.entity.UserAuth;
 import fun.steven.bookstore.repository.UserRepository;
+import fun.steven.bookstore.utils.BCryptUtils;
 import fun.steven.bookstore.utils.exception.LoginException;
 import fun.steven.bookstore.utils.exception.RegisterException;
 
@@ -47,7 +47,7 @@ public class UserDao implements IUserDao {
 
         UserAuth userAuth = new UserAuth();
         String password = userDto.getPassword();
-        password = BCrypt.hashpw(password, BCrypt.gensalt());
+        password = BCryptUtils.hashPassword(password, user.getUsername());
         userAuth.setPassword(password);
         userAuth.setState("normal");
         userAuth.setUser(user);
@@ -81,7 +81,8 @@ public class UserDao implements IUserDao {
 
         String password = userDto.getPassword();
         if (password != null && !password.isEmpty()) {
-            user.getUserAuth().setPassword(BCrypt.hashpw(password, BCrypt.gensalt()));
+            password = BCryptUtils.hashPassword(password, user.getUsername());
+            user.getUserAuth().setPassword(password);
         }
 
         String avatar = userDto.getAvatar();
@@ -124,11 +125,11 @@ public class UserDao implements IUserDao {
         List<Object[]> userInfos = userRepository.findAllUsersSafely();
         List<GetUserDto> users = userInfos.stream()
                 .map(info -> new GetUserDto(
-                        (String) info[0],  // username
-                        (String) info[1],  // email
-                        (String) info[2],  // avatar
+                        (String) info[0], // username
+                        (String) info[1], // email
+                        (String) info[2], // avatar
                         (Integer) info[3], // balance
-                        (String) info[4]   // state
+                        (String) info[4] // state
                 ))
                 .toList();
         return new GetUsersDto(users);
@@ -145,14 +146,18 @@ public class UserDao implements IUserDao {
     public SessionDto checkLogin(LoginDto loginDto) {
         String username = loginDto.getUsername();
         String password = loginDto.getPassword();
+        password = BCryptUtils.hashPassword(password, username);
 
-        User user = userRepository.findByUsername(username).orElseThrow(
-                () -> new LoginException("User not found"));
-
-        if (!BCrypt.checkpw(password, user.getUserAuth().getPassword())) {
-            throw new LoginException("Incorrect password");
+        if (!userRepository.existsByUsername(username)) {
+            throw new LoginException("用户名不存在");
+        } else if (!userRepository.existsByUsernameAndPassword(username, password)) {
+            throw new LoginException("密码错误");
+        } else if (userRepository.existsByUsernameAndBanned(username)) {
+            throw new LoginException("用户已被封禁");
         }
 
-        return new SessionDto(user);
+        Long userId = userRepository.findUserSessionById(username);
+
+        return new SessionDto(userId, username);
     }
 }
