@@ -103,7 +103,16 @@ public class UserDao implements IUserDao {
 
     @Override
     public GetUsersDto getAllUsers() {
-        List<GetUserDto> users = userRepository.findAllSafely();
+        List<Object[]> userInfos = userRepository.findAllUsersSafely();
+        List<GetUserDto> users = userInfos.stream()
+                .map(info -> new GetUserDto(
+                        (String) info[0],  // username
+                        (String) info[1],  // email
+                        (String) info[2],  // avatar
+                        (Integer) info[3], // balance
+                        (String) info[4]   // state
+                ))
+                .toList();
         return new GetUsersDto(users);
     }
 
