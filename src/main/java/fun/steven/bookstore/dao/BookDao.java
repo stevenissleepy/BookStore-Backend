@@ -1,5 +1,7 @@
 package fun.steven.bookstore.dao;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -12,7 +14,9 @@ import org.springframework.stereotype.Repository;
 import fun.steven.bookstore.pojo.dto.book.BookDto;
 import fun.steven.bookstore.pojo.dto.book.BooksDto;
 import fun.steven.bookstore.pojo.dto.book.CategoriesDto;
+import fun.steven.bookstore.pojo.dto.book.SalesDto;
 import fun.steven.bookstore.pojo.dto.book.SearchBooksDto;
+import fun.steven.bookstore.pojo.dto.book.SearchSalesDto;
 import fun.steven.bookstore.pojo.entity.Book;
 import fun.steven.bookstore.repository.BookRepository;
 
@@ -87,7 +91,28 @@ public class BookDao implements IBookDao {
 
     @Override
     public CategoriesDto getCategories() {
-        List<String> categories = bookRepository.findDistinctCategories().orElse(List.of());
+        List<String> categories = bookRepository.findDistinctCategories();
         return new CategoriesDto(categories);
+    }
+
+    @Override
+    public SalesDto searchSales(SearchSalesDto searchSalesDto) {
+        String startDateStr = searchSalesDto.getStartDate();
+        String endDateStr = searchSalesDto.getEndDate();
+        List<Object[]> salesList;
+
+        if (startDateStr == null || endDateStr == null || startDateStr.isEmpty() || endDateStr.isEmpty()) {
+            salesList = bookRepository.findTop10BookSales();
+        } else {
+            LocalDateTime startDate = LocalDate.parse(startDateStr).atStartOfDay();
+            LocalDateTime endDate = LocalDate.parse(endDateStr).atTime(23, 59, 59);
+            salesList = bookRepository.findTop10BookSalesByDateRange(startDate, endDate);
+        }
+
+        List<SalesDto.SalesItemDto> salesItems = salesList.stream()
+                .map(sale -> new SalesDto.SalesItemDto((String) sale[0], ((Number) sale[1]).intValue()))
+                .toList();
+
+        return new SalesDto(salesItems);
     }
 }

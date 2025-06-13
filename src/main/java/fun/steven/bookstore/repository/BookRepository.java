@@ -1,7 +1,7 @@
 package fun.steven.bookstore.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,26 +15,49 @@ import fun.steven.bookstore.pojo.entity.Book;
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
 
-    /* 根据书名搜索 */
-    @Query("SELECT b FROM Book b WHERE " +
-        "LOWER(b.title) LIKE LOWER(CONCAT('%', :query, '%'))")
-    Page<Book> findByQuery(@Param("query") String query, Pageable pageable);
+        /* 根据书名搜索 */
+        @Query("SELECT b FROM Book b WHERE " +
+                        "LOWER(b.title) LIKE LOWER(CONCAT('%', :query, '%'))")
+        Page<Book> findByQuery(@Param("query") String query, Pageable pageable);
 
-    /* 根据分类搜索 */
-    @Query("SELECT b FROM Book b WHERE " +
-        "b.category IN :categories")
-    Page<Book> findByCategories(@Param("categories") List<String> categories, Pageable pageable);
+        /* 根据分类搜索 */
+        @Query("SELECT b FROM Book b WHERE " +
+                        "b.category IN :categories")
+        Page<Book> findByCategories(@Param("categories") List<String> categories, Pageable pageable);
 
-    /* 根据书名和分类搜索 */
-    @Query("SELECT b FROM Book b WHERE " +
-        "LOWER(b.title) LIKE LOWER(CONCAT('%', :query, '%')) " +
-        "AND b.category IN :categories")
-    Page<Book> findByQueryAndCategories(
-        @Param("query") String query,
-        @Param("categories") List<String> categories,
-        Pageable pageable);
+        /* 根据书名和分类搜索 */
+        @Query("SELECT b FROM Book b WHERE " +
+                        "LOWER(b.title) LIKE LOWER(CONCAT('%', :query, '%')) " +
+                        "AND b.category IN :categories")
+        Page<Book> findByQueryAndCategories(
+                        @Param("query") String query,
+                        @Param("categories") List<String> categories,
+                        Pageable pageable);
 
-    /* 获取 categories */
-    @Query("SELECT DISTINCT b.category FROM Book b")
-    Optional<List<String>> findDistinctCategories();
+        /* 获取 categories */
+        @Query("SELECT DISTINCT b.category FROM Book b")
+        List<String> findDistinctCategories();
+
+        /* 统计所有订单中书籍的销量并排序 */
+        @Query(value = "SELECT b.title, SUM(oi.quantity) as total_sales " +
+                        "FROM books b " +
+                        "JOIN order_items oi ON b.id = oi.book_id " +
+                        "JOIN orders o ON oi.order_id = o.id " +
+                        "GROUP BY b.id, b.title " +
+                        "ORDER BY total_sales DESC " +
+                        "LIMIT 10")
+        List<Object[]> findTop10BookSales();
+
+        /* 按日期范围统计书籍销量 */
+        @Query(value = "SELECT b.title, SUM(oi.quantity) as total_sales " +
+                        "FROM books b " +
+                        "JOIN order_items oi ON b.id = oi.book_id " +
+                        "JOIN orders o ON oi.order_id = o.id " +
+                        "WHERE o.date >= :startDate AND o.date <= :endDate " +
+                        "GROUP BY b.id, b.title " +
+                        "ORDER BY total_sales DESC " +
+                        "LIMIT 10")
+        List<Object[]> findTop10BookSalesByDateRange(
+                        @Param("startDate") LocalDateTime startDate,
+                        @Param("endDate") LocalDateTime endDate);
 }
