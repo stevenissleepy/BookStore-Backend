@@ -6,13 +6,13 @@ import fun.steven.bookstore.pojo.entity.User;
 import lombok.Data;
 
 @Data
-public class UserInfoDto {
+public class GetUserDto {
     private String username;
     private String avatar;
     private Integer balance;
     private String state;
 
-    public UserInfoDto(User user) {
+    public GetUserDto(User user) {
         BeanUtils.copyProperties(user, this);
         this.state = user.getUserAuth().getState();
     }

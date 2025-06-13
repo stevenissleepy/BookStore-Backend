@@ -1,5 +1,7 @@
 package fun.steven.bookstore.dao;
 
+import java.util.List;
+
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -9,7 +11,8 @@ import fun.steven.bookstore.pojo.dto.user.LoginDto;
 import fun.steven.bookstore.pojo.dto.user.RegisterDto;
 import fun.steven.bookstore.pojo.dto.user.SessionDto;
 import fun.steven.bookstore.pojo.dto.user.UpdateUserDto;
-import fun.steven.bookstore.pojo.dto.user.UserInfoDto;
+import fun.steven.bookstore.pojo.dto.user.GetUserDto;
+import fun.steven.bookstore.pojo.dto.user.GetUsersDto;
 import fun.steven.bookstore.pojo.entity.Cart;
 import fun.steven.bookstore.pojo.entity.User;
 import fun.steven.bookstore.pojo.entity.UserAuth;
@@ -67,7 +70,7 @@ public class UserDao implements IUserDao {
     }
 
     @Override
-    public UserInfoDto update(Long userId, UpdateUserDto userDto) {
+    public GetUserDto update(Long userId, UpdateUserDto userDto) {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new RuntimeException("User not found"));
 
@@ -87,15 +90,21 @@ public class UserDao implements IUserDao {
         }
 
         user = userRepository.save(user);
-        return new UserInfoDto(user);
+        return new GetUserDto(user);
     }
 
     @Override
-    public UserInfoDto getUserById(Long userId) {
+    public GetUserDto getUserById(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new RuntimeException("User not found"));
 
-        return new UserInfoDto(user);
+        return new GetUserDto(user);
+    }
+
+    @Override
+    public GetUsersDto getAllUsers() {
+        List<GetUserDto> users = userRepository.findAllSafely();
+        return new GetUsersDto(users);
     }
 
     @Override

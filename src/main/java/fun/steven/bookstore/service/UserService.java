@@ -8,7 +8,8 @@ import fun.steven.bookstore.pojo.dto.user.LoginDto;
 import fun.steven.bookstore.pojo.dto.user.RegisterDto;
 import fun.steven.bookstore.pojo.dto.user.SessionDto;
 import fun.steven.bookstore.pojo.dto.user.UpdateUserDto;
-import fun.steven.bookstore.pojo.dto.user.UserInfoDto;
+import fun.steven.bookstore.pojo.dto.user.GetUserDto;
+import fun.steven.bookstore.pojo.dto.user.GetUsersDto;
 
 @Service                                    /* 将该类标记为一个 Spring Bean */
 public class UserService implements IUserService {
@@ -24,12 +25,16 @@ public class UserService implements IUserService {
         return true;
     }
 
-    public UserInfoDto update(Long userId, UpdateUserDto userDto) {
+    public GetUserDto update(Long userId, UpdateUserDto userDto) {
         return userDao.update(userId, userDto);
     }
 
-    public UserInfoDto query(Long userId) {
+    public GetUserDto get(Long userId) {
         return userDao.getUserById(userId);
+    }
+
+    public GetUsersDto getAll() {
+        return userDao.getAllUsers();
     }
     
     public SessionDto login(LoginDto loginDto) {

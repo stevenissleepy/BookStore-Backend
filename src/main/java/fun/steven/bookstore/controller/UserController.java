@@ -15,8 +15,10 @@ import fun.steven.bookstore.pojo.dto.user.LoginDto;
 import fun.steven.bookstore.pojo.dto.user.RegisterDto;
 import fun.steven.bookstore.pojo.dto.user.SessionDto;
 import fun.steven.bookstore.pojo.dto.user.UpdateUserDto;
-import fun.steven.bookstore.pojo.dto.user.UserInfoDto;
+import fun.steven.bookstore.pojo.dto.user.GetUserDto;
+import fun.steven.bookstore.pojo.dto.user.GetUsersDto;
 import fun.steven.bookstore.service.IUserService;
+import fun.steven.bookstore.utils.annotation.AdminOnly;
 import fun.steven.bookstore.utils.annotation.CurrentUserId;
 
 
@@ -35,15 +37,15 @@ public class UserController {
     }
 
     @PutMapping
-    public ResponseMessage<UserInfoDto> update(@CurrentUserId Long userId, @RequestBody UpdateUserDto userDto) {
-        UserInfoDto userInfoDto = userService.update(userId, userDto);
+    public ResponseMessage<GetUserDto> update(@CurrentUserId Long userId, @RequestBody UpdateUserDto userDto) {
+        GetUserDto userInfoDto = userService.update(userId, userDto);
 
         return ResponseMessage.success("update user success!", userInfoDto);
     }
 
     @GetMapping
-    public ResponseMessage<UserInfoDto> query(@CurrentUserId Long userId) {
-        UserInfoDto userInfoDto = userService.query(userId);
+    public ResponseMessage<GetUserDto> get(@CurrentUserId Long userId) {
+        GetUserDto userInfoDto = userService.get(userId);
 
         return ResponseMessage.success("query user success!", userInfoDto);
     }
@@ -70,5 +72,12 @@ public class UserController {
         }
         request.getSession().invalidate();
         return ResponseMessage.success("logout success!", null);
+    }
+    
+    @AdminOnly
+    @PostMapping("/all")
+    public ResponseMessage<GetUsersDto> getAllUsers() {
+        GetUsersDto users = userService.getAll();
+        return ResponseMessage.success("get all users success!", users);
     }
 }
