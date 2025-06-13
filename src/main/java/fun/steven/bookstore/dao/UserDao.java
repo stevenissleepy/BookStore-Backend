@@ -153,7 +153,7 @@ public class UserDao implements IUserDao {
         } else if (!userRepository.existsByUsernameAndPassword(username, password)) {
             throw new LoginException("密码错误");
         } else if (userRepository.existsByUsernameAndBanned(username)) {
-            throw new LoginException("用户已被封禁");
+            throw new LoginException("您的账号已经被禁用");
         }
 
         Long userId = userRepository.findUserSessionById(username);
