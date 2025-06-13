@@ -17,11 +17,6 @@ public class BooksDto {
     private Boolean first;
     private Boolean last;
 
-    public BooksDto(List<Book> books) {
-        this.quantity = books.size();
-        this.books = books.stream().map(BookDto::new).toList();
-    }
-
     public BooksDto(Page<Book> page) {
         this.quantity = (int) page.getTotalElements();
         this.books = page.getContent().stream().map(BookDto::new).toList();

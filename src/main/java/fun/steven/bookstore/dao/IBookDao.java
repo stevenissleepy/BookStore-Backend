@@ -10,7 +10,6 @@ public interface IBookDao {
     boolean delete(Long id);
     boolean update(BookDto book);
     BookDto getBookById(Long id);
-    BooksDto getAllBooks();
     BooksDto searchBooks(SearchBooksDto searchBooksDto);
     CategoriesDto getCategories();
 }

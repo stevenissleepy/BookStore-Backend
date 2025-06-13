@@ -51,12 +51,6 @@ public class BookDao implements IBookDao {
     }
 
     @Override
-    public BooksDto getAllBooks() {
-        List<Book> books = bookRepository.findAll();
-        return new BooksDto(books);
-    }
-
-    @Override
     public BooksDto searchBooks(SearchBooksDto searchBooksDto) {
         String query = searchBooksDto.getQuery();
         List<String> categories = searchBooksDto.getCategories();

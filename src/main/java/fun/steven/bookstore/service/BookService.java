@@ -30,10 +30,6 @@ public class BookService implements IBookService {
         return bookDao.getBookById(id);
     }
 
-    public BooksDto getAllBooks() {
-        return bookDao.getAllBooks();
-    }
-
     public BooksDto searchBooks(SearchBooksDto searchBooksDto) {        
         return bookDao.searchBooks(searchBooksDto);
     }

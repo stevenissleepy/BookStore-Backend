@@ -10,7 +10,6 @@ public interface IBookService {
     boolean delete(Long id);
     boolean update(BookDto bookDto);
     BookDto get(Long id);
-    BooksDto getAllBooks();
     BooksDto searchBooks(SearchBooksDto searchBooksDto);
     CategoriesDto getCategories();
 }

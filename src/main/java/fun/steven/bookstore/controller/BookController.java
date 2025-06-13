@@ -45,12 +45,6 @@ public class BookController {
         return ResponseMessage.success("delete book success", null);
     }
 
-    @GetMapping("/all")
-    public ResponseMessage<BooksDto> getAllBooks() {
-        BooksDto booksDto = bookService.getAllBooks();
-        return ResponseMessage.success("get book success", booksDto);
-    }
-
     @PostMapping("/search")
     public ResponseMessage<BooksDto> searchBooks(@RequestBody SearchBooksDto searchBooksDto) {
         BooksDto booksDto = bookService.searchBooks(searchBooksDto);
