@@ -7,12 +7,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import fun.steven.bookstore.pojo.dto.book.SalesDto;
-import fun.steven.bookstore.pojo.dto.book.SalesDto.SalesItemDto;
-import fun.steven.bookstore.pojo.dto.book.SearchSalesDto;
 import fun.steven.bookstore.pojo.dto.order.AddOrderDto;
 import fun.steven.bookstore.pojo.dto.order.GetOrdersDto;
 import fun.steven.bookstore.pojo.dto.order.SearchDto;
+import fun.steven.bookstore.pojo.dto.stats.SalesDto;
+import fun.steven.bookstore.pojo.dto.stats.SalesDto.SalesItemDto;
+import fun.steven.bookstore.pojo.dto.stats.SearchSalesDto;
 import fun.steven.bookstore.pojo.entity.Book;
 import fun.steven.bookstore.pojo.entity.CartItem;
 import fun.steven.bookstore.pojo.entity.Order;
@@ -130,17 +130,37 @@ public class OrderDao implements IOrderDao {
         List<Object[]> salesList;
 
         if (startDateStr == null || endDateStr == null || startDateStr.isEmpty() || endDateStr.isEmpty()) {
-            salesList = bookRepository.findTop10Book();
+            salesList = orderRepository.findTop10Book();
         } else {
             LocalDateTime startDate = LocalDate.parse(startDateStr).atStartOfDay();
             LocalDateTime endDate = LocalDate.parse(endDateStr).atTime(23, 59, 59);
-            salesList = bookRepository.findTop10BookByDateRange(startDate, endDate);
+            salesList = orderRepository.findTop10BookByDateRange(startDate, endDate);
         }
 
         List<SalesItemDto> salesItems = salesList.stream()
                 .map(sale -> new SalesItemDto((String) sale[0], ((Number) sale[1]).intValue()))
                 .toList();
 
+        return new SalesDto(salesItems);
+    }
+
+    @Override
+    public SalesDto searchTop10Users(SearchSalesDto searchSalesDto) {
+        String startDateStr = searchSalesDto.getStartDate();
+        String endDateStr = searchSalesDto.getEndDate();
+        List<Object[]> salesList;
+
+        if (startDateStr == null || endDateStr == null || startDateStr.isEmpty() || endDateStr.isEmpty()) {
+            salesList = orderRepository.findTop10User();
+        } else {
+            LocalDateTime startDate = LocalDate.parse(startDateStr).atStartOfDay();
+            LocalDateTime endDate = LocalDate.parse(endDateStr).atTime(23, 59, 59);
+            salesList = orderRepository.findTop10UserByDateRange(startDate, endDate);
+        }
+
+        List<SalesItemDto> salesItems = salesList.stream()
+                .map(sale -> new SalesItemDto((String) sale[0], ((Number) sale[1]).intValue()))
+                .toList();
         return new SalesDto(salesItems);
     }
 }

@@ -6,11 +6,11 @@ import org.springframework.stereotype.Service;
 import fun.steven.bookstore.dao.ICartDao;
 import fun.steven.bookstore.dao.IOrderDao;
 import fun.steven.bookstore.dao.IUserDao;
-import fun.steven.bookstore.pojo.dto.book.SalesDto;
-import fun.steven.bookstore.pojo.dto.book.SearchSalesDto;
 import fun.steven.bookstore.pojo.dto.order.AddOrderDto;
 import fun.steven.bookstore.pojo.dto.order.GetOrdersDto;
 import fun.steven.bookstore.pojo.dto.order.SearchDto;
+import fun.steven.bookstore.pojo.dto.stats.SalesDto;
+import fun.steven.bookstore.pojo.dto.stats.SearchSalesDto;
 
 @Service
 public class OrderService implements IOrderService {
@@ -46,5 +46,10 @@ public class OrderService implements IOrderService {
     @Override
     public SalesDto searchTop10Books(SearchSalesDto searchSalesDto) {
         return orderDao.searchTop10Books(searchSalesDto);
+    }
+
+    @Override
+    public SalesDto searchTop10Users(SearchSalesDto searchSalesDto) {
+        return orderDao.searchTop10Users(searchSalesDto);
     }
 }

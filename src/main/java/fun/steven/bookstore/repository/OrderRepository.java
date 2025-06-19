@@ -13,24 +13,64 @@ import fun.steven.bookstore.pojo.entity.Order;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
-    
+
     Optional<List<Order>> findByUserId(Long userId);
-    
-    // 按日期范围查询
+
+    /* 查询所有订单 */
     @Query("SELECT o FROM Order o WHERE o.date >= :startDate AND o.date <= :endDate")
-    List<Order> findByDateRange(@Param("startDate") LocalDateTime startDate, 
-                               @Param("endDate") LocalDateTime endDate);
-    
-    // 按书名查询
+    List<Order> findByDateRange(@Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate);
+
     @Query("SELECT DISTINCT o FROM Order o JOIN o.orderItems oi JOIN oi.book b " +
-           "WHERE LOWER(b.title) LIKE LOWER(CONCAT('%', :bookTitle, '%'))")
+            "WHERE LOWER(b.title) LIKE LOWER(CONCAT('%', :bookTitle, '%'))")
     List<Order> findByBookTitle(@Param("bookTitle") String bookTitle);
-    
-    // 按日期范围和书名查询
+
     @Query("SELECT DISTINCT o FROM Order o JOIN o.orderItems oi JOIN oi.book b " +
-           "WHERE o.date >= :startDate AND o.date <= :endDate " +
-           "AND b.title LIKE CONCAT('%', :bookTitle, '%')")
+            "WHERE o.date >= :startDate AND o.date <= :endDate " +
+            "AND b.title LIKE CONCAT('%', :bookTitle, '%')")
     List<Order> findByDateRangeAndBookTitle(@Param("startDate") LocalDateTime startDate,
-                                           @Param("endDate") LocalDateTime endDate,
-                                           @Param("bookTitle") String bookTitle);
+            @Param("endDate") LocalDateTime endDate,
+            @Param("bookTitle") String bookTitle);
+
+    /* 查询10本销量最高的书 */
+    @Query(value = "SELECT b.title, SUM(oi.quantity) as sales " +
+            "FROM tb_book b " +
+            "JOIN tb_order_item oi ON b.id = oi.book_id " +
+            "JOIN tb_order o ON oi.order_id = o.id " +
+            "GROUP BY b.id, b.title " +
+            "ORDER BY sales DESC " +
+            "LIMIT 10", nativeQuery = true)
+    List<Object[]> findTop10Book();
+
+    @Query(value = "SELECT b.title, SUM(oi.quantity) as sales " +
+            "FROM tb_book b " +
+            "JOIN tb_order_item oi ON b.id = oi.book_id " +
+            "JOIN tb_order o ON oi.order_id = o.id " +
+            "WHERE o.date >= :startDate AND o.date <= :endDate " +
+            "GROUP BY b.id, b.title " +
+            "ORDER BY sales DESC " +
+            "LIMIT 10", nativeQuery = true)
+    List<Object[]> findTop10BookByDateRange(
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate);
+
+    /* 查询10个消费最高的用户 */
+    @Query(value = "SELECT u.username, SUM(o.total_price) as sales " +
+            "FROM tb_user u " +
+            "JOIN tb_order o ON u.id = o.user_id " +
+            "GROUP BY u.id, u.username " +
+            "ORDER BY sales DESC " +
+            "LIMIT 10", nativeQuery = true)
+    List<Object[]> findTop10User();
+
+    @Query(value = "SELECT u.username, SUM(o.total_price) as sales " +
+            "FROM tb_user u " +
+            "JOIN tb_order o ON u.id = o.user_id " +
+            "WHERE o.date >= :startDate AND o.date <= :endDate " +
+            "GROUP BY u.id, u.username " +
+            "ORDER BY sales DESC " +
+            "LIMIT 10", nativeQuery = true)
+    List<Object[]> findTop10UserByDateRange(
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate);
 }

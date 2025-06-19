@@ -1,4 +1,4 @@
-package fun.steven.bookstore.pojo.dto.book;
+package fun.steven.bookstore.pojo.dto.stats;
 
 import java.util.List;
 
@@ -12,8 +12,8 @@ public class SalesDto {
     @Data
     @AllArgsConstructor
     public static class SalesItemDto {
-        private String title;
-        private Integer sales;
+        private String name;
+        private Integer quantity;
     }
 
     List<SalesItemDto> salesItems;

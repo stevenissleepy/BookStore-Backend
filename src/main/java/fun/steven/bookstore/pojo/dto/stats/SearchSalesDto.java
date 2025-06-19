@@ -1,4 +1,4 @@
-package fun.steven.bookstore.pojo.dto.book;
+package fun.steven.bookstore.pojo.dto.stats;
 
 import lombok.Data;
 
