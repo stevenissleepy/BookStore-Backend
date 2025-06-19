@@ -7,6 +7,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import fun.steven.bookstore.pojo.dto.book.SalesDto;
+import fun.steven.bookstore.pojo.dto.book.SalesDto.SalesItemDto;
+import fun.steven.bookstore.pojo.dto.book.SearchSalesDto;
 import fun.steven.bookstore.pojo.dto.order.AddOrderDto;
 import fun.steven.bookstore.pojo.dto.order.GetOrdersDto;
 import fun.steven.bookstore.pojo.dto.order.SearchDto;
@@ -96,23 +99,48 @@ public class OrderDao implements IOrderDao {
 
         List<Order> orders;
 
-        if (hasStartDate && hasEndDate && hasBookTitle) {   // 有日期和书名
+        // 有日期和书名
+        if (hasStartDate && hasEndDate && hasBookTitle) {
             LocalDateTime startDate = LocalDate.parse(startDateStr).atStartOfDay();
             LocalDateTime endDate = LocalDate.parse(endDateStr).atTime(23, 59, 59);
             orders = orderRepository.findByDateRangeAndBookTitle(startDate, endDate, bookTitle);
 
-        } else if (hasStartDate && hasEndDate) {            // 有日期范围，没有书名
+        // 有日期范围，没有书名
+        } else if (hasStartDate && hasEndDate) {
             LocalDateTime startDate = LocalDate.parse(startDateStr).atStartOfDay();
             LocalDateTime endDate = LocalDate.parse(endDateStr).atTime(23, 59, 59);
             orders = orderRepository.findByDateRange(startDate, endDate);
 
-        } else if (hasBookTitle) {                          // 有书名，没有日期范围
+        // 有书名，没有日期范围
+        } else if (hasBookTitle) {
             orders = orderRepository.findByBookTitle(bookTitle);
 
-        } else {                                            // 没有任何条件
+        // 没有任何条件
+        } else { 
             orders = orderRepository.findAll();
         }
 
         return new GetOrdersDto(orders);
+    }
+
+    @Override
+    public SalesDto searchTop10Books(SearchSalesDto searchSalesDto) {
+        String startDateStr = searchSalesDto.getStartDate();
+        String endDateStr = searchSalesDto.getEndDate();
+        List<Object[]> salesList;
+
+        if (startDateStr == null || endDateStr == null || startDateStr.isEmpty() || endDateStr.isEmpty()) {
+            salesList = bookRepository.findTop10Book();
+        } else {
+            LocalDateTime startDate = LocalDate.parse(startDateStr).atStartOfDay();
+            LocalDateTime endDate = LocalDate.parse(endDateStr).atTime(23, 59, 59);
+            salesList = bookRepository.findTop10BookByDateRange(startDate, endDate);
+        }
+
+        List<SalesItemDto> salesItems = salesList.stream()
+                .map(sale -> new SalesItemDto((String) sale[0], ((Number) sale[1]).intValue()))
+                .toList();
+
+        return new SalesDto(salesItems);
     }
 }

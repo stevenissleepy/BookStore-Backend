@@ -7,9 +7,7 @@ import fun.steven.bookstore.dao.IBookDao;
 import fun.steven.bookstore.pojo.dto.book.BookDto;
 import fun.steven.bookstore.pojo.dto.book.BooksDto;
 import fun.steven.bookstore.pojo.dto.book.CategoriesDto;
-import fun.steven.bookstore.pojo.dto.book.SalesDto;
 import fun.steven.bookstore.pojo.dto.book.SearchBooksDto;
-import fun.steven.bookstore.pojo.dto.book.SearchSalesDto;
 
 @Service
 public class BookService implements IBookService {
@@ -38,9 +36,5 @@ public class BookService implements IBookService {
 
     public CategoriesDto getCategories() {
         return bookDao.getCategories();
-    }
-
-    public SalesDto searchSales(SearchSalesDto searchSalesDto) {
-        return bookDao.searchSales(searchSalesDto);
     }
 }

@@ -14,9 +14,7 @@ import fun.steven.bookstore.pojo.dto.ResponseMessage;
 import fun.steven.bookstore.pojo.dto.book.BookDto;
 import fun.steven.bookstore.pojo.dto.book.BooksDto;
 import fun.steven.bookstore.pojo.dto.book.CategoriesDto;
-import fun.steven.bookstore.pojo.dto.book.SalesDto;
 import fun.steven.bookstore.pojo.dto.book.SearchBooksDto;
-import fun.steven.bookstore.pojo.dto.book.SearchSalesDto;
 import fun.steven.bookstore.service.IBookService;
 import fun.steven.bookstore.utils.annotation.AdminOnly;
 
@@ -65,10 +63,4 @@ public class BookController {
         return ResponseMessage.success("get book success", bookDto);
     }
 
-    @AdminOnly
-    @PostMapping("/sales")
-    public ResponseMessage<SalesDto> searchSales(@RequestBody SearchSalesDto searchSalesDto) {
-        SalesDto salesDto = bookService.searchSales(searchSalesDto);
-        return ResponseMessage.success("get sales success", salesDto);
-    }
 }

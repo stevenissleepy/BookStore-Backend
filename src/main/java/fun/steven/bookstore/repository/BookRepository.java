@@ -46,7 +46,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
                         "GROUP BY b.id, b.title " +
                         "ORDER BY total_sales DESC " +
                         "LIMIT 10", nativeQuery = true)
-        List<Object[]> findTop10BookSales();
+        List<Object[]> findTop10Book();
 
         /* 按日期范围统计书籍销量 */
         @Query(value = "SELECT b.title, SUM(oi.quantity) as total_sales " +
@@ -57,7 +57,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
                         "GROUP BY b.id, b.title " +
                         "ORDER BY total_sales DESC " +
                         "LIMIT 10", nativeQuery = true)
-        List<Object[]> findTop10BookSalesByDateRange(
+        List<Object[]> findTop10BookByDateRange(
                         @Param("startDate") LocalDateTime startDate,
                         @Param("endDate") LocalDateTime endDate);
 }
