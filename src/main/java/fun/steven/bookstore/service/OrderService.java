@@ -6,11 +6,12 @@ import org.springframework.stereotype.Service;
 import fun.steven.bookstore.dao.ICartDao;
 import fun.steven.bookstore.dao.IOrderDao;
 import fun.steven.bookstore.dao.IUserDao;
+import fun.steven.bookstore.pojo.dto.book.BookDto;
 import fun.steven.bookstore.pojo.dto.order.AddOrderDto;
 import fun.steven.bookstore.pojo.dto.order.GetOrdersDto;
 import fun.steven.bookstore.pojo.dto.order.SearchDto;
-import fun.steven.bookstore.pojo.dto.stats.SalesDto;
-import fun.steven.bookstore.pojo.dto.stats.SearchSalesDto;
+import fun.steven.bookstore.pojo.dto.stats.ResultDto;
+import fun.steven.bookstore.pojo.dto.stats.DateRangeDto;
 
 @Service
 public class OrderService implements IOrderService {
@@ -44,12 +45,17 @@ public class OrderService implements IOrderService {
     }
     
     @Override
-    public SalesDto searchTop10Books(SearchSalesDto searchSalesDto) {
-        return orderDao.searchTop10Books(searchSalesDto);
+    public ResultDto<BookDto> statsBooks(Long userId, DateRangeDto dateRangeDto) {
+        return orderDao.statsBooks(userId, dateRangeDto);
     }
 
     @Override
-    public SalesDto searchTop10Users(SearchSalesDto searchSalesDto) {
-        return orderDao.searchTop10Users(searchSalesDto);
+    public ResultDto<String> searchTop10Books(DateRangeDto dateRangeDto) {
+        return orderDao.searchTop10Books(dateRangeDto);
+    }
+
+    @Override
+    public ResultDto<String> searchTop10Users(DateRangeDto dateRangeDto) {
+        return orderDao.searchTop10Users(dateRangeDto);
     }
 }

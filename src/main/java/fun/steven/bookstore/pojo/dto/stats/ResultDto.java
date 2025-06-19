@@ -7,14 +7,14 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class SalesDto {
+public class ResultDto<T> {
 
     @Data
     @AllArgsConstructor
-    public static class SalesItemDto {
-        private String name;
+    public static class ResultItemDto<T> {
+        private T object;
         private Integer quantity;
     }
 
-    List<SalesItemDto> salesItems;
+    List<ResultItemDto<T>> salesItems;
 }

@@ -32,6 +32,26 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             @Param("endDate") LocalDateTime endDate,
             @Param("bookTitle") String bookTitle);
 
+    /* 统计用户购买了那些书籍 */
+    @Query(value = "SELECT b.id, SUM(oi.quantity) as sales " +
+            "FROM tb_book b " +
+            "JOIN tb_order_item oi ON b.id = oi.book_id " +
+            "JOIN tb_order o ON oi.order_id = o.id " +
+            "WHERE o.user_id = :userId " +
+            "GROUP BY b.id", nativeQuery = true)
+    List<Object[]> findBooksByUserId(@Param("userId") Long userId);
+
+    @Query(value = "SELECT b.id, SUM(oi.quantity) as sales " +
+            "FROM tb_book b " +
+            "JOIN tb_order_item oi ON b.id = oi.book_id " +
+            "JOIN tb_order o ON oi.order_id = o.id " +
+            "WHERE o.user_id = :userId AND o.date >= :startDate AND o.date <= :endDate " +
+            "GROUP BY b.id", nativeQuery = true)
+    List<Object[]> findBooksByUserIdAndDateRange(
+            @Param("userId") Long userId,
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate);
+
     /* 查询10本销量最高的书 */
     @Query(value = "SELECT b.title, SUM(oi.quantity) as sales " +
             "FROM tb_book b " +

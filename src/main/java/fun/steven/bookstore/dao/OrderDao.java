@@ -7,12 +7,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import fun.steven.bookstore.pojo.dto.book.BookDto;
 import fun.steven.bookstore.pojo.dto.order.AddOrderDto;
 import fun.steven.bookstore.pojo.dto.order.GetOrdersDto;
 import fun.steven.bookstore.pojo.dto.order.SearchDto;
-import fun.steven.bookstore.pojo.dto.stats.SalesDto;
-import fun.steven.bookstore.pojo.dto.stats.SalesDto.SalesItemDto;
-import fun.steven.bookstore.pojo.dto.stats.SearchSalesDto;
+import fun.steven.bookstore.pojo.dto.stats.ResultDto;
+import fun.steven.bookstore.pojo.dto.stats.ResultDto.ResultItemDto;
+import fun.steven.bookstore.pojo.dto.stats.DateRangeDto;
 import fun.steven.bookstore.pojo.entity.Book;
 import fun.steven.bookstore.pojo.entity.CartItem;
 import fun.steven.bookstore.pojo.entity.Order;
@@ -105,18 +106,18 @@ public class OrderDao implements IOrderDao {
             LocalDateTime endDate = LocalDate.parse(endDateStr).atTime(23, 59, 59);
             orders = orderRepository.findByDateRangeAndBookTitle(startDate, endDate, bookTitle);
 
-        // 有日期范围，没有书名
+            // 有日期范围，没有书名
         } else if (hasStartDate && hasEndDate) {
             LocalDateTime startDate = LocalDate.parse(startDateStr).atStartOfDay();
             LocalDateTime endDate = LocalDate.parse(endDateStr).atTime(23, 59, 59);
             orders = orderRepository.findByDateRange(startDate, endDate);
 
-        // 有书名，没有日期范围
+            // 有书名，没有日期范围
         } else if (hasBookTitle) {
             orders = orderRepository.findByBookTitle(bookTitle);
 
-        // 没有任何条件
-        } else { 
+            // 没有任何条件
+        } else {
             orders = orderRepository.findAll();
         }
 
@@ -124,9 +125,36 @@ public class OrderDao implements IOrderDao {
     }
 
     @Override
-    public SalesDto searchTop10Books(SearchSalesDto searchSalesDto) {
-        String startDateStr = searchSalesDto.getStartDate();
-        String endDateStr = searchSalesDto.getEndDate();
+    public ResultDto<BookDto> statsBooks(Long userId, DateRangeDto dateRangeDto) {
+        String startDateStr = dateRangeDto.getStartDate();
+        String endDateStr = dateRangeDto.getEndDate();
+        List<Object[]> bookList;
+
+        if (startDateStr == null || endDateStr == null || startDateStr.isEmpty() || endDateStr.isEmpty()) {
+            bookList = orderRepository.findBooksByUserId(userId);
+        } else {
+            LocalDateTime startDate = LocalDate.parse(startDateStr).atStartOfDay();
+            LocalDateTime endDate = LocalDate.parse(endDateStr).atTime(23, 59, 59);
+            bookList = orderRepository.findBooksByUserIdAndDateRange(userId, startDate, endDate);
+        }
+
+        List<ResultItemDto<BookDto>> bookItems = bookList.stream()
+                .map(item -> {
+                    Long bookId = ((Number) item[0]).longValue();
+                    Integer sales = ((Number) item[1]).intValue();
+                    Book book = bookRepository.findById(bookId)
+                            .orElseThrow(() -> new RuntimeException("Book not found: " + bookId));
+                    BookDto bookDto = new BookDto(book);
+                    return new ResultItemDto<>(bookDto, sales);
+                })
+                .toList();
+        return new ResultDto<>(bookItems);
+    }
+
+    @Override
+    public ResultDto<String> searchTop10Books(DateRangeDto dateRangeDto) {
+        String startDateStr = dateRangeDto.getStartDate();
+        String endDateStr = dateRangeDto.getEndDate();
         List<Object[]> salesList;
 
         if (startDateStr == null || endDateStr == null || startDateStr.isEmpty() || endDateStr.isEmpty()) {
@@ -137,17 +165,17 @@ public class OrderDao implements IOrderDao {
             salesList = orderRepository.findTop10BookByDateRange(startDate, endDate);
         }
 
-        List<SalesItemDto> salesItems = salesList.stream()
-                .map(sale -> new SalesItemDto((String) sale[0], ((Number) sale[1]).intValue()))
+        List<ResultItemDto<String>> salesItems = salesList.stream()
+                .map(sale -> new ResultItemDto<>((String) sale[0], ((Number) sale[1]).intValue()))
                 .toList();
 
-        return new SalesDto(salesItems);
+        return new ResultDto<>(salesItems);
     }
 
     @Override
-    public SalesDto searchTop10Users(SearchSalesDto searchSalesDto) {
-        String startDateStr = searchSalesDto.getStartDate();
-        String endDateStr = searchSalesDto.getEndDate();
+    public ResultDto<String> searchTop10Users(DateRangeDto dateRangeDto) {
+        String startDateStr = dateRangeDto.getStartDate();
+        String endDateStr = dateRangeDto.getEndDate();
         List<Object[]> salesList;
 
         if (startDateStr == null || endDateStr == null || startDateStr.isEmpty() || endDateStr.isEmpty()) {
@@ -158,9 +186,9 @@ public class OrderDao implements IOrderDao {
             salesList = orderRepository.findTop10UserByDateRange(startDate, endDate);
         }
 
-        List<SalesItemDto> salesItems = salesList.stream()
-                .map(sale -> new SalesItemDto((String) sale[0], ((Number) sale[1]).intValue()))
+        List<ResultItemDto<String>> salesItems = salesList.stream()
+                .map(sale -> new ResultItemDto<>((String) sale[0], ((Number) sale[1]).intValue()))
                 .toList();
-        return new SalesDto(salesItems);
+        return new ResultDto<>(salesItems);
     }
 }
