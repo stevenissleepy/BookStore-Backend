@@ -1,10 +1,11 @@
 package fun.steven.bookstore.service;
 
-import fun.steven.bookstore.pojo.dto.cart.CartItemDto;
-import fun.steven.bookstore.pojo.dto.cart.GetCartDto;
+import fun.steven.bookstore.pojo.dto.cart.AddToCartRequestDto;
+import fun.steven.bookstore.pojo.dto.cart.CartResponseDto;
+import fun.steven.bookstore.pojo.dto.cart.UpdateCartRequestDto;
 
 public interface ICartService {
-    boolean addToCart(Long userId, CartItemDto cartItemDto);
-    boolean updateCartItem(Long userId, CartItemDto cartItemDto);
-    GetCartDto getCart(Long userId);
+    boolean addToCart(Long userId, AddToCartRequestDto cartItemDto);
+    boolean updateCartItem(Long userId, UpdateCartRequestDto cartItemDto);
+    CartResponseDto getCart(Long userId);
 }

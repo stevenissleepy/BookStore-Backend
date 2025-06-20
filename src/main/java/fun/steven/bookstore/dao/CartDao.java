@@ -5,8 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import fun.steven.bookstore.pojo.dto.cart.CartItemDto;
-import fun.steven.bookstore.pojo.dto.cart.GetCartDto;
+import fun.steven.bookstore.pojo.dto.cart.AddToCartRequestDto;
+import fun.steven.bookstore.pojo.dto.cart.UpdateCartRequestDto;
+import fun.steven.bookstore.pojo.dto.cart.CartResponseDto;
 import fun.steven.bookstore.pojo.entity.Book;
 import fun.steven.bookstore.pojo.entity.Cart;
 import fun.steven.bookstore.pojo.entity.CartItem;
@@ -21,7 +22,7 @@ public class CartDao implements ICartDao {
     private BookRepository bookRepository;
 
     @Override
-    public boolean addToCart(Long cartId, CartItemDto cartItemDto) {
+    public boolean addToCart(Long cartId, AddToCartRequestDto cartItemDto) {
         Long bookId = cartItemDto.getBookId();
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new RuntimeException("Cart not found: " + cartId));
@@ -67,7 +68,7 @@ public class CartDao implements ICartDao {
     }
 
     @Override
-    public boolean updateCartItem(Long cartId, CartItemDto cartItemDto) {
+    public boolean updateCartItem(Long cartId, UpdateCartRequestDto cartItemDto) {
         Long bookId = cartItemDto.getBookId();
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new RuntimeException("Cart not found: " + cartId));
@@ -87,9 +88,9 @@ public class CartDao implements ICartDao {
     }
 
     @Override
-    public GetCartDto getCart(Long cartId) {
+    public CartResponseDto getCart(Long cartId) {
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new RuntimeException("Cart not found: " + cartId));
-        return new GetCartDto(cart);
+        return new CartResponseDto(cart);
     }
 }
