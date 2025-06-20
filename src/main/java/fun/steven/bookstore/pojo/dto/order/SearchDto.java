@@ -9,4 +9,6 @@ public class SearchDto {
     private String startDate;
     private String endDate;
     private String BookTitle;
+    private Integer page;
+    private Integer limit;
 }

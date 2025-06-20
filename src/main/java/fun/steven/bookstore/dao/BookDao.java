@@ -56,8 +56,8 @@ public class BookDao implements IBookDao {
         List<String> categories = searchBooksDto.getCategories();
         Integer page = searchBooksDto.getPage();
         Integer limit = searchBooksDto.getLimit();
-
         Pageable pageable = PageRequest.of(page, limit);
+        
         Page<Book> bookPage;
 
         // 如果查询条件和分类都为空，返回所有书籍

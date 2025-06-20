@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import fun.steven.bookstore.pojo.dto.book.BookDto;
@@ -87,32 +89,35 @@ public class OrderDao implements IOrderDao {
         String startDateStr = searchDto.getStartDate();
         String endDateStr = searchDto.getEndDate();
         String bookTitle = searchDto.getBookTitle();
+        Integer page = searchDto.getPage();
+        Integer limit = searchDto.getLimit();
+        Pageable pageable = Pageable.ofSize(limit).withPage(page);
+
+        Page<Order> orders;
 
         boolean hasStartDate = startDateStr != null && !startDateStr.isEmpty();
         boolean hasEndDate = endDateStr != null && !endDateStr.isEmpty();
         boolean hasBookTitle = bookTitle != null && !bookTitle.isEmpty();
 
-        List<Order> orders;
-
         // 有日期和书名
         if (hasStartDate && hasEndDate && hasBookTitle) {
             LocalDateTime startDate = LocalDate.parse(startDateStr).atStartOfDay();
             LocalDateTime endDate = LocalDate.parse(endDateStr).atTime(23, 59, 59);
-            orders = orderRepository.findByUserIdAndDateRangeAndBookTitle(userId, startDate, endDate, bookTitle);
+            orders = orderRepository.findByUserIdAndDateRangeAndBookTitle(userId, startDate, endDate, bookTitle, pageable);
 
             // 有日期范围，没有书名
         } else if (hasStartDate && hasEndDate) {
             LocalDateTime startDate = LocalDate.parse(startDateStr).atStartOfDay();
             LocalDateTime endDate = LocalDate.parse(endDateStr).atTime(23, 59, 59);
-            orders = orderRepository.findByUserIdAndDateRange(userId, startDate, endDate);
+            orders = orderRepository.findByUserIdAndDateRange(userId, startDate, endDate, pageable);
 
             // 有书名，没有日期范围
         } else if (hasBookTitle) {
-            orders = orderRepository.findByUserIdAndBookTitle(userId, bookTitle);
+            orders = orderRepository.findByUserIdAndBookTitle(userId, bookTitle, pageable);
             
             // 没有任何条件
         } else {
-            orders = orderRepository.findByUserId(userId);
+            orders = orderRepository.findByUserId(userId, pageable);
         }
         return new GetOrdersDto(orders);
     }
@@ -122,32 +127,35 @@ public class OrderDao implements IOrderDao {
         String startDateStr = searchDto.getStartDate();
         String endDateStr = searchDto.getEndDate();
         String bookTitle = searchDto.getBookTitle();
+        Integer page = searchDto.getPage();
+        Integer limit = searchDto.getLimit();
+        Pageable pageable = Pageable.ofSize(limit).withPage(page);
+
+        Page<Order> orders;
 
         boolean hasStartDate = startDateStr != null && !startDateStr.isEmpty();
         boolean hasEndDate = endDateStr != null && !endDateStr.isEmpty();
         boolean hasBookTitle = bookTitle != null && !bookTitle.isEmpty();
 
-        List<Order> orders;
-
         // 有日期和书名
         if (hasStartDate && hasEndDate && hasBookTitle) {
             LocalDateTime startDate = LocalDate.parse(startDateStr).atStartOfDay();
             LocalDateTime endDate = LocalDate.parse(endDateStr).atTime(23, 59, 59);
-            orders = orderRepository.findByDateRangeAndBookTitle(startDate, endDate, bookTitle);
+            orders = orderRepository.findByDateRangeAndBookTitle(startDate, endDate, bookTitle, pageable);
 
             // 有日期范围，没有书名
         } else if (hasStartDate && hasEndDate) {
             LocalDateTime startDate = LocalDate.parse(startDateStr).atStartOfDay();
             LocalDateTime endDate = LocalDate.parse(endDateStr).atTime(23, 59, 59);
-            orders = orderRepository.findByDateRange(startDate, endDate);
+            orders = orderRepository.findByDateRange(startDate, endDate, pageable);
 
             // 有书名，没有日期范围
         } else if (hasBookTitle) {
-            orders = orderRepository.findByBookTitle(bookTitle);
+            orders = orderRepository.findByBookTitle(bookTitle, pageable);
 
             // 没有任何条件
         } else {
-            orders = orderRepository.findAll();
+            orders = orderRepository.findAll(pageable);
         }
 
         return new GetOrdersDto(orders);
