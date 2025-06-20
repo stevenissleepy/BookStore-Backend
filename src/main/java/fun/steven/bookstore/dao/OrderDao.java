@@ -10,8 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import fun.steven.bookstore.pojo.dto.book.BookDto;
-import fun.steven.bookstore.pojo.dto.order.AddOrderDto;
-import fun.steven.bookstore.pojo.dto.order.GetOrdersDto;
+import fun.steven.bookstore.pojo.dto.order.createOrderRequestDto;
+import fun.steven.bookstore.pojo.dto.order.OrdersResponseDto;
 import fun.steven.bookstore.pojo.dto.order.SearchDto;
 import fun.steven.bookstore.pojo.dto.stats.ResultDto;
 import fun.steven.bookstore.pojo.dto.stats.ResultDto.ResultItemDto;
@@ -35,7 +35,7 @@ public class OrderDao implements IOrderDao {
     private BookRepository bookRepository;
 
     @Override
-    public boolean createOrder(Long userId, AddOrderDto addOrderDto) {
+    public boolean createOrder(Long userId, createOrderRequestDto addOrderDto) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
         List<CartItem> cartItems = user.getCart().getCartItems();
@@ -85,7 +85,7 @@ public class OrderDao implements IOrderDao {
     }
 
     @Override
-    public GetOrdersDto searchUserOrders(Long userId, SearchDto searchDto) {
+    public OrdersResponseDto searchUserOrders(Long userId, SearchDto searchDto) {
         String startDateStr = searchDto.getStartDate();
         String endDateStr = searchDto.getEndDate();
         String bookTitle = searchDto.getBookTitle();
@@ -120,11 +120,11 @@ public class OrderDao implements IOrderDao {
         } else {
             orders = orderRepository.findByUserId(userId, pageable);
         }
-        return new GetOrdersDto(orders);
+        return new OrdersResponseDto(orders);
     }
 
     @Override
-    public GetOrdersDto searchAllOrders(SearchDto searchDto) {
+    public OrdersResponseDto searchAllOrders(SearchDto searchDto) {
         String startDateStr = searchDto.getStartDate();
         String endDateStr = searchDto.getEndDate();
         String bookTitle = searchDto.getBookTitle();
@@ -159,7 +159,7 @@ public class OrderDao implements IOrderDao {
             orders = orderRepository.findAll(pageable);
         }
 
-        return new GetOrdersDto(orders);
+        return new OrdersResponseDto(orders);
     }
 
     @Override

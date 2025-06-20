@@ -8,16 +8,16 @@ import fun.steven.bookstore.pojo.entity.Order;
 import lombok.Data;
 
 @Data
-public class GetOrdersDto {
+public class OrdersResponseDto {
     Integer quantity;
-    private List<GetOrderDto> orders;
+    private List<OrderResponseDto> orders;
     private Integer currentPage;
     private Boolean first;
     private Boolean last;
 
-    public GetOrdersDto(Page<Order> orders) {
+    public OrdersResponseDto(Page<Order> orders) {
         this.quantity = (int) orders.getTotalElements();
-        this.orders = orders.stream().map(GetOrderDto::new).toList();
+        this.orders = orders.stream().map(OrderResponseDto::new).toList();
         this.currentPage = orders.getNumber();
         this.first = orders.isFirst();
         this.last = orders.isLast();

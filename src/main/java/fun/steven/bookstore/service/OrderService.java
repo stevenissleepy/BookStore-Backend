@@ -7,8 +7,8 @@ import fun.steven.bookstore.dao.ICartDao;
 import fun.steven.bookstore.dao.IOrderDao;
 import fun.steven.bookstore.dao.IUserDao;
 import fun.steven.bookstore.pojo.dto.book.BookDto;
-import fun.steven.bookstore.pojo.dto.order.AddOrderDto;
-import fun.steven.bookstore.pojo.dto.order.GetOrdersDto;
+import fun.steven.bookstore.pojo.dto.order.createOrderRequestDto;
+import fun.steven.bookstore.pojo.dto.order.OrdersResponseDto;
 import fun.steven.bookstore.pojo.dto.order.SearchDto;
 import fun.steven.bookstore.pojo.dto.stats.ResultDto;
 import fun.steven.bookstore.pojo.dto.stats.DateRangeDto;
@@ -23,7 +23,7 @@ public class OrderService implements IOrderService {
     private IOrderDao orderDao;
 
     @Override
-    public boolean cartToOrder(Long userId, AddOrderDto addOrderDto) {
+    public boolean cartToOrder(Long userId, createOrderRequestDto addOrderDto) {
         orderDao.createOrder(userId, addOrderDto);
         
         Long cartId = userDao.getCartId(userId);
@@ -35,12 +35,12 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public GetOrdersDto searchUserOrders(Long userId, SearchDto searchDto) {
+    public OrdersResponseDto searchUserOrders(Long userId, SearchDto searchDto) {
         return orderDao.searchUserOrders(userId, searchDto);
     }
 
     @Override
-    public GetOrdersDto searchAllOrders(SearchDto searchDto) {
+    public OrdersResponseDto searchAllOrders(SearchDto searchDto) {
         return orderDao.searchAllOrders(searchDto);
     }
     

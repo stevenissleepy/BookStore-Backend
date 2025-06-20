@@ -5,7 +5,7 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class AddOrderDto {
+public class createOrderRequestDto {
     private String receiver;
     private String tel;
     private String address;
