@@ -31,11 +31,11 @@ public class UserDao implements IUserDao {
     @Override
     public boolean addUser(RegisterDto userDto) {
         // Check if the username already exists
-        if (userRepository.findByUsername(userDto.getUsername()).isPresent()) {
+        if (userRepository.existsByUsername(userDto.getUsername())) {
             throw new RegisterException("用户名已存在");
         }
         // Check if the email already exists
-        if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
+        if (userRepository.existsByEmail(userDto.getEmail())) {
             throw new RegisterException("邮箱已被注册");
         }
 
