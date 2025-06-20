@@ -84,43 +84,34 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             @Param("endDate") LocalDateTime endDate);
 
     /* 查询10本销量最高的书 */
-    @Query(value = "SELECT b.title, SUM(oi.quantity) as sales " +
-            "FROM tb_book b " +
-            "JOIN tb_order_item oi ON b.id = oi.book_id " +
-            "JOIN tb_order o ON oi.order_id = o.id " +
-            "GROUP BY b.id, b.title " +
-            "ORDER BY sales DESC " +
-            "LIMIT 10", nativeQuery = true)
+    @Query("SELECT oi.book.title, SUM(oi.quantity) " +
+            "FROM OrderItem oi " +
+            "GROUP BY oi.book.id, oi.book.title " +
+            "ORDER BY SUM(oi.quantity) DESC")
     List<Object[]> findTop10Book();
 
-    @Query(value = "SELECT b.title, SUM(oi.quantity) as sales " +
-            "FROM tb_book b " +
-            "JOIN tb_order_item oi ON b.id = oi.book_id " +
-            "JOIN tb_order o ON oi.order_id = o.id " +
+    @Query("SELECT oi.book.title, SUM(oi.quantity) " +
+            "FROM OrderItem oi " +
+            "JOIN oi.order o " +
             "WHERE o.date >= :startDate AND o.date <= :endDate " +
-            "GROUP BY b.id, b.title " +
-            "ORDER BY sales DESC " +
-            "LIMIT 10", nativeQuery = true)
+            "GROUP BY oi.book.id, oi.book.title " +
+            "ORDER BY SUM(oi.quantity) DESC")
     List<Object[]> findTop10BookByDateRange(
             @Param("startDate") LocalDateTime startDate,
             @Param("endDate") LocalDateTime endDate);
 
     /* 查询10个消费最高的用户 */
-    @Query(value = "SELECT u.username, SUM(o.total_price) as sales " +
-            "FROM tb_user u " +
-            "JOIN tb_order o ON u.id = o.user_id " +
-            "GROUP BY u.id, u.username " +
-            "ORDER BY sales DESC " +
-            "LIMIT 10", nativeQuery = true)
+    @Query("SELECT o.user.username, SUM(o.totalPrice) " +
+            "FROM Order o " +
+            "GROUP BY o.user.id, o.user.username " +
+            "ORDER BY SUM(o.totalPrice) DESC")
     List<Object[]> findTop10User();
 
-    @Query(value = "SELECT u.username, SUM(o.total_price) as sales " +
-            "FROM tb_user u " +
-            "JOIN tb_order o ON u.id = o.user_id " +
+    @Query("SELECT o.user.username, SUM(o.totalPrice) " +
+            "FROM Order o " +
             "WHERE o.date >= :startDate AND o.date <= :endDate " +
-            "GROUP BY u.id, u.username " +
-            "ORDER BY sales DESC " +
-            "LIMIT 10", nativeQuery = true)
+            "GROUP BY o.user.id, o.user.username " +
+            "ORDER BY SUM(o.totalPrice) DESC")
     List<Object[]> findTop10UserByDateRange(
             @Param("startDate") LocalDateTime startDate,
             @Param("endDate") LocalDateTime endDate);
