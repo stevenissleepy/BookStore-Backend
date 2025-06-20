@@ -96,6 +96,18 @@ public class CartDao implements ICartDao {
     public CartResponseDto getCart(Long cartId) {
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new RuntimeException("Cart not found: " + cartId));
+
+        // 检查购物车中是否有已下架的书籍
+        for (CartItem item : cart.getCartItems()) {
+            if (item.getBook().getDeleted()) {
+                deleteFromCart(cartId, item.getBook().getId());
+            }
+        }
+        
+        // 重新获取购物车以确保已下架的书籍被删除
+        cart = cartRepository.findById(cartId)
+                .orElseThrow(() -> new RuntimeException("Cart not found after cleanup: " + cartId));
+
         return new CartResponseDto(cart);
     }
 }
