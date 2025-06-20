@@ -23,18 +23,18 @@ public class CartController {
     @PostMapping("/add")
     public ResponseMessage<String> addToCart(@CurrentUserId Long userId, @RequestBody AddToCartRequestDto cartItemDto) {
         cartService.addToCart(userId, cartItemDto);
-        return ResponseMessage.success("Item added to cart successfully", null);
+        return ResponseMessage.success("成功添加到购物车", null);
     }
 
     @PostMapping("/update")
     public ResponseMessage<String> updateCartItem(@CurrentUserId Long userId, @RequestBody UpdateCartRequestDto cartItemDto) {
         cartService.updateCartItem(userId, cartItemDto);
-        return ResponseMessage.success("Cart item updated successfully", null);
+        return ResponseMessage.success("成功更新购物车商品", null);
     }
 
     @GetMapping
     public ResponseMessage<CartResponseDto> getCart(@CurrentUserId Long userId) {
         CartResponseDto cart = cartService.getCart(userId);
-        return ResponseMessage.success("Cart retrieved successfully", cart);
+        return ResponseMessage.success("成功获取购物车", cart);
     }
 }

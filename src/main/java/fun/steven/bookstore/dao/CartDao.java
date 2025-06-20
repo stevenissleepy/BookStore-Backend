@@ -29,6 +29,11 @@ public class CartDao implements ICartDao {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new RuntimeException("Book not found: " + bookId));
 
+        // 检查书籍是否已经下架
+        if (book.getDeleted()) {
+            throw new RuntimeException("这本书已下架");
+        }
+
         // 在cart的cartItems集合中查找是否已存在该商品
         List<CartItem> cartItems = cart.getCartItems();
         for (CartItem item : cartItems) {
