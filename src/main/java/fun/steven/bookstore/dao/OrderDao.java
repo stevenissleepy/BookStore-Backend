@@ -103,7 +103,8 @@ public class OrderDao implements IOrderDao {
         if (hasStartDate && hasEndDate && hasBookTitle) {
             LocalDateTime startDate = LocalDate.parse(startDateStr).atStartOfDay();
             LocalDateTime endDate = LocalDate.parse(endDateStr).atTime(23, 59, 59);
-            orders = orderRepository.findByUserIdAndDateRangeAndBookTitle(userId, startDate, endDate, bookTitle, pageable);
+            orders = orderRepository.findByUserIdAndDateRangeAndBookTitle(userId, startDate, endDate, bookTitle,
+                    pageable);
 
             // 有日期范围，没有书名
         } else if (hasStartDate && hasEndDate) {
@@ -114,7 +115,7 @@ public class OrderDao implements IOrderDao {
             // 有书名，没有日期范围
         } else if (hasBookTitle) {
             orders = orderRepository.findByUserIdAndBookTitle(userId, bookTitle, pageable);
-            
+
             // 没有任何条件
         } else {
             orders = orderRepository.findByUserId(userId, pageable);
@@ -177,10 +178,8 @@ public class OrderDao implements IOrderDao {
 
         List<ResultItemDto<BookDto>> bookItems = bookList.stream()
                 .map(item -> {
-                    Long bookId = ((Number) item[0]).longValue();
+                    Book book = (Book) item[0];
                     Integer sales = ((Number) item[1]).intValue();
-                    Book book = bookRepository.findById(bookId)
-                            .orElseThrow(() -> new RuntimeException("Book not found: " + bookId));
                     BookDto bookDto = new BookDto(book);
                     return new ResultItemDto<>(bookDto, sales);
                 })

@@ -63,20 +63,21 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             Pageable pageable);
 
     /* 统计用户购买了那些书籍 */
-    @Query(value = "SELECT b.id, SUM(oi.quantity) as sales " +
-            "FROM tb_book b " +
-            "JOIN tb_order_item oi ON b.id = oi.book_id " +
-            "JOIN tb_order o ON oi.order_id = o.id " +
-            "WHERE o.user_id = :userId " +
-            "GROUP BY b.id", nativeQuery = true)
+    @Query("SELECT oi.book, SUM(oi.quantity) " +
+            "FROM Order o " +
+            "JOIN o.orderItems oi " +
+            "WHERE o.user.id = :userId " +
+            "GROUP BY oi.book " +
+            "ORDER BY SUM(oi.quantity) DESC")
     List<Object[]> findBooksByUserId(@Param("userId") Long userId);
 
-    @Query(value = "SELECT b.id, SUM(oi.quantity) as sales " +
-            "FROM tb_book b " +
-            "JOIN tb_order_item oi ON b.id = oi.book_id " +
-            "JOIN tb_order o ON oi.order_id = o.id " +
-            "WHERE o.user_id = :userId AND o.date >= :startDate AND o.date <= :endDate " +
-            "GROUP BY b.id", nativeQuery = true)
+    @Query("SELECT oi.book, SUM(oi.quantity) " +
+            "FROM Order o " +
+            "JOIN o.orderItems oi " +
+            "WHERE o.user.id = :userId " +
+            "AND o.date >= :startDate AND o.date <= :endDate " +
+            "GROUP BY oi.book " +
+            "ORDER BY SUM(oi.quantity) DESC")
     List<Object[]> findBooksByUserIdAndDateRange(
             @Param("userId") Long userId,
             @Param("startDate") LocalDateTime startDate,

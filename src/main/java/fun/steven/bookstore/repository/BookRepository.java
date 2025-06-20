@@ -14,17 +14,15 @@ import fun.steven.bookstore.pojo.entity.Book;
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
 
-        /* 根据书名搜索 */
+        /* 搜索所有图书 */
         @Query("SELECT b FROM Book b WHERE " +
                         "LOWER(b.title) LIKE LOWER(CONCAT('%', :query, '%'))")
         Page<Book> findByQuery(@Param("query") String query, Pageable pageable);
 
-        /* 根据分类搜索 */
         @Query("SELECT b FROM Book b WHERE " +
                         "b.category IN :categories")
         Page<Book> findByCategories(@Param("categories") List<String> categories, Pageable pageable);
 
-        /* 根据书名和分类搜索 */
         @Query("SELECT b FROM Book b WHERE " +
                         "LOWER(b.title) LIKE LOWER(CONCAT('%', :query, '%')) " +
                         "AND b.category IN :categories")
