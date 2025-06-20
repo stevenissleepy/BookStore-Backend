@@ -29,7 +29,10 @@ public class BookDao implements IBookDao {
 
     @Override
     public boolean delete(Long id) {
-        bookRepository.deleteById(id);
+        Book book = bookRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Book not found: " + id));
+        book.setDeleted(true);
+        bookRepository.save(book);
         return true;
     }
 
@@ -63,7 +66,7 @@ public class BookDao implements IBookDao {
         // 如果查询条件和分类都为空，返回所有书籍
         if ((query == null || query.trim().isEmpty()) &&
                 (categories == null || categories.isEmpty())) {
-            bookPage = bookRepository.findAll(pageable);
+            bookPage = bookRepository.findAllBooks(pageable);
         }
 
         // 如果只有查询条件，没有分类限制

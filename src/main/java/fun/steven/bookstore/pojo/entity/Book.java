@@ -49,6 +49,9 @@ public class Book {
     @Column(name = "isbn")
     private String isbn;
 
+    @Column(name = "deleted")
+    private Boolean deleted = false;
+
     public Book(BookDto bookDto) {
         BeanUtils.copyProperties(bookDto, this);
     }

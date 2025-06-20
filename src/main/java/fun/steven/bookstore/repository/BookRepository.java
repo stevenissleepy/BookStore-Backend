@@ -14,25 +14,29 @@ import fun.steven.bookstore.pojo.entity.Book;
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
 
-        /* 搜索所有图书 */
-        @Query("SELECT b FROM Book b WHERE " +
-                        "LOWER(b.title) LIKE LOWER(CONCAT('%', :query, '%'))")
-        Page<Book> findByQuery(@Param("query") String query, Pageable pageable);
+    /* 搜索所有图书 */
+    @Query("SELECT b FROM Book b WHERE b.deleted = false")
+    Page<Book> findAllBooks(Pageable pageable);
 
-        @Query("SELECT b FROM Book b WHERE " +
-                        "b.category IN :categories")
-        Page<Book> findByCategories(@Param("categories") List<String> categories, Pageable pageable);
+    @Query("SELECT b FROM Book b " +
+            "WHERE LOWER(b.title) LIKE LOWER(CONCAT('%', :query, '%')) " +
+            "AND b.deleted = false")
+    Page<Book> findByQuery(@Param("query") String query, Pageable pageable);
 
-        @Query("SELECT b FROM Book b WHERE " +
-                        "LOWER(b.title) LIKE LOWER(CONCAT('%', :query, '%')) " +
-                        "AND b.category IN :categories")
-        Page<Book> findByQueryAndCategories(
-                        @Param("query") String query,
-                        @Param("categories") List<String> categories,
-                        Pageable pageable);
+    @Query("SELECT b FROM Book b " +
+            "WHERE b.category IN :categories " +
+            "AND b.deleted = false")
+    Page<Book> findByCategories(@Param("categories") List<String> categories, Pageable pageable);
 
-        /* 获取 categories */
-        @Query("SELECT DISTINCT b.category FROM Book b")
-        List<String> findDistinctCategories();
+    @Query("SELECT b FROM Book b WHERE " +
+            "LOWER(b.title) LIKE LOWER(CONCAT('%', :query, '%')) " +
+            "AND b.category IN :categories AND b.deleted = false")
+    Page<Book> findByQueryAndCategories(
+            @Param("query") String query,
+            @Param("categories") List<String> categories,
+            Pageable pageable);
 
+    /* 获取 categories */
+    @Query("SELECT DISTINCT b.category FROM Book b WHERE b.deleted = false")
+    List<String> findDistinctCategories();
 }
