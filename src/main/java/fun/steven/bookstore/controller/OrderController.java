@@ -10,6 +10,7 @@ import fun.steven.bookstore.pojo.dto.order.SearchDto;
 import fun.steven.bookstore.service.IOrderService;
 import fun.steven.bookstore.utils.annotation.AdminOnly;
 import fun.steven.bookstore.utils.annotation.CurrentUserId;
+import fun.steven.bookstore.utils.annotation.UserOnly;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,12 +22,14 @@ public class OrderController {
     @Autowired
     private IOrderService orderService;
 
+    @UserOnly
     @PostMapping
     public ResponseMessage<String> createOrder(@RequestBody createOrderRequestDto addOrderDto, @CurrentUserId Long userId) {
         orderService.cartToOrder(userId, addOrderDto);
         return ResponseMessage.success("create order success", null);
     }
 
+    @UserOnly
     @PostMapping("/search")
     public ResponseMessage<OrdersResponseDto> searchUserOrders(
             @CurrentUserId Long userId,

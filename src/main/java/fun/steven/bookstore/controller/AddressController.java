@@ -13,6 +13,7 @@ import fun.steven.bookstore.pojo.dto.address.AddressDto;
 import fun.steven.bookstore.pojo.dto.address.AddressesDto;
 import fun.steven.bookstore.service.IAddressService;
 import fun.steven.bookstore.utils.annotation.CurrentUserId;
+import fun.steven.bookstore.utils.annotation.UserOnly;
 
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -22,18 +23,21 @@ public class AddressController {
     @Autowired
     private IAddressService addressService;
 
+    @UserOnly
     @PostMapping
     public ResponseMessage<String> addAddress(@RequestBody AddressDto addressDto, @CurrentUserId Long userId) {
         addressService.addAddress(userId, addressDto);
         return ResponseMessage.success("add address success!", null);
     }
 
+    @UserOnly
     @GetMapping
     public ResponseMessage<AddressesDto> getUserAddresses(@CurrentUserId Long userId) {
         AddressesDto addresses = addressService.getUserAddresses(userId);
         return ResponseMessage.success("get address success!", addresses);
     }
 
+    @UserOnly
     @DeleteMapping("/{addressId}")
     public ResponseMessage<String> deleteAddress(@PathVariable Long addressId, @CurrentUserId Long userId) {
         addressService.deleteAddress(userId, addressId);
