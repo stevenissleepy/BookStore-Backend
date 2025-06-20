@@ -10,7 +10,7 @@ import fun.steven.bookstore.pojo.dto.stats.DateRangeDto;
 public interface IOrderDao {
     boolean createOrder(Long cartId, AddOrderDto orderDto);
 
-    GetOrdersDto getOrders(Long userId);
+    GetOrdersDto searchUserOrders(Long userId, SearchDto searchDto);
     GetOrdersDto searchAllOrders(SearchDto searchDto);
     ResultDto<BookDto> statsBooks(Long userId, DateRangeDto dateRangeDto);
     ResultDto<String> searchTop10Books(DateRangeDto dateRangeDto);

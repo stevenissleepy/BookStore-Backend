@@ -35,8 +35,8 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public GetOrdersDto getUserOrders(Long userId) {
-        return orderDao.getOrders(userId);
+    public GetOrdersDto searchUserOrders(Long userId, SearchDto searchDto) {
+        return orderDao.searchUserOrders(userId, searchDto);
     }
 
     @Override

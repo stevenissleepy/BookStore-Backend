@@ -9,7 +9,7 @@ import fun.steven.bookstore.pojo.dto.order.SearchDto;
 
 public interface IOrderService {
     boolean cartToOrder(Long userId, AddOrderDto addOrderDto);
-    GetOrdersDto getUserOrders(Long userId);
+    GetOrdersDto searchUserOrders(Long userId, SearchDto searchDto);
     GetOrdersDto searchAllOrders(SearchDto searchDto);
     ResultDto<BookDto> statsBooks(Long userId, DateRangeDto dateRangeDto);
     ResultDto<String> searchTop10Books(DateRangeDto dateRangeDto);

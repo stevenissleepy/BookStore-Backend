@@ -12,10 +12,8 @@ import fun.steven.bookstore.utils.annotation.AdminOnly;
 import fun.steven.bookstore.utils.annotation.CurrentUserId;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
 
 @RestController
 @RequestMapping("/order")
@@ -29,10 +27,12 @@ public class OrderController {
         return ResponseMessage.success("create order success", null);
     }
 
-    @GetMapping
-    public ResponseMessage<GetOrdersDto> getUserOrders(@CurrentUserId Long userId) {
-        GetOrdersDto getOrdersDto = orderService.getUserOrders(userId);
-        return ResponseMessage.success("get orders success", getOrdersDto);
+    @PostMapping("/search")
+    public ResponseMessage<GetOrdersDto> searchUserOrders(
+            @CurrentUserId Long userId,
+            @RequestBody SearchDto searchDto) {
+        GetOrdersDto getOrdersDto = orderService.searchUserOrders(userId, searchDto);
+        return ResponseMessage.success("search user orders success", getOrdersDto);
     }
 
     @AdminOnly
@@ -40,6 +40,6 @@ public class OrderController {
     public ResponseMessage<GetOrdersDto> searchAllOrders(@RequestBody SearchDto searchDto) {
         GetOrdersDto getOrdersDto = orderService.searchAllOrders(searchDto);
         return ResponseMessage.success("search all orders success", getOrdersDto);
-        
+
     }
 }

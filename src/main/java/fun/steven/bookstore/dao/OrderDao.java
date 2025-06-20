@@ -83,8 +83,37 @@ public class OrderDao implements IOrderDao {
     }
 
     @Override
-    public GetOrdersDto getOrders(Long userId) {
-        List<Order> orders = orderRepository.findByUserId(userId).orElse(List.of());
+    public GetOrdersDto searchUserOrders(Long userId, SearchDto searchDto) {
+        String startDateStr = searchDto.getStartDate();
+        String endDateStr = searchDto.getEndDate();
+        String bookTitle = searchDto.getBookTitle();
+
+        boolean hasStartDate = startDateStr != null && !startDateStr.isEmpty();
+        boolean hasEndDate = endDateStr != null && !endDateStr.isEmpty();
+        boolean hasBookTitle = bookTitle != null && !bookTitle.isEmpty();
+
+        List<Order> orders;
+
+        // 有日期和书名
+        if (hasStartDate && hasEndDate && hasBookTitle) {
+            LocalDateTime startDate = LocalDate.parse(startDateStr).atStartOfDay();
+            LocalDateTime endDate = LocalDate.parse(endDateStr).atTime(23, 59, 59);
+            orders = orderRepository.findByUserIdAndDateRangeAndBookTitle(userId, startDate, endDate, bookTitle);
+
+            // 有日期范围，没有书名
+        } else if (hasStartDate && hasEndDate) {
+            LocalDateTime startDate = LocalDate.parse(startDateStr).atStartOfDay();
+            LocalDateTime endDate = LocalDate.parse(endDateStr).atTime(23, 59, 59);
+            orders = orderRepository.findByUserIdAndDateRange(userId, startDate, endDate);
+
+            // 有书名，没有日期范围
+        } else if (hasBookTitle) {
+            orders = orderRepository.findByUserIdAndBookTitle(userId, bookTitle);
+            
+            // 没有任何条件
+        } else {
+            orders = orderRepository.findByUserId(userId);
+        }
         return new GetOrdersDto(orders);
     }
 
