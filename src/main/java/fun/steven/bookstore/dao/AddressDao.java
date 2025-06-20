@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import fun.steven.bookstore.pojo.dto.address.AddressDto;
+import fun.steven.bookstore.pojo.dto.address.AddressesDto;
 import fun.steven.bookstore.pojo.entity.Address;
 import fun.steven.bookstore.pojo.entity.User;
 import fun.steven.bookstore.repository.AddressRepository;
@@ -34,8 +35,10 @@ public class AddressDao implements IAddressDao {
     }
 
     @Override
-    public List<Address> getUserAddresses(Long userId) {
-        return addressRepository.findByUserId(userId);
+    public AddressesDto getUserAddresses(Long userId) {
+        List<Address> addresses = addressRepository.findByUserId(userId);
+        AddressesDto addressesDto = new AddressesDto(addresses);
+        return addressesDto;
     }
 
     @Override
