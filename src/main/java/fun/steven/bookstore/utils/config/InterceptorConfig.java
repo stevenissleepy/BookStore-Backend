@@ -10,6 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import fun.steven.bookstore.utils.interceptor.AdminInterceptor;
 import fun.steven.bookstore.utils.interceptor.LoginInterceptor;
+import fun.steven.bookstore.utils.interceptor.UserInterceptor;
 
 @Configuration /* 配置拦截器 */
 public class InterceptorConfig implements WebMvcConfigurer {
@@ -22,6 +23,10 @@ public class InterceptorConfig implements WebMvcConfigurer {
     @Autowired
     private AdminInterceptor adminInterceptor;
 
+    /* user 拦截器 */
+    @Autowired 
+    private UserInterceptor userInterceptor;
+    
     @Override
     public void addInterceptors(@NonNull InterceptorRegistry registry) {
         List<String> loginExcludePath = List.of(
@@ -35,7 +40,10 @@ public class InterceptorConfig implements WebMvcConfigurer {
                 .excludePathPatterns(loginExcludePath);
 
         registry.addInterceptor(adminInterceptor)
-                .addPathPatterns("/book/**");
+                .addPathPatterns("/**");
+
+        registry.addInterceptor(userInterceptor)
+                .addPathPatterns("/**");
     }
 
 }
