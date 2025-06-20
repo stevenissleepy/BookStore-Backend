@@ -23,7 +23,7 @@ public class AddressDao implements IAddressDao {
     public boolean addAddress(Long userId, AddressDto addressDto) {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new RuntimeException("User not found"));
-        
+
         Address address = new Address();
         BeanUtils.copyProperties(addressDto, address);
         address.setUser(user);
@@ -34,16 +34,8 @@ public class AddressDao implements IAddressDao {
     }
 
     @Override
-    public Address getAddressById(Long addressId) {
-        return addressRepository.findById(addressId).orElseThrow(
-                () -> new RuntimeException("Address not found"));
-    }
-
-    @Override
     public List<Address> getUserAddresses(Long userId) {
-        return addressRepository.findByUserId(userId).orElseThrow(
-                () -> new RuntimeException("No address found")
-        );
+        return addressRepository.findByUserId(userId);
     }
 
     @Override

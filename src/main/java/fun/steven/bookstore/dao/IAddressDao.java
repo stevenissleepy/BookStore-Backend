@@ -8,7 +8,6 @@ import fun.steven.bookstore.pojo.entity.Address;
 public interface IAddressDao {
     boolean addAddress(Long userId, AddressDto addressDto);
 
-    Address getAddressById(Long addressId);
     List<Address> getUserAddresses(Long userId);
 
     boolean deleteAddress(Long userId, Long addressId);
