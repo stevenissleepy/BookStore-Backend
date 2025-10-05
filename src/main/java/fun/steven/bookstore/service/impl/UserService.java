@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import fun.steven.bookstore.dao.IUserDao;
 import fun.steven.bookstore.pojo.dto.user.LoginRequest;
-import fun.steven.bookstore.pojo.dto.user.RegisterDto;
+import fun.steven.bookstore.pojo.dto.user.RegisterRequest;
 import fun.steven.bookstore.pojo.dto.user.SessionDto;
 import fun.steven.bookstore.pojo.dto.user.UpdateRequest;
 import fun.steven.bookstore.pojo.entity.Cart;
@@ -29,7 +29,7 @@ public class UserService implements IUserService {
     @Value("${default.avatar.base64}")
     private String defaultAvatar;
 
-    public boolean add(RegisterDto userDto) {
+    public boolean add(RegisterRequest userDto) {
         String username = userDto.getUsername();
         String email = userDto.getEmail();
         String password = userDto.getPassword();
@@ -64,7 +64,7 @@ public class UserService implements IUserService {
         return userDao.save(user);
     }
 
-    public boolean deleteById(Long userId) {
+    public boolean delete(Long userId) {
         return userDao.deleteById(userId);
     }
 
@@ -105,14 +105,14 @@ public class UserService implements IUserService {
         return userDao.save(user);
     }
 
-    public FindUserReponse findById(Long userId) {
+    public FindUserReponse findUser(Long userId) {
         User user = userDao.findById(userId).orElseThrow(
                 () -> new RuntimeException("User not found"));
 
         return new FindUserReponse(user);
     }
 
-    public FindUsersResponse findAll() {
+    public FindUsersResponse findAllUsers() {
         List<Object[]> userInfos = userDao.findAllSafely();
         List<FindUserReponse> users = userInfos.stream()
                 .map(info -> new FindUserReponse(

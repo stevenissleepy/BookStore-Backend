@@ -11,11 +11,11 @@ public interface IUserService {
 
     public boolean add(RegisterRequest request);
 
-    public boolean deleteById(Long userId);
+    public boolean delete(Long userId);
 
-    public FindUserReponse findById(Long userId);
+    public FindUserReponse findUser(Long userId);
 
-    public FindUsersResponse findAll();
+    public FindUsersResponse findAllUsers();
 
     public boolean update(UpdateRequest request);
 

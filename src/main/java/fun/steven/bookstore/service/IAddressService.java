@@ -1,12 +1,12 @@
 package fun.steven.bookstore.service;
 
-import fun.steven.bookstore.pojo.dto.address.AddressDto;
-import fun.steven.bookstore.pojo.dto.address.AddressesDto;
+import fun.steven.bookstore.pojo.dto.address.AddAddressRequest;
+import fun.steven.bookstore.pojo.dto.address.FindAddressesResponse;
 
 public interface IAddressService {
-    public boolean addAddress(Long userId, AddressDto addressDto);
+    public boolean add(AddAddressRequest request);
 
-    public AddressesDto getUserAddresses(Long userId);
+    public boolean deleteAddress(Long addressId, Long userId);
 
-    public boolean deleteAddress(Long userId, Long addressId);
+    public FindAddressesResponse findUserAddresses(Long userId);
 }

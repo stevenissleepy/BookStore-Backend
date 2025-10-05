@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import fun.steven.bookstore.pojo.ResponseMessage;
-import fun.steven.bookstore.pojo.dto.address.AddressDto;
-import fun.steven.bookstore.pojo.dto.address.AddressesDto;
+import fun.steven.bookstore.pojo.dto.address.AddAddressRequest;
+import fun.steven.bookstore.pojo.dto.address.FindAddressesResponse;
 import fun.steven.bookstore.service.IAddressService;
 import fun.steven.bookstore.utils.annotation.CurrentUserId;
 import fun.steven.bookstore.utils.annotation.UserOnly;
@@ -25,21 +25,22 @@ public class AddressController {
 
     @UserOnly
     @PostMapping
-    public ResponseMessage<String> addAddress(@RequestBody AddressDto addressDto, @CurrentUserId Long userId) {
-        addressService.addAddress(userId, addressDto);
+    public ResponseMessage<String> addAddress(@CurrentUserId Long userId, @RequestBody AddAddressRequest request) {
+        request.setUserId(userId);
+        addressService.add(request);
         return ResponseMessage.success("add address success!", null);
     }
 
     @UserOnly
     @GetMapping
-    public ResponseMessage<AddressesDto> getUserAddresses(@CurrentUserId Long userId) {
-        AddressesDto addresses = addressService.getUserAddresses(userId);
-        return ResponseMessage.success("get address success!", addresses);
+    public ResponseMessage<FindAddressesResponse> findUserAddresses(@CurrentUserId Long userId) {
+        FindAddressesResponse response = addressService.findUserAddresses(userId);
+        return ResponseMessage.success("get address success!", response);
     }
 
     @UserOnly
     @DeleteMapping("/{addressId}")
-    public ResponseMessage<String> deleteAddress(@PathVariable Long addressId, @CurrentUserId Long userId) {
+    public ResponseMessage<String> deleteAddress(@CurrentUserId Long userId, @PathVariable Long addressId) {
         addressService.deleteAddress(userId, addressId);
         return ResponseMessage.success("delete address success!", null);
     }

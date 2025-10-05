@@ -1,12 +1,13 @@
 package fun.steven.bookstore.dao;
 
-import fun.steven.bookstore.pojo.dto.address.AddressDto;
-import fun.steven.bookstore.pojo.dto.address.AddressesDto;
+import java.util.List;
+
+import fun.steven.bookstore.pojo.entity.Address;
 
 public interface IAddressDao {
-    boolean addAddress(Long userId, AddressDto addressDto);
+    boolean save(Address address);
 
-    AddressesDto getUserAddresses(Long userId);
+    List<Address> findByUserId(Long userId);
 
-    boolean deleteAddress(Long userId, Long addressId);
+    boolean deleteByIdAndUserId(Long addressId, Long userId);
 }

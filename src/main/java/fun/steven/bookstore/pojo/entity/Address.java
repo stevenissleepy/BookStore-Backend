@@ -1,10 +1,7 @@
 package fun.steven.bookstore.pojo.entity;
 
-import org.springframework.beans.BeanUtils;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import fun.steven.bookstore.pojo.dto.address.AddressDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,11 +10,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "tb_address")
 public class Address {
@@ -39,8 +38,4 @@ public class Address {
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
-
-    public Address(AddressDto addressDto) {
-        BeanUtils.copyProperties(addressDto, this);
-    }
 }

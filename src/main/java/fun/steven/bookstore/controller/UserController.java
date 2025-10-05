@@ -45,10 +45,17 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseMessage<FindUserReponse> findById(@CurrentUserId Long userId) {
-        FindUserReponse reponse = userService.findById(userId);
+    public ResponseMessage<FindUserReponse> findUser(@CurrentUserId Long userId) {
+        FindUserReponse reponse = userService.findUser(userId);
 
         return ResponseMessage.success("query user success!", reponse);
+    }
+
+    @AdminOnly
+    @PostMapping("/all")
+    public ResponseMessage<FindUsersResponse> findAllUsers() {
+        FindUsersResponse response = userService.findAllUsers();
+        return ResponseMessage.success("get all users success!", response);
     }
 
     @PostMapping("/login")
@@ -66,20 +73,13 @@ public class UserController {
     }
 
     @PostMapping("/logout")
-    public ResponseMessage<String> logout(HttpServletRequest request, @CurrentUserId Long userId) {
+    public ResponseMessage<String> logout(@CurrentUserId Long userId, HttpServletRequest request) {
         Long sessionUserId = (Long) request.getSession().getAttribute("userId");
         if (sessionUserId == null || !sessionUserId.equals(userId)) {
             return ResponseMessage.error(403, "用户未登录或登录已过期");
         }
         request.getSession().invalidate();
         return ResponseMessage.success("logout success!", null);
-    }
-
-    @AdminOnly
-    @PostMapping("/all")
-    public ResponseMessage<FindUsersResponse> findAll() {
-        FindUsersResponse response = userService.findAll();
-        return ResponseMessage.success("get all users success!", response);
     }
 
     @AdminOnly
