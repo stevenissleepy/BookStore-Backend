@@ -1,4 +1,4 @@
-package fun.steven.bookstore.service;
+package fun.steven.bookstore.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,6 +8,7 @@ import fun.steven.bookstore.dao.IUserDao;
 import fun.steven.bookstore.pojo.dto.cart.AddToCartRequestDto;
 import fun.steven.bookstore.pojo.dto.cart.CartResponseDto;
 import fun.steven.bookstore.pojo.dto.cart.UpdateCartRequestDto;
+import fun.steven.bookstore.service.ICartService;
 
 @Service
 public class CartService implements ICartService {

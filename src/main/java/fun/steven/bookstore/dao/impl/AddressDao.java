@@ -1,4 +1,4 @@
-package fun.steven.bookstore.dao;
+package fun.steven.bookstore.dao.impl;
 
 import java.util.List;
 
@@ -6,6 +6,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import fun.steven.bookstore.dao.IAddressDao;
 import fun.steven.bookstore.pojo.dto.address.AddressDto;
 import fun.steven.bookstore.pojo.dto.address.AddressesDto;
 import fun.steven.bookstore.pojo.entity.Address;

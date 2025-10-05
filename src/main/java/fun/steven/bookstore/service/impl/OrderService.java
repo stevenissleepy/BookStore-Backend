@@ -1,4 +1,4 @@
-package fun.steven.bookstore.service;
+package fun.steven.bookstore.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +11,7 @@ import fun.steven.bookstore.pojo.dto.order.createOrderRequestDto;
 import fun.steven.bookstore.pojo.dto.order.OrdersResponseDto;
 import fun.steven.bookstore.pojo.dto.order.SearchDto;
 import fun.steven.bookstore.pojo.dto.stats.ResultDto;
+import fun.steven.bookstore.service.IOrderService;
 import fun.steven.bookstore.pojo.dto.stats.DateRangeDto;
 
 @Service

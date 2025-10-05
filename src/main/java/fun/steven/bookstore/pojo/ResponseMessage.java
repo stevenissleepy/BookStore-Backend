@@ -1,4 +1,4 @@
-package fun.steven.bookstore.pojo.dto;
+package fun.steven.bookstore.pojo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

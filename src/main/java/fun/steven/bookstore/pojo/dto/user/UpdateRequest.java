@@ -3,8 +3,9 @@ package fun.steven.bookstore.pojo.dto.user;
 import lombok.Data;
 
 @Data
-public class UpdateUserDto {
+public class UpdateRequest {
+    private Long id;
     private String username;
-    private String avatar;
     private String password;
+    private String avatar;
 }

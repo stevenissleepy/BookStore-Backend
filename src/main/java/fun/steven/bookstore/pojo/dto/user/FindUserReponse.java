@@ -8,14 +8,14 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class GetUserDto {
+public class FindUserReponse {
     private String username;
     private String email;
     private String avatar;
     private Integer balance;
     private String state;
 
-    public GetUserDto(User user) {
+    public FindUserReponse(User user) {
         BeanUtils.copyProperties(user, this);
         this.state = user.getUserAuth().getState();
     }

@@ -1,4 +1,4 @@
-package fun.steven.bookstore.dao;
+package fun.steven.bookstore.dao.impl;
 
 import java.util.List;
 
@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import fun.steven.bookstore.dao.IBookDao;
 import fun.steven.bookstore.pojo.dto.book.BookDto;
 import fun.steven.bookstore.pojo.dto.book.BooksDto;
 import fun.steven.bookstore.pojo.dto.book.CategoriesDto;

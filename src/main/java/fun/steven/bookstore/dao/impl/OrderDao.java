@@ -1,4 +1,4 @@
-package fun.steven.bookstore.dao;
+package fun.steven.bookstore.dao.impl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import fun.steven.bookstore.dao.IOrderDao;
 import fun.steven.bookstore.pojo.dto.book.BookDto;
 import fun.steven.bookstore.pojo.dto.order.createOrderRequestDto;
 import fun.steven.bookstore.pojo.dto.order.OrdersResponseDto;

@@ -1,24 +1,21 @@
 package fun.steven.bookstore.dao;
 
-import fun.steven.bookstore.pojo.dto.user.LoginDto;
-import fun.steven.bookstore.pojo.dto.user.RegisterDto;
-import fun.steven.bookstore.pojo.dto.user.SessionDto;
-import fun.steven.bookstore.pojo.dto.user.UpdateUserDto;
-import fun.steven.bookstore.pojo.dto.user.GetUserDto;
-import fun.steven.bookstore.pojo.dto.user.GetUsersDto;
+import fun.steven.bookstore.pojo.entity.User;
+
+import java.util.List;
+import java.util.Optional;
 
 public interface IUserDao {
-    boolean addUser(RegisterDto user);
+    boolean save(User user);
 
-    boolean delete(Long userId);
+    boolean deleteById(Long userId);
 
-    GetUserDto getUserById(Long userId);
-    GetUsersDto getAllUsers();
-    Long getCartId(Long userId);
+    Optional<User> findById(Long userId);
+    Optional<User> findByUsername(String username);
+    List<Object[]> findAllSafely();
 
-    GetUserDto update(Long userId, UpdateUserDto user);
-    boolean banUser(String username);
-    boolean unbanUser(String username);
-
-    SessionDto checkLogin(LoginDto loginDto);
+    boolean existsByUsername(String username);
+    boolean existsByEmail(String email);
+    boolean existsByUsernameAndPassword(String username, String password);
+    boolean existsByUsernameAndBanned(String username);
 }

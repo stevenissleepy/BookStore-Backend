@@ -1,4 +1,4 @@
-package fun.steven.bookstore.service;
+package fun.steven.bookstore.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import fun.steven.bookstore.dao.IAddressDao;
 import fun.steven.bookstore.pojo.dto.address.AddressDto;
 import fun.steven.bookstore.pojo.dto.address.AddressesDto;
+import fun.steven.bookstore.service.IAddressService;
 
 @Service
 public class AddressService implements IAddressService {

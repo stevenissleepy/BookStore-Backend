@@ -14,15 +14,11 @@ import fun.steven.bookstore.pojo.entity.User;
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUsername(String username);
 
-    // 获取用户session信息
-    @Query("SELECT u.id FROM User u WHERE u.username = :username")
-    Long findUserSessionById(@Param("username") String username);
-
     // 安全地查询所有用户信息，排除 admin 用户
     @Query("SELECT u.username, u.email ,u.avatar, u.balance, ua.state " +
             "FROM User u LEFT JOIN u.userAuth ua " +
             "WHERE u.username != 'admin'")
-    List<Object[]> findAllUsersSafely();
+    List<Object[]> findAllSafely();
 
     // 安全地检查用户名是否存在
     @Query("SELECT COUNT(u) > 0 FROM User u WHERE u.username = :username")

@@ -1,10 +1,11 @@
-package fun.steven.bookstore.dao;
+package fun.steven.bookstore.dao.impl;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import fun.steven.bookstore.dao.ICartDao;
 import fun.steven.bookstore.pojo.dto.cart.AddToCartRequestDto;
 import fun.steven.bookstore.pojo.dto.cart.UpdateCartRequestDto;
 import fun.steven.bookstore.pojo.dto.cart.CartResponseDto;

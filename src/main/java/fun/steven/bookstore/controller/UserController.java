@@ -11,55 +11,55 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import fun.steven.bookstore.pojo.dto.ResponseMessage;
-import fun.steven.bookstore.pojo.dto.user.LoginDto;
-import fun.steven.bookstore.pojo.dto.user.RegisterDto;
+import fun.steven.bookstore.pojo.ResponseMessage;
+import fun.steven.bookstore.pojo.dto.user.FindUserReponse;
+import fun.steven.bookstore.pojo.dto.user.FindUsersResponse;
+import fun.steven.bookstore.pojo.dto.user.LoginRequest;
+import fun.steven.bookstore.pojo.dto.user.RegisterRequest;
 import fun.steven.bookstore.pojo.dto.user.SessionDto;
-import fun.steven.bookstore.pojo.dto.user.UpdateUserDto;
-import fun.steven.bookstore.pojo.dto.user.GetUserDto;
-import fun.steven.bookstore.pojo.dto.user.GetUsersDto;
+import fun.steven.bookstore.pojo.dto.user.UpdateRequest;
 import fun.steven.bookstore.service.IUserService;
 import fun.steven.bookstore.utils.annotation.AdminOnly;
 import fun.steven.bookstore.utils.annotation.CurrentUserId;
 
-
-@RestController                         /* 将接口方法返回的对象自动转化成 json */
-@RequestMapping("/user")                /* 设置请求路径为 /user */
+@RestController /* 将接口方法返回的对象自动转化成 json */
+@RequestMapping("/user") /* 设置请求路径为 /user */
 public class UserController {
 
     @Autowired
-    private IUserService userService;   /* 注入用户服务 */
+    private IUserService userService; /* 注入用户服务 */
 
     @PostMapping("/register")
-    public ResponseMessage<String> add(@RequestBody RegisterDto userDto) {
-        userService.add(userDto);
+    public ResponseMessage<String> add(@RequestBody RegisterRequest request) {
+        userService.add(request);
 
         return ResponseMessage.success("注册成功", null);
     }
 
     @PutMapping
-    public ResponseMessage<GetUserDto> update(@CurrentUserId Long userId, @RequestBody UpdateUserDto userDto) {
-        GetUserDto userInfoDto = userService.update(userId, userDto);
+    public ResponseMessage<?> update(@CurrentUserId Long userId, @RequestBody UpdateRequest request) {
+        request.setId(userId);
+        userService.update(request);
 
-        return ResponseMessage.success("update user success!", userInfoDto);
+        return ResponseMessage.success("update user success!", null);
     }
 
     @GetMapping
-    public ResponseMessage<GetUserDto> get(@CurrentUserId Long userId) {
-        GetUserDto userInfoDto = userService.get(userId);
+    public ResponseMessage<FindUserReponse> findById(@CurrentUserId Long userId) {
+        FindUserReponse reponse = userService.findById(userId);
 
-        return ResponseMessage.success("query user success!", userInfoDto);
+        return ResponseMessage.success("query user success!", reponse);
     }
 
     @PostMapping("/login")
-    public ResponseMessage<String> login(@RequestBody LoginDto loginDto,  HttpServletRequest request) {
-        String username = loginDto.getUsername();
-        String password = loginDto.getPassword();
+    public ResponseMessage<String> login(@RequestBody LoginRequest loginRequest, HttpServletRequest request) {
+        String username = loginRequest.getUsername();
+        String password = loginRequest.getPassword();
         if (username == null || password == null) {
             return ResponseMessage.error(401, "用户名或密码不能为空");
         }
-        
-        SessionDto userSession = userService.login(loginDto);
+
+        SessionDto userSession = userService.login(loginRequest);
         request.getSession().setAttribute("userId", userSession.getUserId());
         request.getSession().setAttribute("username", userSession.getUsername());
         return ResponseMessage.success("login success!", null);
@@ -74,12 +74,12 @@ public class UserController {
         request.getSession().invalidate();
         return ResponseMessage.success("logout success!", null);
     }
-    
+
     @AdminOnly
     @PostMapping("/all")
-    public ResponseMessage<GetUsersDto> getAllUsers() {
-        GetUsersDto users = userService.getAll();
-        return ResponseMessage.success("get all users success!", users);
+    public ResponseMessage<FindUsersResponse> findAll() {
+        FindUsersResponse response = userService.findAll();
+        return ResponseMessage.success("get all users success!", response);
     }
 
     @AdminOnly

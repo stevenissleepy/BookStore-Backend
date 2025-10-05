@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import fun.steven.bookstore.pojo.dto.ResponseMessage;
+import fun.steven.bookstore.pojo.ResponseMessage;
 import fun.steven.bookstore.pojo.dto.cart.AddToCartRequestDto;
 import fun.steven.bookstore.pojo.dto.cart.CartResponseDto;
 import fun.steven.bookstore.pojo.dto.cart.UpdateCartRequestDto;

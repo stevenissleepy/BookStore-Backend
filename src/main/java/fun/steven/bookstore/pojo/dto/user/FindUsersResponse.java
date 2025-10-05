@@ -5,11 +5,11 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class GetUsersDto {
+public class FindUsersResponse {
     private Integer quantity;
-    private List<GetUserDto> users;
+    private List<FindUserReponse> users;
 
-    public GetUsersDto(List<GetUserDto> users) {
+    public FindUsersResponse(List<FindUserReponse> users) {
         this.quantity = users.size();
         this.users = users;
     }

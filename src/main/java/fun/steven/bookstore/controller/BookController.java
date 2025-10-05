@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import fun.steven.bookstore.pojo.dto.ResponseMessage;
+import fun.steven.bookstore.pojo.ResponseMessage;
 import fun.steven.bookstore.pojo.dto.book.BookDto;
 import fun.steven.bookstore.pojo.dto.book.BooksDto;
 import fun.steven.bookstore.pojo.dto.book.CategoriesDto;
