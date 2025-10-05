@@ -12,24 +12,24 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CartResponseDto {
+public class FindCartResponse {
 
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    private class CartItemResponseDto {
+    private class CartItemResponse {
         private BookDto book;
         private Integer quantity;
 
-        public CartItemResponseDto(CartItem cartItem) {
+        public CartItemResponse(CartItem cartItem) {
             this.book = new BookDto(cartItem.getBook());
             this.quantity = cartItem.getQuantity();
         }
     }
 
-    List<CartItemResponseDto> cart;
+    List<CartItemResponse> cart;
 
-    public CartResponseDto(Cart cart) {
-        this.cart = cart.getCartItems().stream().map(CartItemResponseDto::new).toList();
+    public FindCartResponse(Cart cart) {
+        this.cart = cart.getCartItems().stream().map(CartItemResponse::new).toList();
     }
 }

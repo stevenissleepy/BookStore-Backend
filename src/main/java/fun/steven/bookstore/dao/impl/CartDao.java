@@ -1,114 +1,26 @@
 package fun.steven.bookstore.dao.impl;
 
-import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import fun.steven.bookstore.dao.ICartDao;
-import fun.steven.bookstore.pojo.dto.cart.AddToCartRequestDto;
-import fun.steven.bookstore.pojo.dto.cart.UpdateCartRequestDto;
-import fun.steven.bookstore.pojo.dto.cart.CartResponseDto;
-import fun.steven.bookstore.pojo.entity.Book;
 import fun.steven.bookstore.pojo.entity.Cart;
-import fun.steven.bookstore.pojo.entity.CartItem;
-import fun.steven.bookstore.repository.BookRepository;
 import fun.steven.bookstore.repository.CartRepository;
 
 @Repository
 public class CartDao implements ICartDao {
     @Autowired
     private CartRepository cartRepository;
-    @Autowired
-    private BookRepository bookRepository;
 
     @Override
-    public boolean addToCart(Long cartId, AddToCartRequestDto cartItemDto) {
-        Long bookId = cartItemDto.getBookId();
-        Cart cart = cartRepository.findById(cartId)
-                .orElseThrow(() -> new RuntimeException("Cart not found: " + cartId));
-        Book book = bookRepository.findById(bookId)
-                .orElseThrow(() -> new RuntimeException("Book not found: " + bookId));
-
-        // 检查书籍是否已经下架
-        if (book.getDeleted()) {
-            throw new RuntimeException("这本书已下架");
-        }
-
-        // 在cart的cartItems集合中查找是否已存在该商品
-        List<CartItem> cartItems = cart.getCartItems();
-        for (CartItem item : cartItems) {
-            if (item.getBook().getId().equals(bookId)) {
-                // 如果已存在，则更新数量
-                item.setQuantity(item.getQuantity() + cartItemDto.getQuantity());
-                cart.setCartItems(cartItems);
-                cartRepository.save(cart);
-                return true;
-            }
-        }
-
-        // 否则创建新的CartItem并添加到购物车
-        CartItem newCartItem = new CartItem();
-        newCartItem.setCart(cart);
-        newCartItem.setBook(book);
-        newCartItem.setQuantity(cartItemDto.getQuantity());
-        cartItems.add(newCartItem);
-        cart.setCartItems(cartItems);
-        cartRepository.save(cart);
-
-        return true;
+    public boolean save(Cart cart) {
+        return cartRepository.save(cart) != null;
     }
 
     @Override
-    public boolean deleteFromCart(Long cartId, Long bookId) {
-        Cart cart = cartRepository.findById(cartId)
-                .orElseThrow(() -> new RuntimeException("Cart not found: " + cartId));
-        List<CartItem> cartItems = cart.getCartItems();
-
-        // 查找并删除指定的CartItem
-        cartItems.removeIf(item -> item.getBook().getId().equals(bookId));
-        cart.setCartItems(cartItems);
-        cartRepository.save(cart);
-
-        return true;
-    }
-
-    @Override
-    public boolean updateCartItem(Long cartId, UpdateCartRequestDto cartItemDto) {
-        Long bookId = cartItemDto.getBookId();
-        Cart cart = cartRepository.findById(cartId)
-                .orElseThrow(() -> new RuntimeException("Cart not found: " + cartId));
-        List<CartItem> cartItems = cart.getCartItems();
-
-        // 查找并更新指定的CartItem
-        for (CartItem item : cartItems) {
-            if (item.getBook().getId().equals(bookId)) {
-                item.setQuantity(cartItemDto.getQuantity());
-                cart.setCartItems(cartItems);
-                cartRepository.save(cart);
-                return true;
-            }
-        }
-
-        throw new RuntimeException("Cart item with book id " + bookId + " not found in cart: " + cartId);
-    }
-
-    @Override
-    public CartResponseDto getCart(Long cartId) {
-        Cart cart = cartRepository.findById(cartId)
-                .orElseThrow(() -> new RuntimeException("Cart not found: " + cartId));
-
-        // 检查购物车中是否有已下架的书籍
-        for (CartItem item : cart.getCartItems()) {
-            if (item.getBook().getDeleted()) {
-                deleteFromCart(cartId, item.getBook().getId());
-            }
-        }
-        
-        // 重新获取购物车以确保已下架的书籍被删除
-        cart = cartRepository.findById(cartId)
-                .orElseThrow(() -> new RuntimeException("Cart not found after cleanup: " + cartId));
-
-        return new CartResponseDto(cart);
+    public Optional<Cart> findByUserId(Long userId) {
+        return cartRepository.findByUserId(userId);
     }
 }

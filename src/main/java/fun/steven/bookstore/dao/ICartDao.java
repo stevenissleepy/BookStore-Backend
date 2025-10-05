@@ -1,15 +1,12 @@
 package fun.steven.bookstore.dao;
 
-import fun.steven.bookstore.pojo.dto.cart.AddToCartRequestDto;
-import fun.steven.bookstore.pojo.dto.cart.CartResponseDto;
-import fun.steven.bookstore.pojo.dto.cart.UpdateCartRequestDto;
+
+import java.util.Optional;
+
+import fun.steven.bookstore.pojo.entity.Cart;
 
 public interface ICartDao {
-    boolean addToCart(Long cartId, AddToCartRequestDto cartItemDto);
+    boolean save(Cart cart);
 
-    boolean deleteFromCart(Long cartId, Long bookId);
-
-    boolean updateCartItem(Long cartId, UpdateCartRequestDto cartItemDto);
-
-    CartResponseDto getCart(Long cartId);
+    Optional<Cart> findByUserId(Long userId);
 }
