@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import fun.steven.bookstore.dao.IBookDao;
 import fun.steven.bookstore.dao.ICartDao;
-import fun.steven.bookstore.dao.IUserDao;
 import fun.steven.bookstore.pojo.dto.cart.AddToCartRequest;
 import fun.steven.bookstore.pojo.dto.cart.FindCartResponse;
 import fun.steven.bookstore.pojo.dto.cart.UpdateCartRequest;

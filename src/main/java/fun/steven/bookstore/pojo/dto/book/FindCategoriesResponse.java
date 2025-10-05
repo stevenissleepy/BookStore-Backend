@@ -7,6 +7,6 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class CategoriesDto {
+public class FindCategoriesResponse {
     private List<String> categories;
 }

@@ -2,7 +2,7 @@ package fun.steven.bookstore.pojo.dto.cart;
 
 import java.util.List;
 
-import fun.steven.bookstore.pojo.dto.book.BookDto;
+import fun.steven.bookstore.pojo.dto.book.FindBookResponse;
 import fun.steven.bookstore.pojo.entity.Cart;
 import fun.steven.bookstore.pojo.entity.CartItem;
 import lombok.AllArgsConstructor;
@@ -18,11 +18,11 @@ public class FindCartResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     private class CartItemResponse {
-        private BookDto book;
+        private FindBookResponse book;
         private Integer quantity;
 
         public CartItemResponse(CartItem cartItem) {
-            this.book = new BookDto(cartItem.getBook());
+            this.book = new FindBookResponse(cartItem.getBook());
             this.quantity = cartItem.getQuantity();
         }
     }

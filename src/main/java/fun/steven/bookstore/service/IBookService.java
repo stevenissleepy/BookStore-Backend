@@ -1,15 +1,22 @@
 package fun.steven.bookstore.service;
 
-import fun.steven.bookstore.pojo.dto.book.BookDto;
-import fun.steven.bookstore.pojo.dto.book.BooksDto;
-import fun.steven.bookstore.pojo.dto.book.CategoriesDto;
-import fun.steven.bookstore.pojo.dto.book.SearchBooksDto;
+import fun.steven.bookstore.pojo.dto.book.AddBookRequest;
+import fun.steven.bookstore.pojo.dto.book.FindBooksResponse;
+import fun.steven.bookstore.pojo.dto.book.FindCategoriesResponse;
+import fun.steven.bookstore.pojo.dto.book.FindBookResponse;
+import fun.steven.bookstore.pojo.dto.book.SearchBooksRequest;
+import fun.steven.bookstore.pojo.dto.book.UpdateBookRequest;
 
 public interface IBookService {
-    boolean add(BookDto bookDto);
-    boolean delete(Long id);
-    boolean update(BookDto bookDto);
-    BookDto get(Long id);
-    BooksDto searchBooks(SearchBooksDto searchBooksDto);
-    CategoriesDto getCategories();
+    boolean addBook(AddBookRequest request);
+
+    boolean deleteBook(Long bookId);
+
+    FindBookResponse findBook(Long bookId);
+
+    FindBooksResponse searchBooks(SearchBooksRequest request);
+
+    FindCategoriesResponse findCategories();
+
+    boolean updateBook(UpdateBookRequest request);
 }

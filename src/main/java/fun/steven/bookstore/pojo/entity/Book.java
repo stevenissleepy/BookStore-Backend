@@ -2,7 +2,7 @@ package fun.steven.bookstore.pojo.entity;
 
 import org.springframework.beans.BeanUtils;
 
-import fun.steven.bookstore.pojo.dto.book.BookDto;
+import fun.steven.bookstore.pojo.dto.book.AddBookRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -52,7 +52,7 @@ public class Book {
     @Column(name = "deleted")
     private Boolean deleted = false;
 
-    public Book(BookDto bookDto) {
-        BeanUtils.copyProperties(bookDto, this);
+    public Book(AddBookRequest request) {
+        BeanUtils.copyProperties(request, this);
     }
 }

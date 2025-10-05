@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import fun.steven.bookstore.pojo.ResponseMessage;
-import fun.steven.bookstore.pojo.dto.book.BookDto;
-import fun.steven.bookstore.pojo.dto.book.BooksDto;
-import fun.steven.bookstore.pojo.dto.book.CategoriesDto;
-import fun.steven.bookstore.pojo.dto.book.SearchBooksDto;
+import fun.steven.bookstore.pojo.dto.book.AddBookRequest;
+import fun.steven.bookstore.pojo.dto.book.FindBookResponse;
+import fun.steven.bookstore.pojo.dto.book.FindBooksResponse;
+import fun.steven.bookstore.pojo.dto.book.FindCategoriesResponse;
+import fun.steven.bookstore.pojo.dto.book.SearchBooksRequest;
+import fun.steven.bookstore.pojo.dto.book.UpdateBookRequest;
 import fun.steven.bookstore.service.IBookService;
 import fun.steven.bookstore.utils.annotation.AdminOnly;
 
@@ -26,41 +28,40 @@ public class BookController {
 
     @AdminOnly
     @PostMapping
-    public ResponseMessage<String> add(@RequestBody BookDto bookDto) {
-        bookService.add(bookDto);
+    public ResponseMessage<String> addBook(@RequestBody AddBookRequest request) {
+        bookService.addBook(request);
         return ResponseMessage.success("add book success", null);
     }
 
     @AdminOnly
     @PutMapping
-    public ResponseMessage<String> update(@RequestBody BookDto bookDto) {
-        bookService.update(bookDto);
+    public ResponseMessage<String> update(@RequestBody UpdateBookRequest request) {
+        bookService.updateBook(request);
         return ResponseMessage.success("update book success", null);
     }
 
     @AdminOnly
     @DeleteMapping("/{id}")
-    public ResponseMessage<String> delete(@PathVariable Long id) {
-        bookService.delete(id);
+    public ResponseMessage<String> deleteBook(@PathVariable Long id) {
+        bookService.deleteBook(id);
         return ResponseMessage.success("delete book success", null);
     }
 
     @PostMapping("/search")
-    public ResponseMessage<BooksDto> searchBooks(@RequestBody SearchBooksDto searchBooksDto) {
-        BooksDto booksDto = bookService.searchBooks(searchBooksDto);
+    public ResponseMessage<FindBooksResponse> searchBooks(@RequestBody SearchBooksRequest request) {
+        FindBooksResponse booksDto = bookService.searchBooks(request);
         return ResponseMessage.success("search book success", booksDto);
     }
 
     @GetMapping("/categories")
-    public ResponseMessage<CategoriesDto> getCategories() {
-        CategoriesDto categoriesDto = bookService.getCategories();
-        return ResponseMessage.success("get categories success", categoriesDto);
+    public ResponseMessage<FindCategoriesResponse> findCategories() {
+        FindCategoriesResponse response = bookService.findCategories();
+        return ResponseMessage.success("get categories success", response);
     }
 
     @GetMapping("/{id}")
-    public ResponseMessage<BookDto> getBookById(@PathVariable Long id) {
-        BookDto bookDto = bookService.get(id);
-        return ResponseMessage.success("get book success", bookDto);
+    public ResponseMessage<FindBookResponse> findBook(@PathVariable Long id) {
+        FindBookResponse response = bookService.findBook(id);
+        return ResponseMessage.success("get book success", response);
     }
-
 }

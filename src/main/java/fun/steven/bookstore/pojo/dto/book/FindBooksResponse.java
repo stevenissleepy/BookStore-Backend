@@ -10,16 +10,16 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class BooksDto {
+public class FindBooksResponse {
     Integer quantity;
-    List<BookDto> books;
+    List<FindBookResponse> books;
     private Integer currentPage;
     private Boolean first;
     private Boolean last;
 
-    public BooksDto(Page<Book> page) {
+    public FindBooksResponse(Page<Book> page) {
         this.quantity = (int) page.getTotalElements();
-        this.books = page.getContent().stream().map(BookDto::new).toList();
+        this.books = page.getContent().stream().map(FindBookResponse::new).toList();
         this.currentPage = page.getNumber();
         this.first = page.isFirst();
         this.last = page.isLast();
