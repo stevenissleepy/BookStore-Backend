@@ -129,6 +129,10 @@ public class UserService implements IUserService {
     public SessionDto login(LoginRequest request) {
         String username = request.getUsername();
         String password = request.getPassword();
+        if (username == null || password == null) {
+            throw new LoginException("用户名或密码不能为空");
+        }
+
         password = BCryptUtils.hashPassword(password, username);
 
         if (!userDao.existsByUsername(username)) {

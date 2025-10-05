@@ -60,12 +60,6 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseMessage<String> login(@RequestBody LoginRequest loginRequest, HttpServletRequest request) {
-        String username = loginRequest.getUsername();
-        String password = loginRequest.getPassword();
-        if (username == null || password == null) {
-            return ResponseMessage.error(401, "用户名或密码不能为空");
-        }
-
         SessionDto userSession = userService.login(loginRequest);
         request.getSession().setAttribute("userId", userSession.getUserId());
         request.getSession().setAttribute("username", userSession.getUsername());
