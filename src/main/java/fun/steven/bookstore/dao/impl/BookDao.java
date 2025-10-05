@@ -34,8 +34,8 @@ public class BookDao implements IBookDao {
     }
 
     @Override
-    public Page<Book> findByQuery(String query, Pageable pageable) {
-        return bookRepository.findByQuery(query, pageable);
+    public Page<Book> findByTitle(String title, Pageable pageable) {
+        return bookRepository.findByTitle(title, pageable);
     }
 
     @Override
@@ -44,8 +44,8 @@ public class BookDao implements IBookDao {
     }
 
     @Override
-    public Page<Book> findByQueryAndCategories(String query, List<String> categories, Pageable pageable) {
-        return bookRepository.findByQueryAndCategories(query, categories, pageable);
+    public Page<Book> findByTitleAndCategories(String title, List<String> categories, Pageable pageable) {
+        return bookRepository.findByTitleAndCategories(title, categories, pageable);
     }
 
     @Override

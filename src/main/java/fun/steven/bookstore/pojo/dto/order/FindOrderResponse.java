@@ -2,7 +2,7 @@ package fun.steven.bookstore.pojo.dto.order;
 
 import java.util.List;
 
-import fun.steven.bookstore.pojo.dto.book.BookDto;
+import fun.steven.bookstore.pojo.dto.book.FindBookResponse;
 import fun.steven.bookstore.pojo.entity.Order;
 import fun.steven.bookstore.pojo.entity.OrderItem;
 import lombok.AllArgsConstructor;
@@ -12,16 +12,16 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderResponseDto {
+public class FindOrderResponse {
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
     private class OrderItemResponseDto {
-        private BookDto book;
+        private FindBookResponse book;
         private Integer quantity;
 
         public OrderItemResponseDto(OrderItem orderItem) {
-            this.book = new BookDto(orderItem.getBook());
+            this.book = new FindBookResponse(orderItem.getBook());
             this.quantity = orderItem.getQuantity();
         }
     }
@@ -33,7 +33,7 @@ public class OrderResponseDto {
     private List<OrderItemResponseDto> orderItems;
     private String date;
 
-    public OrderResponseDto(Order order) {
+    public FindOrderResponse(Order order) {
         this.address = order.getAddress();
         this.tel = order.getTel();
         this.receiver = order.getReceiver();

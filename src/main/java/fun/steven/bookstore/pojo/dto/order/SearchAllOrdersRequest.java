@@ -5,10 +5,11 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class SearchDto {
+public class SearchAllOrdersRequest {
+    private Long userId;
     private String startDate;
     private String endDate;
-    private String BookTitle;
+    private String title;
     private Integer page;
     private Integer limit;
 }

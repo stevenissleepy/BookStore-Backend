@@ -46,7 +46,7 @@ public class BookService implements IBookService {
     }
 
     public FindBooksResponse searchBooks(SearchBooksRequest request) {
-        String query = request.getQuery();
+        String title = request.getTitle();
         List<String> categories = request.getCategories();
         Integer page = request.getPage();
         Integer limit = request.getLimit();
@@ -55,25 +55,25 @@ public class BookService implements IBookService {
         Page<Book> bookPage;
 
         // 如果查询条件和分类都为空，返回所有书籍
-        if ((query == null || query.trim().isEmpty()) &&
+        if ((title == null || title.trim().isEmpty()) &&
                 (categories == null || categories.isEmpty())) {
             bookPage = bookDao.findAll(pageable);
         }
 
         // 如果只有查询条件，没有分类限制
         else if (categories == null || categories.isEmpty()) {
-            query = (query == null) ? "" : query;
-            bookPage = bookDao.findByQuery(query, pageable);
+            title = (title == null) ? "" : title;
+            bookPage = bookDao.findByTitle(title, pageable);
         }
 
         // 如果只有分类限制，没有查询条件
-        else if (query == null || query.trim().isEmpty()) {
+        else if (title == null || title.trim().isEmpty()) {
             bookPage = bookDao.findByCategories(categories, pageable);
         }
 
         // 如果查询条件和分类都有
         else {
-            bookPage = bookDao.findByQueryAndCategories(query.trim(), categories, pageable);
+            bookPage = bookDao.findByTitleAndCategories(title.trim(), categories, pageable);
         }
 
         return new FindBooksResponse(bookPage);

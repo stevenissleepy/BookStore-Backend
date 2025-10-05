@@ -3,7 +3,8 @@ package fun.steven.bookstore.pojo.dto.stats;
 import lombok.Data;
 
 @Data
-public class DateRangeDto {
+public class StatsUserRequest {
+    Long userId;
     private String startDate;
     private String endDate;
 }

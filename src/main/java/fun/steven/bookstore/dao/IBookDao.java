@@ -14,9 +14,9 @@ public interface IBookDao {
     boolean delete(Long id);
 
     Page<Book> findAll(Pageable pageable);
-    Page<Book> findByQuery(String query, Pageable pageable);
+    Page<Book> findByTitle(String title, Pageable pageable);
     Page<Book> findByCategories(List<String> categories, Pageable pageable);
-    Page<Book> findByQueryAndCategories(String query, List<String> categories, Pageable pageable);
+    Page<Book> findByTitleAndCategories(String title, List<String> categories, Pageable pageable);
     Optional<Book> findById(Long id);
     List<String> findDistinctCategories();
 }

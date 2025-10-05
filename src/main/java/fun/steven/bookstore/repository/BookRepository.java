@@ -19,9 +19,9 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     Page<Book> findAllBooks(Pageable pageable);
 
     @Query("SELECT b FROM Book b " +
-            "WHERE LOWER(b.title) LIKE LOWER(CONCAT('%', :query, '%')) " +
+            "WHERE LOWER(b.title) LIKE LOWER(CONCAT('%', :title, '%')) " +
             "AND b.deleted = false")
-    Page<Book> findByQuery(@Param("query") String query, Pageable pageable);
+    Page<Book> findByTitle(@Param("title") String title, Pageable pageable);
 
     @Query("SELECT b FROM Book b " +
             "WHERE b.category IN :categories " +
@@ -29,10 +29,10 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     Page<Book> findByCategories(@Param("categories") List<String> categories, Pageable pageable);
 
     @Query("SELECT b FROM Book b WHERE " +
-            "LOWER(b.title) LIKE LOWER(CONCAT('%', :query, '%')) " +
+            "LOWER(b.title) LIKE LOWER(CONCAT('%', :title, '%')) " +
             "AND b.category IN :categories AND b.deleted = false")
-    Page<Book> findByQueryAndCategories(
-            @Param("query") String query,
+    Page<Book> findByTitleAndCategories(
+            @Param("title") String title,
             @Param("categories") List<String> categories,
             Pageable pageable);
 

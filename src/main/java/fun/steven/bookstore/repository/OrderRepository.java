@@ -23,16 +23,16 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             Pageable pageable);
 
     @Query("SELECT DISTINCT o FROM Order o JOIN o.orderItems oi JOIN oi.book b " +
-            "WHERE LOWER(b.title) LIKE LOWER(CONCAT('%', :bookTitle, '%'))")
-    Page<Order> findByBookTitle(@Param("bookTitle") String bookTitle, Pageable pageable);
+            "WHERE LOWER(b.title) LIKE LOWER(CONCAT('%', :title, '%'))")
+    Page<Order> findByTitle(@Param("title") String title, Pageable pageable);
 
     @Query("SELECT DISTINCT o FROM Order o JOIN o.orderItems oi JOIN oi.book b " +
             "WHERE o.date >= :startDate AND o.date <= :endDate " +
-            "AND b.title LIKE CONCAT('%', :bookTitle, '%')")
-    Page<Order> findByDateRangeAndBookTitle(
+            "AND b.title LIKE CONCAT('%', :title, '%')")
+    Page<Order> findByDateRangeAndTitle(
             @Param("startDate") LocalDateTime startDate,
             @Param("endDate") LocalDateTime endDate,
-            @Param("bookTitle") String bookTitle,
+            @Param("title") String title,
             Pageable pageable);
 
     /* 查询用户的订单 */
@@ -46,20 +46,20 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             Pageable pageable);
 
     @Query("SELECT DISTINCT o FROM Order o JOIN o.orderItems oi JOIN oi.book b " +
-            "WHERE o.user.id = :userId AND LOWER(b.title) LIKE LOWER(CONCAT('%', :bookTitle, '%'))")
-    Page<Order> findByUserIdAndBookTitle(
+            "WHERE o.user.id = :userId AND LOWER(b.title) LIKE LOWER(CONCAT('%', :title, '%'))")
+    Page<Order> findByUserIdAndTitle(
             @Param("userId") Long userId,
-            @Param("bookTitle") String bookTitle,
+            @Param("title") String title,
             Pageable pageable);
 
     @Query("SELECT DISTINCT o FROM Order o JOIN o.orderItems oi JOIN oi.book b " +
             "WHERE o.user.id = :userId AND o.date >= :startDate AND o.date <= :endDate " +
-            "AND LOWER(b.title) LIKE LOWER(CONCAT('%', :bookTitle, '%'))")
-    Page<Order> findByUserIdAndDateRangeAndBookTitle(
+            "AND LOWER(b.title) LIKE LOWER(CONCAT('%', :title, '%'))")
+    Page<Order> findByUserIdAndDateRangeAndTitle(
             @Param("userId") Long userId,
             @Param("startDate") LocalDateTime startDate,
             @Param("endDate") LocalDateTime endDate,
-            @Param("bookTitle") String bookTitle,
+            @Param("title") String title,
             Pageable pageable);
 
     /* 统计用户购买了那些书籍 */
@@ -69,7 +69,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "WHERE o.user.id = :userId " +
             "GROUP BY oi.book " +
             "ORDER BY SUM(oi.quantity) DESC")
-    List<Object[]> findBooksByUserId(@Param("userId") Long userId);
+    List<Object[]> findByUserId(@Param("userId") Long userId);
 
     @Query("SELECT oi.book, SUM(oi.quantity) " +
             "FROM Order o " +
@@ -78,7 +78,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "AND o.date >= :startDate AND o.date <= :endDate " +
             "GROUP BY oi.book " +
             "ORDER BY SUM(oi.quantity) DESC")
-    List<Object[]> findBooksByUserIdAndDateRange(
+    List<Object[]> findByUserIdAndDateRange(
             @Param("userId") Long userId,
             @Param("startDate") LocalDateTime startDate,
             @Param("endDate") LocalDateTime endDate);

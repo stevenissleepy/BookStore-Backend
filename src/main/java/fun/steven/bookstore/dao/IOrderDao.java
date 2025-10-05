@@ -1,18 +1,47 @@
 package fun.steven.bookstore.dao;
 
-import fun.steven.bookstore.pojo.dto.book.BookDto;
-import fun.steven.bookstore.pojo.dto.order.createOrderRequestDto;
-import fun.steven.bookstore.pojo.dto.order.OrdersResponseDto;
-import fun.steven.bookstore.pojo.dto.order.SearchDto;
-import fun.steven.bookstore.pojo.dto.stats.ResultDto;
-import fun.steven.bookstore.pojo.dto.stats.DateRangeDto;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import fun.steven.bookstore.pojo.entity.Order;
 
 public interface IOrderDao {
-    boolean createOrder(Long cartId, createOrderRequestDto orderDto);
+    /* 查询所有订单 */
+    Page<Order> findAll(Pageable pageable);
 
-    OrdersResponseDto searchUserOrders(Long userId, SearchDto searchDto);
-    OrdersResponseDto searchAllOrders(SearchDto searchDto);
-    ResultDto<BookDto> statsBooks(Long userId, DateRangeDto dateRangeDto);
-    ResultDto<String> searchTop10Books(DateRangeDto dateRangeDto);
-    ResultDto<String> searchTop10Users(DateRangeDto dateRangeDto);
+    Page<Order> findByTitle(String title, Pageable pageable);
+
+    Page<Order> findByDateRange(LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
+
+    Page<Order> findByDateRangeAndTitle(LocalDateTime startDate, LocalDateTime endDate,
+            String title, Pageable pageable);
+
+    /* 查询用户的订单 */
+    Page<Order> findByUserId(Long userId, Pageable pageable);
+
+    Page<Order> findByUserIdAndTitle(Long userId, String title, Pageable pageable);
+
+    Page<Order> findByUserIdAndDateRange(Long userId, LocalDateTime startDate,
+            LocalDateTime endDate, Pageable pageable);
+
+    Page<Order> findByUserIdAndDateRangeAndTitle(Long userId, LocalDateTime startDate,
+            LocalDateTime endDate, String title, Pageable pageable);
+
+    /* 统计用户购买的书籍 */
+    List<Object[]> findByUserId(Long userId);
+
+    List<Object[]> findByUserIdAndDateRange(Long userId, LocalDateTime startDate, LocalDateTime endDate);
+
+    /* 查询10本销量最高的书 */
+    List<Object[]> findTop10Books();
+
+    List<Object[]> findTop10BooksByDateRange(LocalDateTime startDate, LocalDateTime endDate);
+
+    /* 查询10个消费最高的用户 */
+    List<Object[]> findTop10Users();
+
+    List<Object[]> findTop10UsersByDateRange(LocalDateTime startDate, LocalDateTime endDate);
 }

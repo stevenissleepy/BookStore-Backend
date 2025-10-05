@@ -1,62 +1,244 @@
 package fun.steven.bookstore.service.impl;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import fun.steven.bookstore.dao.ICartDao;
+import fun.steven.bookstore.dao.IBookDao;
 import fun.steven.bookstore.dao.IOrderDao;
 import fun.steven.bookstore.dao.IUserDao;
-import fun.steven.bookstore.pojo.dto.book.BookDto;
-import fun.steven.bookstore.pojo.dto.order.createOrderRequestDto;
-import fun.steven.bookstore.pojo.dto.order.OrdersResponseDto;
-import fun.steven.bookstore.pojo.dto.order.SearchDto;
+import fun.steven.bookstore.pojo.dto.book.FindBookResponse;
+import fun.steven.bookstore.pojo.dto.order.CreateOrderRequest;
+import fun.steven.bookstore.pojo.dto.order.FindOrdersResponse;
+import fun.steven.bookstore.pojo.dto.order.SearchAllOrdersRequest;
+import fun.steven.bookstore.pojo.dto.order.SearchUserOrdersRequest;
 import fun.steven.bookstore.pojo.dto.stats.ResultDto;
+import fun.steven.bookstore.pojo.dto.stats.ResultDto.ResultItemDto;
 import fun.steven.bookstore.service.IOrderService;
-import fun.steven.bookstore.pojo.dto.stats.DateRangeDto;
+import fun.steven.bookstore.pojo.dto.stats.StatsAllRequest;
+import fun.steven.bookstore.pojo.dto.stats.StatsUserRequest;
+import fun.steven.bookstore.pojo.entity.Book;
+import fun.steven.bookstore.pojo.entity.CartItem;
+import fun.steven.bookstore.pojo.entity.Order;
+import fun.steven.bookstore.pojo.entity.OrderItem;
+import fun.steven.bookstore.pojo.entity.User;
 
 @Service
 public class OrderService implements IOrderService {
     @Autowired
-    private ICartDao cartDao;
-    @Autowired
     private IUserDao userDao;
+    @Autowired
+    private IBookDao bookDao;
     @Autowired
     private IOrderDao orderDao;
 
     @Override
-    public boolean cartToOrder(Long userId, createOrderRequestDto addOrderDto) {
-        orderDao.createOrder(userId, addOrderDto);
-        
-        Long cartId = userDao.getCartId(userId);
-        for(Long bookId : addOrderDto.getBookIds()) {
-            cartDao.deleteFromCart(cartId, bookId);
-        }
+    public boolean createOrder(CreateOrderRequest request) {
+
+        /* 获取用户所有的 CartItem */
+        Long userId = request.getUserId();
+        User user = userDao.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        List<CartItem> cartItems = user.getCart().getCartItems();
+
+        /* 只保留选中的 cartItem */
+        List<Long> bookIds = request.getBookIds();
+        List<CartItem> selectedCartItems = cartItems.stream()
+                .filter(item -> bookIds.contains(item.getBook().getId()))
+                .toList();
+
+        /* 创建订单 */
+        Order order = new Order();
+        order.setUser(user);
+        order.setReceiver(request.getReceiver());
+        order.setTel(request.getTel());
+        order.setAddress(request.getAddress());
+        order.setDate(java.time.LocalDateTime.now());
+
+        /* 将购物车中的商品加到订单中 */
+        List<OrderItem> orderItems = selectedCartItems.stream().map(item -> {
+            OrderItem orderItem = new OrderItem();
+            orderItem.setOrder(order);
+            orderItem.setBook(item.getBook());
+            orderItem.setQuantity(item.getQuantity());
+            return orderItem;
+        }).toList();
+        order.setOrderItems(orderItems);
+
+        /* 从库存中删去已经被购买的书 */
+        selectedCartItems.forEach(item -> {
+            Book book = item.getBook();
+            book.setStock(book.getStock() - item.getQuantity());
+            bookDao.save(book);
+        });
+
+        /* 从购物车移除已经购买的商品 */
+        user.getCart().getCartItems().removeIf(item -> bookIds.contains(item.getBook().getId()));
+
+        /* 计算总价格 */
+        Integer totalPrice = selectedCartItems.stream().mapToInt(
+                item -> item.getBook().getPrice() * item.getQuantity()).sum();
+        order.setTotalPrice(totalPrice);
+
+        /* 保存订单 */
+        user.getOrders().add(order);
+        userDao.save(user);
 
         return true;
     }
 
     @Override
-    public OrdersResponseDto searchUserOrders(Long userId, SearchDto searchDto) {
-        return orderDao.searchUserOrders(userId, searchDto);
+    public FindOrdersResponse searchUserOrders(SearchUserOrdersRequest request) {
+        Long userId = request.getUserId();
+        String startDateStr = request.getStartDate();
+        String endDateStr = request.getEndDate();
+        String title = request.getTitle();
+        Integer page = request.getPage();
+        Integer limit = request.getLimit();
+        Pageable pageable = Pageable.ofSize(limit).withPage(page);
+
+        Page<Order> orders;
+
+        boolean hasStartDate = startDateStr != null && !startDateStr.isEmpty();
+        boolean hasEndDate = endDateStr != null && !endDateStr.isEmpty();
+        boolean hasTitle = title != null && !title.isEmpty();
+
+        // 有日期和书名
+        if (hasStartDate && hasEndDate && hasTitle) {
+            LocalDateTime startDate = LocalDate.parse(startDateStr).atStartOfDay();
+            LocalDateTime endDate = LocalDate.parse(endDateStr).atTime(23, 59, 59);
+            orders = orderDao.findByUserIdAndDateRangeAndTitle(userId, startDate, endDate, title,
+                    pageable);
+
+        }
+        // 有日期范围，没有书名
+        else if (hasStartDate && hasEndDate) {
+            LocalDateTime startDate = LocalDate.parse(startDateStr).atStartOfDay();
+            LocalDateTime endDate = LocalDate.parse(endDateStr).atTime(23, 59, 59);
+            orders = orderDao.findByUserIdAndDateRange(userId, startDate, endDate, pageable);
+
+        }
+        // 有书名，没有日期范围
+        else if (hasTitle) {
+            orders = orderDao.findByUserIdAndTitle(userId, title, pageable);
+
+        }
+        // 没有任何条件
+        else {
+            orders = orderDao.findByUserId(userId, pageable);
+        }
+
+        return new FindOrdersResponse(orders);
     }
 
     @Override
-    public OrdersResponseDto searchAllOrders(SearchDto searchDto) {
-        return orderDao.searchAllOrders(searchDto);
-    }
-    
-    @Override
-    public ResultDto<BookDto> statsBooks(Long userId, DateRangeDto dateRangeDto) {
-        return orderDao.statsBooks(userId, dateRangeDto);
+    public FindOrdersResponse searchAllOrders(SearchAllOrdersRequest request) {
+        String startDateStr = request.getStartDate();
+        String endDateStr = request.getEndDate();
+        String title = request.getTitle();
+        Integer page = request.getPage();
+        Integer limit = request.getLimit();
+        Pageable pageable = Pageable.ofSize(limit).withPage(page);
+
+        Page<Order> orders;
+
+        boolean hasStartDate = startDateStr != null && !startDateStr.isEmpty();
+        boolean hasEndDate = endDateStr != null && !endDateStr.isEmpty();
+        boolean hasBookTitle = title != null && !title.isEmpty();
+
+        // 有日期和书名
+        if (hasStartDate && hasEndDate && hasBookTitle) {
+            LocalDateTime startDate = LocalDate.parse(startDateStr).atStartOfDay();
+            LocalDateTime endDate = LocalDate.parse(endDateStr).atTime(23, 59, 59);
+            orders = orderDao.findByDateRangeAndTitle(startDate, endDate, title, pageable);
+
+            // 有日期范围，没有书名
+        } else if (hasStartDate && hasEndDate) {
+            LocalDateTime startDate = LocalDate.parse(startDateStr).atStartOfDay();
+            LocalDateTime endDate = LocalDate.parse(endDateStr).atTime(23, 59, 59);
+            orders = orderDao.findByDateRange(startDate, endDate, pageable);
+
+            // 有书名，没有日期范围
+        } else if (hasBookTitle) {
+            orders = orderDao.findByTitle(title, pageable);
+
+            // 没有任何条件
+        } else {
+            orders = orderDao.findAll(pageable);
+        }
+
+        return new FindOrdersResponse(orders);
     }
 
     @Override
-    public ResultDto<String> searchTop10Books(DateRangeDto dateRangeDto) {
-        return orderDao.searchTop10Books(dateRangeDto);
+    public ResultDto<FindBookResponse> statsBooks(StatsUserRequest request) {
+        Long userId = request.getUserId();
+        String startDateStr = request.getStartDate();
+        String endDateStr = request.getEndDate();
+        List<Object[]> bookList;
+
+        if (startDateStr == null || endDateStr == null || startDateStr.isEmpty() || endDateStr.isEmpty()) {
+            bookList = orderDao.findByUserId(userId);
+        } else {
+            LocalDateTime startDate = LocalDate.parse(startDateStr).atStartOfDay();
+            LocalDateTime endDate = LocalDate.parse(endDateStr).atTime(23, 59, 59);
+            bookList = orderDao.findByUserIdAndDateRange(userId, startDate, endDate);
+        }
+
+        List<ResultItemDto<FindBookResponse>> bookItems = bookList.stream()
+                .map(item -> {
+                    Book book = (Book) item[0];
+                    Integer sales = ((Number) item[1]).intValue();
+                    FindBookResponse bookDto = new FindBookResponse(book);
+                    return new ResultItemDto<>(bookDto, sales);
+                })
+                .toList();
+        return new ResultDto<>(bookItems);
     }
 
     @Override
-    public ResultDto<String> searchTop10Users(DateRangeDto dateRangeDto) {
-        return orderDao.searchTop10Users(dateRangeDto);
+    public ResultDto<String> searchTop10Books(StatsAllRequest request) {
+        String startDateStr = request.getStartDate();
+        String endDateStr = request.getEndDate();
+        List<Object[]> salesList;
+
+        if (startDateStr == null || endDateStr == null || startDateStr.isEmpty() || endDateStr.isEmpty()) {
+            salesList = orderDao.findTop10Books();
+        } else {
+            LocalDateTime startDate = LocalDate.parse(startDateStr).atStartOfDay();
+            LocalDateTime endDate = LocalDate.parse(endDateStr).atTime(23, 59, 59);
+            salesList = orderDao.findTop10BooksByDateRange(startDate, endDate);
+        }
+
+        List<ResultItemDto<String>> salesItems = salesList.stream()
+                .map(sale -> new ResultItemDto<>((String) sale[0], ((Number) sale[1]).intValue()))
+                .toList();
+
+        return new ResultDto<>(salesItems);
+    }
+
+    @Override
+    public ResultDto<String> searchTop10Users(StatsAllRequest request) {
+        String startDateStr = request.getStartDate();
+        String endDateStr = request.getEndDate();
+        List<Object[]> salesList;
+
+        if (startDateStr == null || endDateStr == null || startDateStr.isEmpty() || endDateStr.isEmpty()) {
+            salesList = orderDao.findTop10Users();
+        } else {
+            LocalDateTime startDate = LocalDate.parse(startDateStr).atStartOfDay();
+            LocalDateTime endDate = LocalDate.parse(endDateStr).atTime(23, 59, 59);
+            salesList = orderDao.findTop10UsersByDateRange(startDate, endDate);
+        }
+
+        List<ResultItemDto<String>> salesItems = salesList.stream()
+                .map(sale -> new ResultItemDto<>((String) sale[0], ((Number) sale[1]).intValue()))
+                .toList();
+        return new ResultDto<>(salesItems);
     }
 }

@@ -7,9 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import fun.steven.bookstore.pojo.ResponseMessage;
-import fun.steven.bookstore.pojo.dto.book.BookDto;
+import fun.steven.bookstore.pojo.dto.book.FindBookResponse;
 import fun.steven.bookstore.pojo.dto.stats.ResultDto;
-import fun.steven.bookstore.pojo.dto.stats.DateRangeDto;
+import fun.steven.bookstore.pojo.dto.stats.StatsAllRequest;
+import fun.steven.bookstore.pojo.dto.stats.StatsUserRequest;
 import fun.steven.bookstore.service.IOrderService;
 import fun.steven.bookstore.utils.annotation.AdminOnly;
 import fun.steven.bookstore.utils.annotation.CurrentUserId;
@@ -23,23 +24,24 @@ public class StatsController {
 
     @AdminOnly
     @PostMapping("/top-10-books")
-    public ResponseMessage<ResultDto<String>> searchTop10Books(@RequestBody DateRangeDto dateRangeDto) {
-        ResultDto<String> salesDto = orderService.searchTop10Books(dateRangeDto);
+    public ResponseMessage<ResultDto<String>> searchTop10Books(@RequestBody StatsAllRequest request) {
+        ResultDto<String> salesDto = orderService.searchTop10Books(request);
         return ResponseMessage.success("get top 10 books success", salesDto);
     }
 
     @AdminOnly
     @PostMapping("/top-10-users")
-    public ResponseMessage<ResultDto<String>> searchTop10Users(@RequestBody DateRangeDto dateRangeDto) {
-        ResultDto<String> salesDto = orderService.searchTop10Users(dateRangeDto);
+    public ResponseMessage<ResultDto<String>> searchTop10Users(@RequestBody StatsAllRequest request) {
+        ResultDto<String> salesDto = orderService.searchTop10Users(request);
         return ResponseMessage.success("get top 10 users success", salesDto);
     }
 
     @PostMapping("/books")
-    public ResponseMessage<ResultDto<BookDto>> statsBooks(
+    public ResponseMessage<ResultDto<FindBookResponse>> statsBooks(
             @CurrentUserId Long userId,
-            @RequestBody DateRangeDto dateRangeDto) {
-        ResultDto<BookDto> salesDto = orderService.statsBooks(userId, dateRangeDto);
-        return ResponseMessage.success("get books stats success", salesDto);
+            @RequestBody StatsUserRequest request) {
+        request.setUserId(userId);
+        ResultDto<FindBookResponse> response = orderService.statsBooks(request);
+        return ResponseMessage.success("get books stats success", response);
     }
 }
