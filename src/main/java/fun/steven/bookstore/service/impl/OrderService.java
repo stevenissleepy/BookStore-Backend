@@ -10,8 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import fun.steven.bookstore.dao.IBookDao;
 import fun.steven.bookstore.dao.IOrderDao;
+import fun.steven.bookstore.dao.IOrderItemDao;
 import fun.steven.bookstore.dao.IUserDao;
 import fun.steven.bookstore.pojo.dto.order.CreateOrderRequest;
 import fun.steven.bookstore.pojo.dto.order.FindOrdersResponse;
@@ -29,61 +29,60 @@ public class OrderService implements IOrderService {
     @Autowired
     private IUserDao userDao;
     @Autowired
-    private IBookDao bookDao;
-    @Autowired
     private IOrderDao orderDao;
+    @Autowired
+    private IOrderItemDao orderItemDao;
 
     @Override
     @Transactional
     public boolean createOrder(CreateOrderRequest request) {
 
-        /* 获取用户所有的 CartItem */
+        /* 获取用户和它所有的 CartItem */
         Long userId = request.getUserId();
         User user = userDao.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
         List<CartItem> cartItems = user.getCart().getCartItems();
 
-        /* 只保留选中的 cartItem */
+        /* 筛选出本次下单的 CartItem */
         List<Long> bookIds = request.getBookIds();
-        List<CartItem> selectedCartItems = cartItems.stream()
+        cartItems = cartItems.stream()
                 .filter(item -> bookIds.contains(item.getBook().getId()))
                 .toList();
 
-        /* 创建订单 */
+        /* 创建 Order */
         Order order = new Order();
         order.setUser(user);
         order.setReceiver(request.getReceiver());
         order.setTel(request.getTel());
         order.setAddress(request.getAddress());
         order.setDate(java.time.LocalDateTime.now());
+        Integer totalPrice = cartItems.stream().mapToInt(
+                item -> item.getBook().getPrice() * item.getQuantity()).sum();
+        order.setTotalPrice(totalPrice);
 
-        /* 将购物车中的商品加到订单中 */
-        List<OrderItem> orderItems = selectedCartItems.stream().map(item -> {
+        /* 保存 Order, 这是事务中的第一个操作 */
+        Order savedOrder = orderDao.save(order);
+
+        /* 将 CartItem 转换为 OrderItem */
+        List<OrderItem> orderItems = cartItems.stream().map(item -> {
             OrderItem orderItem = new OrderItem();
-            orderItem.setOrder(order);
+            orderItem.setOrder(savedOrder);
             orderItem.setBook(item.getBook());
             orderItem.setQuantity(item.getQuantity());
             return orderItem;
         }).toList();
-        order.setOrderItems(orderItems);
 
-        /* 从库存中删去已经被购买的书 */
-        selectedCartItems.forEach(item -> {
+        /* 保存 OrderItem, 这是事务中的第二个操作 */
+        orderItemDao.saveAll(orderItems);
+
+        /* 更新书籍库存 */
+        cartItems.forEach(item -> {
             Book book = item.getBook();
             book.setStock(book.getStock() - item.getQuantity());
-            bookDao.save(book);
         });
 
-        /* 从购物车移除已经购买的商品 */
+        /* 从购物车移除已购买的商品 */
         user.getCart().getCartItems().removeIf(item -> bookIds.contains(item.getBook().getId()));
-
-        /* 计算总价格 */
-        Integer totalPrice = selectedCartItems.stream().mapToInt(
-                item -> item.getBook().getPrice() * item.getQuantity()).sum();
-        order.setTotalPrice(totalPrice);
-
-        /* 保存订单 */
-        user.getOrders().add(order);
         userDao.save(user);
 
         return true;

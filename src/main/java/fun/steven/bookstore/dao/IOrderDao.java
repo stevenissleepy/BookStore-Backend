@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import fun.steven.bookstore.pojo.entity.Order;
 
 public interface IOrderDao {
+    Order save(Order order);
+
     /* 查询所有订单 */
     Page<Order> findAll(Pageable pageable);
 

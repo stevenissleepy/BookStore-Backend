@@ -18,6 +18,11 @@ public class OrderDao implements IOrderDao {
     private OrderRepository orderRepository;
 
     @Override
+    public Order save(Order order) {
+        return orderRepository.save(order);
+    }
+
+    @Override
     public Page<Order> findAll(Pageable pageable) {
         return orderRepository.findAll(pageable);
     }
