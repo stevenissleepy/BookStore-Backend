@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import fun.steven.bookstore.dao.IBookDao;
 import fun.steven.bookstore.dao.IOrderDao;
@@ -33,6 +34,7 @@ public class OrderService implements IOrderService {
     private IOrderDao orderDao;
 
     @Override
+    @Transactional
     public boolean createOrder(CreateOrderRequest request) {
 
         /* 获取用户所有的 CartItem */

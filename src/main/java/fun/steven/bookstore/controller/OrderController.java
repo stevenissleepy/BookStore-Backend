@@ -12,8 +12,10 @@ import fun.steven.bookstore.service.IOrderService;
 import fun.steven.bookstore.utils.annotation.AdminOnly;
 import fun.steven.bookstore.utils.annotation.CurrentUserId;
 import fun.steven.bookstore.utils.annotation.UserOnly;
+import fun.steven.bookstore.utils.kafka.KafkaTopicConfig;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -23,12 +25,15 @@ public class OrderController {
     @Autowired
     private IOrderService orderService;
 
+    @Autowired
+    private KafkaTemplate<String, CreateOrderRequest> createOrderTemplate;
+
     @UserOnly
     @PostMapping
-    public ResponseMessage<String> createOrder(@CurrentUserId Long userId, @RequestBody CreateOrderRequest request) {
+    public ResponseMessage<?> createOrder(@CurrentUserId Long userId, @RequestBody CreateOrderRequest request) {
         request.setUserId(userId);
-        orderService.createOrder(request);
-        return ResponseMessage.success("create order success", null);
+        createOrderTemplate.send(KafkaTopicConfig.NEW_ORDER_TOPIC, request);
+        return ResponseMessage.success("订单请求已提交，正在处理中...", null);
     }
 
     @UserOnly
