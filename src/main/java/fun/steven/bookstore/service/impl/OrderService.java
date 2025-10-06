@@ -12,16 +12,11 @@ import org.springframework.stereotype.Service;
 import fun.steven.bookstore.dao.IBookDao;
 import fun.steven.bookstore.dao.IOrderDao;
 import fun.steven.bookstore.dao.IUserDao;
-import fun.steven.bookstore.pojo.dto.book.FindBookResponse;
 import fun.steven.bookstore.pojo.dto.order.CreateOrderRequest;
 import fun.steven.bookstore.pojo.dto.order.FindOrdersResponse;
 import fun.steven.bookstore.pojo.dto.order.SearchAllOrdersRequest;
 import fun.steven.bookstore.pojo.dto.order.SearchUserOrdersRequest;
-import fun.steven.bookstore.pojo.dto.stats.ResultDto;
-import fun.steven.bookstore.pojo.dto.stats.ResultDto.ResultItemDto;
 import fun.steven.bookstore.service.IOrderService;
-import fun.steven.bookstore.pojo.dto.stats.StatsAllRequest;
-import fun.steven.bookstore.pojo.dto.stats.StatsUserRequest;
 import fun.steven.bookstore.pojo.entity.Book;
 import fun.steven.bookstore.pojo.entity.CartItem;
 import fun.steven.bookstore.pojo.entity.Order;
@@ -175,70 +170,4 @@ public class OrderService implements IOrderService {
         return new FindOrdersResponse(orders);
     }
 
-    @Override
-    public ResultDto<FindBookResponse> statsBooks(StatsUserRequest request) {
-        Long userId = request.getUserId();
-        String startDateStr = request.getStartDate();
-        String endDateStr = request.getEndDate();
-        List<Object[]> bookList;
-
-        if (startDateStr == null || endDateStr == null || startDateStr.isEmpty() || endDateStr.isEmpty()) {
-            bookList = orderDao.findByUserId(userId);
-        } else {
-            LocalDateTime startDate = LocalDate.parse(startDateStr).atStartOfDay();
-            LocalDateTime endDate = LocalDate.parse(endDateStr).atTime(23, 59, 59);
-            bookList = orderDao.findByUserIdAndDateRange(userId, startDate, endDate);
-        }
-
-        List<ResultItemDto<FindBookResponse>> bookItems = bookList.stream()
-                .map(item -> {
-                    Book book = (Book) item[0];
-                    Integer sales = ((Number) item[1]).intValue();
-                    FindBookResponse bookDto = new FindBookResponse(book);
-                    return new ResultItemDto<>(bookDto, sales);
-                })
-                .toList();
-        return new ResultDto<>(bookItems);
-    }
-
-    @Override
-    public ResultDto<String> searchTop10Books(StatsAllRequest request) {
-        String startDateStr = request.getStartDate();
-        String endDateStr = request.getEndDate();
-        List<Object[]> salesList;
-
-        if (startDateStr == null || endDateStr == null || startDateStr.isEmpty() || endDateStr.isEmpty()) {
-            salesList = orderDao.findTop10Books();
-        } else {
-            LocalDateTime startDate = LocalDate.parse(startDateStr).atStartOfDay();
-            LocalDateTime endDate = LocalDate.parse(endDateStr).atTime(23, 59, 59);
-            salesList = orderDao.findTop10BooksByDateRange(startDate, endDate);
-        }
-
-        List<ResultItemDto<String>> salesItems = salesList.stream()
-                .map(sale -> new ResultItemDto<>((String) sale[0], ((Number) sale[1]).intValue()))
-                .toList();
-
-        return new ResultDto<>(salesItems);
-    }
-
-    @Override
-    public ResultDto<String> searchTop10Users(StatsAllRequest request) {
-        String startDateStr = request.getStartDate();
-        String endDateStr = request.getEndDate();
-        List<Object[]> salesList;
-
-        if (startDateStr == null || endDateStr == null || startDateStr.isEmpty() || endDateStr.isEmpty()) {
-            salesList = orderDao.findTop10Users();
-        } else {
-            LocalDateTime startDate = LocalDate.parse(startDateStr).atStartOfDay();
-            LocalDateTime endDate = LocalDate.parse(endDateStr).atTime(23, 59, 59);
-            salesList = orderDao.findTop10UsersByDateRange(startDate, endDate);
-        }
-
-        List<ResultItemDto<String>> salesItems = salesList.stream()
-                .map(sale -> new ResultItemDto<>((String) sale[0], ((Number) sale[1]).intValue()))
-                .toList();
-        return new ResultDto<>(salesItems);
-    }
 }
