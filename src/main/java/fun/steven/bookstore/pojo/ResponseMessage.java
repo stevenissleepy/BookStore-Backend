@@ -15,7 +15,7 @@ public class ResponseMessage<T> {
         return new ResponseMessage<>(200, message, data);
     }
 
-    public static ResponseMessage<String> error(Integer code, String message) {
+    public static <T> ResponseMessage<T> error(Integer code, String message) {
         return new ResponseMessage<>(code, message, null);
     }
 }
