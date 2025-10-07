@@ -18,7 +18,7 @@ import fun.steven.bookstore.service.IUserService;
 import fun.steven.bookstore.utils.BCryptUtils;
 import fun.steven.bookstore.utils.exception.LoginException;
 import fun.steven.bookstore.utils.exception.RegisterException;
-import fun.steven.bookstore.pojo.dto.user.FindUserReponse;
+import fun.steven.bookstore.pojo.dto.user.FindUserResponse;
 import fun.steven.bookstore.pojo.dto.user.FindUsersResponse;
 
 @Service
@@ -105,17 +105,18 @@ public class UserService implements IUserService {
         return userDao.save(user);
     }
 
-    public FindUserReponse findUser(Long userId) {
+    public FindUserResponse findUser(Long userId) {
         User user = userDao.findById(userId).orElseThrow(
                 () -> new RuntimeException("User not found"));
 
-        return new FindUserReponse(user);
+        return new FindUserResponse(user);
     }
 
     public FindUsersResponse findAllUsers() {
         List<Object[]> userInfos = userDao.findAllSafely();
-        List<FindUserReponse> users = userInfos.stream()
-                .map(info -> new FindUserReponse(
+        List<FindUserResponse> users = userInfos.stream()
+                .map(info -> new FindUserResponse(
+                        1L, // dummy id, not used
                         (String) info[0], // username
                         (String) info[1], // email
                         (String) info[2], // avatar

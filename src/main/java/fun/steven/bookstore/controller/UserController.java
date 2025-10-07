@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import fun.steven.bookstore.pojo.ResponseMessage;
-import fun.steven.bookstore.pojo.dto.user.FindUserReponse;
+import fun.steven.bookstore.pojo.dto.user.FindUserResponse;
 import fun.steven.bookstore.pojo.dto.user.FindUsersResponse;
 import fun.steven.bookstore.pojo.dto.user.LoginRequest;
 import fun.steven.bookstore.pojo.dto.user.LogoutResponse;
@@ -50,10 +50,10 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseMessage<FindUserReponse> findUser(@CurrentUserId Long userId) {
-        FindUserReponse reponse = userService.findUser(userId);
+    public ResponseMessage<FindUserResponse> findUser(@CurrentUserId Long userId) {
+        FindUserResponse response = userService.findUser(userId);
 
-        return ResponseMessage.success("query user success!", reponse);
+        return ResponseMessage.success("query user success!", response);
     }
 
     @AdminOnly

@@ -7,9 +7,9 @@ import lombok.Data;
 @Data
 public class FindUsersResponse {
     private Integer quantity;
-    private List<FindUserReponse> users;
+    private List<FindUserResponse> users;
 
-    public FindUsersResponse(List<FindUserReponse> users) {
+    public FindUsersResponse(List<FindUserResponse> users) {
         this.quantity = users.size();
         this.users = users;
     }

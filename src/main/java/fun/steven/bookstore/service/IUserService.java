@@ -4,7 +4,7 @@ import fun.steven.bookstore.pojo.dto.user.LoginRequest;
 import fun.steven.bookstore.pojo.dto.user.RegisterRequest;
 import fun.steven.bookstore.pojo.dto.user.SessionDto;
 import fun.steven.bookstore.pojo.dto.user.UpdateRequest;
-import fun.steven.bookstore.pojo.dto.user.FindUserReponse;
+import fun.steven.bookstore.pojo.dto.user.FindUserResponse;
 import fun.steven.bookstore.pojo.dto.user.FindUsersResponse;
 
 public interface IUserService {
@@ -13,7 +13,7 @@ public interface IUserService {
 
     public boolean delete(Long userId);
 
-    public FindUserReponse findUser(Long userId);
+    public FindUserResponse findUser(Long userId);
 
     public FindUsersResponse findAllUsers();
 

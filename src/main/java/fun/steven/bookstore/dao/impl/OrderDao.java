@@ -3,6 +3,8 @@ package fun.steven.bookstore.dao.impl;
 import fun.steven.bookstore.dao.IOrderDao;
 import fun.steven.bookstore.pojo.entity.Order;
 import fun.steven.bookstore.repository.OrderRepository;
+import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +20,7 @@ public class OrderDao implements IOrderDao {
     private OrderRepository orderRepository;
 
     @Override
+    @Transactional
     public Order save(Order order) {
         return orderRepository.save(order);
     }
