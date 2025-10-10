@@ -46,9 +46,7 @@ public class WebSocketServer {
         Session toSession = SESSIONS.get(userId);
         try {
             String jsonMessage = objectMapper.writeValueAsString(message);
-            synchronized (toSession) {
-                toSession.getBasicRemote().sendText(jsonMessage);
-            }
+            toSession.getBasicRemote().sendText(jsonMessage);
         } catch (Exception e) {
             log.severe("消息发送失败: " + e.getMessage());
         }

@@ -5,12 +5,12 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
 import fun.steven.bookstore.pojo.ResponseMessage;
 import fun.steven.bookstore.pojo.dto.order.CreateOrderRequest;
 import fun.steven.bookstore.service.IOrderService;
+import fun.steven.bookstore.utils.websocket.WebSocketServer;
 
 @Component
 public class OrderTopicListener {
@@ -22,9 +22,6 @@ public class OrderTopicListener {
 
     @Autowired
     private IOrderService orderService;
-
-    @Autowired
-    private SimpMessagingTemplate messagingTemplate;
 
     @KafkaListener(topics = KafkaTopicConfig.NEW_ORDER_TOPIC, groupId = "bookstore-group")
     public void handleNewOrder(CreateOrderRequest request) {
@@ -45,6 +42,6 @@ public class OrderTopicListener {
         Long userId = ((Number) response.getData()).longValue();
         log.info("[Order Result][User " + userId + "]: " + response.getMessage());
 
-        messagingTemplate.convertAndSend("/topic/order/" + userId, response);
+        WebSocketServer.sendMessage(userId, response);
     }
 }
