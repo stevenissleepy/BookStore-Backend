@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,8 +27,12 @@ import fun.steven.bookstore.service.IBookService;
 
 @Service
 public class BookService implements IBookService {
+
+    private static final Logger logger = LoggerFactory.getLogger(BookService.class);
+
     @Autowired
     private IBookDao bookDao;
+    
     @Autowired
     private IBookStockDao bookStockDao;
 
@@ -49,8 +55,13 @@ public class BookService implements IBookService {
     }
 
     public FindBookResponse findBook(Long bookId) {
+        long startTime = System.currentTimeMillis();
+        
         Book book = bookDao.findById(bookId).orElseThrow(
                 () -> new RuntimeException("Book not found: " + bookId));
+
+        long endTime = System.currentTimeMillis();
+        logger.info("Find book by ID {} took {} ms", bookId, endTime - startTime);
 
         return new FindBookResponse(book);
     }

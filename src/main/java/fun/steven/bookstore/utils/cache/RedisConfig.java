@@ -1,5 +1,7 @@
 package fun.steven.bookstore.utils.cache;
 
+import org.springframework.cache.annotation.CachingConfigurer;
+import org.springframework.cache.interceptor.CacheErrorHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
@@ -8,7 +10,7 @@ import org.springframework.data.redis.serializer.RedisSerializationContext.Seria
 import java.time.Duration;
 
 @Configuration
-public class RedisConfig {
+public class RedisConfig implements CachingConfigurer {
 
     @Bean
     public RedisCacheConfiguration cacheConfiguration() {
@@ -19,5 +21,10 @@ public class RedisConfig {
                 .disableCachingNullValues()
                 // 设置值的序列化器为 JSON 格式，可读性更高
                 .serializeValuesWith(SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
+    }
+
+    @Override
+    public CacheErrorHandler errorHandler() {
+        return new RedisErrorHandler();
     }
 }
