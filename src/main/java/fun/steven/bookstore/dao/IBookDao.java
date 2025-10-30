@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 import fun.steven.bookstore.pojo.entity.Book;
 
 public interface IBookDao {
-    boolean save(Book book);
+    Book save(Book book);
 
     boolean delete(Long id);
 

@@ -10,4 +10,5 @@ public class SearchBooksRequest {
     private List<String> categories;
     private Integer page;
     private Integer limit;
+    private Boolean withStock;
 }

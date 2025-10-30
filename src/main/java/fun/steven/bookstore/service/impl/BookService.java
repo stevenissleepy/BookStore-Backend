@@ -1,6 +1,8 @@
 package fun.steven.bookstore.service.impl;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import fun.steven.bookstore.dao.IBookDao;
+import fun.steven.bookstore.dao.IBookStockDao;
 import fun.steven.bookstore.pojo.dto.book.AddBookRequest;
 import fun.steven.bookstore.pojo.dto.book.FindBookResponse;
 import fun.steven.bookstore.pojo.dto.book.FindBooksResponse;
@@ -17,16 +20,23 @@ import fun.steven.bookstore.pojo.dto.book.FindCategoriesResponse;
 import fun.steven.bookstore.pojo.dto.book.SearchBooksRequest;
 import fun.steven.bookstore.pojo.dto.book.UpdateBookRequest;
 import fun.steven.bookstore.pojo.entity.Book;
+import fun.steven.bookstore.pojo.entity.BookStock;
 import fun.steven.bookstore.service.IBookService;
 
 @Service
 public class BookService implements IBookService {
     @Autowired
     private IBookDao bookDao;
+    @Autowired
+    private IBookStockDao bookStockDao;
 
     public boolean addBook(AddBookRequest request) {
         Book book = new Book(request);
-        return bookDao.save(book);
+        Book newBook = bookDao.save(book);
+        BookStock bookStock = new BookStock(newBook.getId(), request.getStock());
+        bookStockDao.save(bookStock);
+
+        return true;
     }
 
     public boolean deleteBook(Long bookId) {
@@ -76,6 +86,19 @@ public class BookService implements IBookService {
             bookPage = bookDao.findByTitleAndCategories(title.trim(), categories, pageable);
         }
 
+        // 查询 Stock
+        Boolean withStock = request.getWithStock();
+        if (withStock != null && withStock) {
+            List<Long> ids = bookPage.stream().map(Book::getId).collect(Collectors.toList());
+            List<BookStock> stocks = bookStockDao.findByIdIn(ids);
+            Map<Long, BookStock> stockMap = stocks.stream().collect(Collectors.toMap(BookStock::getId, s -> s, (a, b) -> a));
+
+            for (Book book : bookPage) {
+                BookStock stock = stockMap.get(book.getId());
+                book.setStock(stock.getStock());
+            }
+        }
+
         return new FindBooksResponse(bookPage);
     }
 
@@ -91,5 +114,4 @@ public class BookService implements IBookService {
         bookDao.save(updateBook);
         return true;
     }
-
 }

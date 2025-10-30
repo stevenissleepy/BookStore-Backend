@@ -18,8 +18,8 @@ public class BookDao implements IBookDao {
     private BookRepository bookRepository;
 
     @Override
-    public boolean save(Book book) {
-        return bookRepository.save(book) != null;
+    public Book save(Book book) {
+        return bookRepository.save(book);
     }
 
     @Override
