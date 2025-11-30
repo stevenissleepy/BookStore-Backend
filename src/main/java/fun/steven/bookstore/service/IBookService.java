@@ -1,6 +1,7 @@
 package fun.steven.bookstore.service;
 
 import fun.steven.bookstore.pojo.dto.book.AddBookRequest;
+import fun.steven.bookstore.pojo.dto.book.AddTagRequest;
 import fun.steven.bookstore.pojo.dto.book.FindBooksResponse;
 import fun.steven.bookstore.pojo.dto.book.FindCategoriesResponse;
 import fun.steven.bookstore.pojo.dto.book.FindBookResponse;
@@ -9,6 +10,8 @@ import fun.steven.bookstore.pojo.dto.book.UpdateBookRequest;
 
 public interface IBookService {
     boolean addBook(AddBookRequest request);
+
+    void addTag(AddTagRequest request);
 
     boolean deleteBook(Long bookId);
 

@@ -1,5 +1,7 @@
 package fun.steven.bookstore.pojo.dto.book;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,4 +19,5 @@ public class AddBookRequest {
     private Integer price;
     private Integer stock;
     private String cover;
+    private List<String> tags;
 }

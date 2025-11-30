@@ -1,13 +1,20 @@
 package fun.steven.bookstore.pojo.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.beans.BeanUtils;
 
 import fun.steven.bookstore.pojo.dto.book.AddBookRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.Data;
@@ -52,6 +59,11 @@ public class Book {
 
     @Column(name = "deleted")
     private Boolean deleted = false;
+
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "tb_book_tag", joinColumns = @JoinColumn(name = "id"))
+    @Column(name = "tag")
+    private Set<String> tags = new HashSet<>();
 
     public Book(AddBookRequest request) {
         BeanUtils.copyProperties(request, this);

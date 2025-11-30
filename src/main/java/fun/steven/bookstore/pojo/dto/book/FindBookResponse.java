@@ -1,5 +1,7 @@
 package fun.steven.bookstore.pojo.dto.book;
 
+import java.util.Set;
+
 import org.springframework.beans.BeanUtils;
 
 import fun.steven.bookstore.pojo.entity.Book;
@@ -21,6 +23,7 @@ public class FindBookResponse {
     private Integer price;
     private Integer stock;
     private String cover;
+    private Set<String> tags;
 
     public FindBookResponse(Book book){
         BeanUtils.copyProperties(book, this);

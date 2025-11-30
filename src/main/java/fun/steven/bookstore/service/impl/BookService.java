@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import fun.steven.bookstore.dao.IBookDao;
 import fun.steven.bookstore.pojo.dto.book.AddBookRequest;
+import fun.steven.bookstore.pojo.dto.book.AddTagRequest;
 import fun.steven.bookstore.pojo.dto.book.FindBookResponse;
 import fun.steven.bookstore.pojo.dto.book.FindBooksResponse;
 import fun.steven.bookstore.pojo.dto.book.FindCategoriesResponse;
@@ -27,6 +28,14 @@ public class BookService implements IBookService {
     public boolean addBook(AddBookRequest request) {
         Book book = new Book(request);
         return bookDao.save(book);
+    }
+
+    public void addTag(AddTagRequest request) {
+        Book book = bookDao.findById(request.getId()).orElseThrow(
+                () -> new RuntimeException("Book not found: " + request.getId()));
+
+        book.getTags().add(request.getTag());
+        bookDao.save(book);
     }
 
     public boolean deleteBook(Long bookId) {
@@ -53,6 +62,12 @@ public class BookService implements IBookService {
         Pageable pageable = PageRequest.of(page, limit);
 
         Page<Book> bookPage;
+
+        // 如果 tag 不为空，按 tag 搜索
+        if (request.getTag() != null && !request.getTag().trim().isEmpty()) {
+            bookPage = bookDao.findByTag(request.getTag().trim(), pageable);
+            return new FindBooksResponse(bookPage);
+        }
 
         // 如果查询条件和分类都为空，返回所有书籍
         if ((title == null || title.trim().isEmpty()) &&

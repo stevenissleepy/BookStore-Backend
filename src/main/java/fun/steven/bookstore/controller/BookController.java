@@ -17,6 +17,7 @@ import fun.steven.bookstore.pojo.dto.book.FindBooksResponse;
 import fun.steven.bookstore.pojo.dto.book.FindCategoriesResponse;
 import fun.steven.bookstore.pojo.dto.book.SearchBooksRequest;
 import fun.steven.bookstore.pojo.dto.book.UpdateBookRequest;
+import fun.steven.bookstore.pojo.dto.book.AddTagRequest;
 import fun.steven.bookstore.service.IBookService;
 import fun.steven.bookstore.utils.annotation.AdminOnly;
 
@@ -30,6 +31,13 @@ public class BookController {
     public ResponseMessage<String> addBook(@RequestBody AddBookRequest request) {
         bookService.addBook(request);
         return ResponseMessage.success("add book success", null);
+    }
+
+    @PostMapping("/tag")
+    public ResponseMessage<String> addTag(@RequestBody AddTagRequest request) {
+        bookService.addTag(request);
+        String message = "add tag {" + request.getTag() + "} to book {" + request.getId() + "}";
+        return ResponseMessage.success(message, null);
     }
 
     @AdminOnly

@@ -1,5 +1,6 @@
 package fun.steven.bookstore.repository;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -39,4 +40,31 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     /* 获取 categories */
     @Query("SELECT DISTINCT b.category FROM Book b WHERE b.deleted = false")
     List<String> findDistinctCategories();
+
+    @Query("SELECT DISTINCT b FROM Book b JOIN b.tags t WHERE t IN :tags AND b.deleted = false")
+    Page<Book> findByTags(@Param("tags") Collection<String> tags, Pageable pageable);
+
+    @Query("SELECT DISTINCT b FROM Book b JOIN b.tags t WHERE " +
+            "LOWER(b.title) LIKE LOWER(CONCAT('%', :title, '%')) " +
+            "AND t IN :tags AND b.deleted = false")
+    Page<Book> findByTitleAndTags(
+            @Param("title") String title,
+            @Param("tags") Collection<String> tags,
+            Pageable pageable);
+
+    @Query("SELECT DISTINCT b FROM Book b JOIN b.tags t WHERE " +
+            "b.category IN :categories AND t IN :tags AND b.deleted = false")
+    Page<Book> findByCategoriesAndTags(
+            @Param("categories") List<String> categories,
+            @Param("tags") Collection<String> tags,
+            Pageable pageable);
+
+    @Query("SELECT DISTINCT b FROM Book b JOIN b.tags t WHERE " +
+            "LOWER(b.title) LIKE LOWER(CONCAT('%', :title, '%')) " +
+            "AND b.category IN :categories AND t IN :tags AND b.deleted = false")
+    Page<Book> findByTitleCategoriesAndTags(
+            @Param("title") String title,
+            @Param("categories") List<String> categories,
+            @Param("tags") Collection<String> tags,
+            Pageable pageable);
 }

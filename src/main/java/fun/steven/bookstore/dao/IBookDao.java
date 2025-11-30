@@ -17,6 +17,7 @@ public interface IBookDao {
     Page<Book> findByTitle(String title, Pageable pageable);
     Page<Book> findByCategories(List<String> categories, Pageable pageable);
     Page<Book> findByTitleAndCategories(String title, List<String> categories, Pageable pageable);
+    Page<Book> findByTag(String tag, Pageable pageable);
     Optional<Book> findById(Long id);
     List<String> findDistinctCategories();
 }

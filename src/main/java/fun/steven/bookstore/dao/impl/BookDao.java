@@ -1,8 +1,10 @@
 package fun.steven.bookstore.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import fun.steven.bookstore.pojo.entity.Book;
 import fun.steven.bookstore.pojo.entity.BookDoc;
 import fun.steven.bookstore.repository.BookDocRepository;
 import fun.steven.bookstore.repository.BookRepository;
+import fun.steven.bookstore.repository.TagRepository;
 
 @Repository
 public class BookDao implements IBookDao {
@@ -22,6 +25,8 @@ public class BookDao implements IBookDao {
     private BookRepository bookRepository;
     @Autowired
     private BookDocRepository bookDocRepository;
+    @Autowired
+    private TagRepository tagRepository;
 
     @Override
     public boolean save(Book book) {
@@ -66,6 +71,14 @@ public class BookDao implements IBookDao {
     }
 
     @Override
+    public Page<Book> findByTag(String tag, Pageable pageable) {
+        List<String> expandedTags = expandTagsForSearch(tag);
+        Page<Book> books = bookRepository.findByTags(expandedTags, pageable);
+        populateBooksDoc(books.getContent());
+        return books;
+    }
+
+    @Override
     public List<String> findDistinctCategories() {
         return bookRepository.findDistinctCategories();
     }
@@ -97,5 +110,10 @@ public class BookDao implements IBookDao {
                 book.setDescription(bookDoc.getDescription());
             }
         });
+    }
+
+    private List<String> expandTagsForSearch(String tag) {
+        Set<String> expanded = tagRepository.fetchRelatedTags(tag);
+        return new ArrayList<>(expanded);
     }
 }
