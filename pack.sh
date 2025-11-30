@@ -18,4 +18,6 @@ zip -rq "$OUTPUT_FILE" . \
     -x "pack.sh" \
     -x "$OUTPUT_FILE"
 
-echo "文件已保存为: $OUTPUT_FILE"
+mv "$OUTPUT_FILE" "/mnt/c/Users/steven/Desktop/$OUTPUT_FILE"
+
+echo "文件已保存为: /mnt/c/Users/steven/Desktop/$OUTPUT_FILE"
