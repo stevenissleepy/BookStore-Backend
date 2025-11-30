@@ -26,7 +26,6 @@ public class BookController {
     @Autowired
     private IBookService bookService;
 
-    @AdminOnly
     @PostMapping
     public ResponseMessage<String> addBook(@RequestBody AddBookRequest request) {
         bookService.addBook(request);

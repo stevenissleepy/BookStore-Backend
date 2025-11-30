@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -34,10 +35,10 @@ public class Book {
     @Column(name = "stock")
     private Integer stock;
 
-    @Column(name = "description", columnDefinition = "LONGTEXT")
+    @Transient
     private String description;
 
-    @Column(name = "cover", columnDefinition = "LONGTEXT")
+    @Transient
     private String cover;
 
     @Column(name = "category")
