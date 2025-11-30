@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import fun.steven.bookstore.dao.IOrderDao;
 import fun.steven.bookstore.pojo.dto.book.FindBookResponse;
@@ -15,6 +16,7 @@ import fun.steven.bookstore.pojo.dto.stats.StatsUserRequest;
 import fun.steven.bookstore.pojo.entity.Book;
 import fun.steven.bookstore.service.IStatsService;
 
+@Service
 public class StatsService implements IStatsService {
 
     @Autowired
