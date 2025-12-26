@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+  db:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: bookstore
+      MYSQL_USER: steven
+      MYSQL_PASSWORD: yjc123
+    network_mode: host
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+
+  backend:
+    image: maven:3-openjdk-17
+    working_dir: /workspace
+    command: mvn spring-boot:run
+    network_mode: host
+    volumes:
+      - ./src:/workspace/src
+      - ./pom.xml:/workspace/pom.xml
+      - ./.mvn:/workspace/.mvn
+      - ./mvnw:/workspace/mvnw
