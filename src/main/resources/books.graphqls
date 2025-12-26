@@ -1,0 +1,24 @@
+type Query {
+  booksByName(name: String!, page: Int = 0, limit: Int = 10): BookSearchResult!
+}
+
+type BookSearchResult {
+  quantity: Int!
+  currentPage: Int!
+  first: Boolean!
+  last: Boolean!
+  books: [Book!]!
+}
+
+type Book {
+  id: ID!
+  title: String
+  author: String
+  description: String
+  category: String
+  language: String
+  isbn: String
+  price: Int
+  stock: Int
+  cover: String
+}

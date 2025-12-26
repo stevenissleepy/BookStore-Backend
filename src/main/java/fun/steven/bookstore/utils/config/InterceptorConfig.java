@@ -33,7 +33,9 @@ public class InterceptorConfig implements WebMvcConfigurer {
                 "/user/login",
                 "/user/register",
                 "/book",
-                "/book/**");
+                "/book/**",
+                "/graphql"
+        );
 
         registry.addInterceptor(loginInterceptor)
                 .addPathPatterns("/**") /* 拦截所有路径 */
